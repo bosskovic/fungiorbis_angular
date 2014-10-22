@@ -143,11 +143,10 @@ module.exports = function (grunt) {
           open: true,
           middleware: function (connect) {
             return [
+              require('connect-modrewrite') (['!(\\..+)$ / [L]']),
               connect.static('.tmp'),
-              connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
-              ),
+              connect().use('/bower_components', connect.static('./bower_components')),
+              connect().use('/fonts', connect.static('./bower_components/font-awesome/fonts')),
               connect.static('src')
             ];
           }
@@ -199,7 +198,7 @@ module.exports = function (grunt) {
     filerev: {
       dist: {
         src: [
-          'dist/app/{,*/}*.js',
+          'dist/scripts/{,*/}*.js',
           'dist/styles/{,*/}*.css',
           'dist/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           'dist/styles/fonts/*'

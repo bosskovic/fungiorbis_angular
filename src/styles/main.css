@@ -161,6 +161,10 @@ ul.alert-dropdown {
     font-size: 40px;
 }
 
+.panel-primary > .panel-heading a {
+    color: #fff;
+}
+
 .panel-green {
     border-color: #5cb85c;
 }
@@ -214,3 +218,10 @@ ul.alert-dropdown {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+
+
+.navbar-inverse .navbar-nav > li > ul > .active > a, .navbar-inverse .navbar-nav > li > ul > .active > a:hover, .navbar-inverse .navbar-nav > li > ul > .active > a:focus {
+    background-color: #080808;
+    color: #fff;
+}
+

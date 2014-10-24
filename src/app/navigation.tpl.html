@@ -1,31 +1,40 @@
-<div class="container-fluid" ng-controller="NavigationController as NavCtrl">
-    <ul class="nav navbar-left top-nav">
+<div class="container-fluid">
+    <ul class="nav navbar-left top-nav" ng-controller="NavigationController as NavCtrl">
         <li ng-class="{open: NavCtrl.isActiveTab('home')}">
             <a class="navbar-brand" href="/" ng-click="NavCtrl.setActiveTab('home')">Fungiorbis</a>
         </li>
         <li ng-class="{open: NavCtrl.isActiveTab(item.name)}" ng-repeat="item in NavCtrl.items">
-            <a href="{{item.name}}" ng-click="NavCtrl.setActiveTab(item.name)"><i class="fa {{item.icon}}"></i>
+            <a href="{{::item.name}}" ng-click="NavCtrl.setActiveTab(item.name)"><i class="fa {{::NavCtrl.icon(item.name)}}"></i>
                 {{item.text}}</a>
         </li>
     </ul>
 
-
     <!-- Top Menu Items -->
-    <ul class="nav navbar-right top-nav">
-        <li class="dropdown" ng-show="NavCtrl.isLoggedIn">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b
+    <ul class="nav navbar-right top-nav" ng-controller="AuthenticationController as auth">
+        <li class="dropdown" ng-hide="auth.currentUser === null">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa {{::auth.icon('user')}}"></i> John Smith <b
                     class="caret"></b></a>
             <ul class="dropdown-menu">
-                <li><a href="#"><i class="fa fa-fw fa-user"></i> Profile</a></li>
-                <li><a href="#"><i class="fa fa-fw fa-envelope"></i> Support</a></li>
+                <li><a href="#"><i class="fa fa-fw {{::auth.icon('user')}}"></i> Profile</a></li>
+                <li><a href="#"><i class="fa fa-fw {{::auth.icon('support')}}"></i> Support</a></li>
                 <!--<li><a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a></li>-->
-                <li><a href="#"><i class="fa fa-fw fa-tags"></i> My Specimens</a></li>
+                <li><a href="#"><i class="fa fa-fw {{::auth.icon('specimens')}}"></i> My Specimens</a></li>
                 <li class="divider"></li>
-                <li><a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
+                <li><a href="" ng-click="auth.signOut()"><i class="fa fa-fw {{::auth.icon('signOut')}}"></i> Sign Out</a></li>
             </ul>
         </li>
-        <li ng-hide="NavCtrl.isLoggedIn">
-            <a href="log_in"><i class="fa fa-sign-in"></i> Log in</a>
+        <li ng-show="auth.currentUser === null && !auth.showSignIn">
+            <a href="" ng-click="auth.showSignIn = true"><i class="fa {{::auth.icon('signIn')}}"></i> Log in</a>
+        </li>
+        <li ng-show="auth.currentUser === null && !auth.showSignIn">
+            <a href=""><i class="fa {{::auth.icon('register')}}"></i> Register</a>
+        </li>
+        <li ng-show="auth.currentUser === null && auth.showSignIn" class="form-group navbar-form">
+            <input class="form-control" type="text" name="email" placeholder="email" ng-model="auth.email"/>
+            <input class="form-control" type="password" name="password" placeholder="password"
+                   ng-model="auth.password"/>
+            <button class="btn btn-default fa {{::auth.icon('signIn')}}" ng-click="auth.signIn()"> Sign In</button>
+            <button class="btn btn-default fa {{::auth.icon('cancel')}}" ng-click="auth.showSignIn = false"></button>
         </li>
     </ul>
 

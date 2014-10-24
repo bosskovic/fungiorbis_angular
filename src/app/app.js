@@ -14,6 +14,7 @@ angular.module('angularFungiorbisApp', [
   'ngCookies',
   'restangular',
   'dashboard',
+  'navigation.userToolbar',
   'services.authentication',
   'services.icons'
 ])
@@ -53,19 +54,15 @@ angular.module('angularFungiorbisApp', [
 //      });
 //  }])
 
-  .controller('NavigationController', function (icons) {
+  .controller('NavigationController', function (icons, authentication) {
     this.activeTab = 'home';
     this.icon = icons.get;
+    this.hasAccess = authentication.hasAccess;
 
-    this.items = [
-      {name: 'dashboard', text: 'Dashboard'},
+    this.publicItems = [
       {name: 'species', text: 'Species'},
       {name: 'specimens', text: 'Specimens'}
     ];
-
-    this.toggleNavigation = function () {
-      this.isCollapsed = !this.isCollapsed;
-    };
 
     this.isActiveTab = function (tab) {
       return tab === this.activeTab;
@@ -74,44 +71,4 @@ angular.module('angularFungiorbisApp', [
     this.setActiveTab = function (tab) {
       this.activeTab = tab;
     };
-  })
-
-
-  .controller('AuthenticationController', function (icons, authentication) {
-    this.showSignIn = false;
-    this.icon = icons.get;
-    this.currentUser = null;
-
-    var that = this;
-
-    this.signIn = function () {
-      authentication.signIn(this.email, this.password)
-        .then(function (result) {
-          that.currentUser = result;
-          that.showSignIn = false;
-//          $location.path("/");
-        }, function (error) {
-//          $window.alert("Invalid credentials");
-          console.log(error);
-          console.log(error.data.errors.details[0]);
-          that.email = null;
-          that.password = null;
-        });
-    };
-
-    this.signOut = function () {
-      authentication.signOut()
-        .then(function (result) {
-          that.currentUser = null;
-          console.log(result);
-        }, function (error) {
-          console.log(error);
-        });
-    };
-
-    this.cancel = function () {
-      this.email = '';
-      this.password = '';
-    };
   });
-

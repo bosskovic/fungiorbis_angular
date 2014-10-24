@@ -41,7 +41,7 @@ angular.module('services.authentication', [])
           'X-User-Token': currentUser.authToken
         }
       }).then(function (result) {
-        currentUser = null;
+        currentUser = {};
         $cookieStore.remove('currentUser');
         deferred.resolve(result);
       }, function (error) {
@@ -55,8 +55,27 @@ angular.module('services.authentication', [])
       return currentUser;
     }
 
+    function hasAccess(requiredRole) {
+      if (requiredRole === undefined || requiredRole === '' || requiredRole === 'visitor') {
+        return true;
+      } else if (getCurrentUser() === null){
+        return false;
+      } else {
+        switch(getCurrentUser().role){
+          case undefined:
+            return false;
+          case 'user':
+            return requiredRole === 'user';
+          case 'contributor':
+            return requiredRole === 'user' || requiredRole === 'contributor';
+          case 'supervisor':
+            return true;
+        }
+      }
+    }
+
     function init() {
-      currentUser = $cookieStore.get('currentUser');
+      currentUser = $cookieStore.get('currentUser') || null;
     }
 
     init();
@@ -66,9 +85,10 @@ angular.module('services.authentication', [])
       signIn: signIn,
       signOut: signOut,
       currentUser: getCurrentUser,
+      hasAccess: hasAccess,
 
       isAuthenticated: function () {
-        return !!service.currentUser;
+        return getCurrentUser() !== null;
       },
 
       isSupervisor: function () {

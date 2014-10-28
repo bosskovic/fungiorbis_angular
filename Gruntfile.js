@@ -124,6 +124,7 @@ module.exports = function (grunt) {
         },
         files: [
           'src/{,*/}*.html',
+          'src/{,*/}*.tpl.html',
           '.tmp/styles/{,*/}*.css',
           'src/assets/img/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
@@ -143,7 +144,7 @@ module.exports = function (grunt) {
           open: true,
           middleware: function (connect) {
             return [
-              require('connect-modrewrite') (['!(\\..+)$ / [L]']),
+              require('connect-modrewrite') (['!(\\..+)$ /index.html [L]']),
               connect.static('.tmp'),
               connect().use('/bower_components', connect.static('./bower_components')),
               connect().use('/fonts', connect.static('./bower_components/font-awesome/fonts')),

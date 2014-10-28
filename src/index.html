@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css" />
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -45,25 +46,33 @@
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
-<script src="bower_components/lodash/dist/lodash.compat.js"></script>
-<script src="bower_components/restangular/dist/restangular.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
 <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-inflector/dist/angular-inflector.min.js"></script>
+<script src="bower_components/angular-restmod/dist/angular-restmod-bundle.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
+<script src="bower_components/angular-restmod/dist/styles/ams.min.js"></script>
 
 <!-- build:js scripts/scripts.js -->
 <script src="app/app.js"></script>
 <script src="app/dashboard/dashboard.js"></script>
-<script src="app/dashboard/activity/activity.js"></script>
-<script src="app/dashboard/users/users.js"></script>
+<script src="app/dashboard/users.js"></script>
+<script src="app/dashboard/species.js"></script>
+<script src="app/dashboard/references.js"></script>
 <script src="app/dashboard/stats/stats.js"></script>
 <script src="app/navigation/userToolbar.js"></script>
 <script src="common/services/icons.js"></script>
 <script src="common/services/authentication.js"></script>
+<script src="common/resources/users.js"></script>
+<script src="common/resources/species.js"></script>
+<script src="common/resources/references.js"></script>
+<script src="common/directives/tableWithPagination.js"></script>
 <!-- endbuild -->
 </body>
 </html>

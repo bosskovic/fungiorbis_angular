@@ -28,11 +28,13 @@ angular.module('navigation.userToolbar', [])
             .then(function () {
               $scope.showSignIn = false;
               $scope.isAuthenticated = true;
-              $scope.email = null;
-              $scope.password = null;
             }, function (error) {
-              console.log(error);
-              console.log(error.data.errors.details[0]);
+              $scope.showSignIn = true;
+              $scope.isAuthenticated = false;
+              // TODO error handler
+//              console.log(error);
+//              console.log(error.data.errors.details[0]);
+            }).finally(function(){
               $scope.email = null;
               $scope.password = null;
             });

@@ -41,11 +41,13 @@ angular.module('services.authentication', [])
           'X-User-Token': currentUser.authToken
         }
       }).then(function (result) {
-        currentUser = {};
-        $cookieStore.remove('currentUser');
         deferred.resolve(result);
       }, function (error) {
+// TODO: error handler
         deferred.reject(error);
+      }).finally(function(){
+        currentUser = null;
+        $cookieStore.remove('currentUser');
       });
 
       return deferred.promise;

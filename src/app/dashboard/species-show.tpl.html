@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            <a ui-sref="dashboard.species"><i class="fa fa-fw {{ icon.backHistory }}"></i><i
+                    class="fa fa-fw {{ icon.species }}"></i></a>
+            {{ species.genus }} {{ species.name }}</h1>
+    </div>
+</div>
+
+<div class="row" ng-hide="true">
+    <div class="col-lg-12">
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-exclamation-triangle"></i>  <strong>Error!</strong> Error message text here...
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-md-6">
+        <table class="table">
+            <caption class="text-left"><h4><i class="fa fa-fw {{ icon.systematics }}"></i> Systematics</h4></caption>
+            <tr ng-repeat="field in systematics">
+                <th>{{field.label}}</th>
+                <td>
+                    <a href="" editable-text="species[field.field]">{{species[field.field]}}</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <table class="table">
+            <caption class="text-left"><h4><i class="fa fa-fw {{ icon.incontestableCharacteristics }}"></i> Incontestable characteristics</h4></caption>
+            <tr>
+                <th>Synonyms</th>
+                <td>
+                    <a href="" editable-text="species.synonyms">{{species.synonyms}}</a>
+                </td>
+            </tr>
+            <tr>
+                <th>Growth Type</th>
+                <td>
+                    <a href="" editable-select="species.growthType" e-ng-options="s.value as s.text for s in growthTypes">
+                        {{ showGrowthType() }}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <th>Nutritive Group</th>
+                <td>
+                    <a href="" editable-select="species.nutritiveGroup" e-ng-options="s.value as s.text for s in nutritiveGroups">
+                        {{ showNutritiveGroup() }}
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        Species characteristics
+    </div>
+</div>

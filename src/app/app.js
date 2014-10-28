@@ -12,11 +12,17 @@ angular.module('angularFungiorbisApp', [
   'ngAnimate',
   'ui.router',
   'ngCookies',
-  'restangular',
+  'restmod',
+  'ui.bootstrap',
+  'xeditable',
   'dashboard',
   'navigation.userToolbar',
   'services.authentication',
-  'services.icons'
+  'services.icons',
+  'resources.users',
+  'resources.species',
+  'resources.references',
+  'directives.tableWithPagination'
 ])
 
   .constant('SERVER_BASE_URL', 'http://0.0.0.0:3000')
@@ -31,28 +37,46 @@ angular.module('angularFungiorbisApp', [
       });
   })
 
-  .config(function (RestangularProvider, SERVER_BASE_URL) {
-    RestangularProvider.setBaseUrl(SERVER_BASE_URL);
+  .config(function (restmodProvider, SERVER_BASE_URL) {
+    restmodProvider.rebase('AMSApi');
+    restmodProvider.rebase('DefaultPacker');
+    restmodProvider.rebase({
+      $config: {
+        urlPrefix: SERVER_BASE_URL
+      }
+    }, 'setHeaders');
   })
 
+  .run(function (editableOptions) {
+    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+  })
 
-//  .run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Auth) {
-//    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-//        if (!Auth.authorize(toState.data.access)) {
-//          $rootScope.error = "Access denied";
-//          event.preventDefault();
-//
-//          if(fromState.url === '^') {
-//            if(Auth.isLoggedIn())
-//              $state.go('user.home');
-//            else {
-//              $rootScope.error = null;
-//              $state.go('anon.login');
-//            }
-//          }
-//        }
-//      });
-//  }])
+  .factory('setHeaders', function (restmod, authentication) {
+    var headers;
+    if (authentication.isAuthenticated()) {
+      var currentUser = authentication.currentUser();
+      headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-User-Email': currentUser.email,
+        'X-User-Token': currentUser.authToken
+      };
+    } else {
+      headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      };
+    }
+
+    return restmod.mixin({
+      $hooks: {
+        'before-request': function (_req) {
+          _req.headers = headers;
+        }
+      }
+    });
+  })
+
 
   .controller('NavigationController', function (icons, authentication) {
     this.activeTab = 'home';

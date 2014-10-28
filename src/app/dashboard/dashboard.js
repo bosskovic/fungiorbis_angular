@@ -1,6 +1,10 @@
 'use strict';
 
-angular.module('dashboard', ['dashboard.activity', 'dashboard.stats'])
+angular.module('dashboard', [
+  'dashboard.stats',
+  'dashboard.users',
+  'dashboard.species',
+  'dashboard.references'])
 
   .config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.when('/dashboard', '/dashboard/activity');
@@ -9,17 +13,10 @@ angular.module('dashboard', ['dashboard.activity', 'dashboard.stats'])
         url: '/dashboard',
         templateUrl: '/app/dashboard/dashboard.tpl.html',
         controller: 'DashboardController as dashboardNav'
-//      controller:'DashboardCtrl',
-//      resolve:{
-//        projects:['Projects', function (Projects) {
-//          //TODO: need to know the current user here
-//          return Projects.all();
-//        }],
-//        tasks:['Tasks', function (Tasks) {
-//          //TODO: need to know the current user here
-//          return Tasks.all();
-//        }]
-//      }
+      })
+      .state('dashboard.activity', {
+        url: '/activity',
+        templateUrl: '/app/dashboard/activity.tpl.html'
       });
   })
 

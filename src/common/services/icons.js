@@ -6,8 +6,13 @@ angular.module('services.icons', [])
     undefined: 'fa-question',
 
     species: 'fa-book',
+    systematics: 'fa-sitemap',
+    incontestableCharacteristics: 'fa-bars',
+
     specimens: 'fa-tags',
-    references: 'fa-university',
+
+//    references: 'fa-university',
+    references: 'fa-quote-left',
 
     dashboard: 'fa-dashboard',
     activity: 'fa-dashboard',
@@ -15,6 +20,9 @@ angular.module('services.icons', [])
 
     close: 'fa-close',
     cancel: 'fa-close',
+
+//    backHistory: 'fa-arrow-circle-o-left',
+    backHistory: 'fa-reply',
 
     user: 'fa-user',
     users: 'fa-users',

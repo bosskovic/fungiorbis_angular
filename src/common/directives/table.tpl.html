@@ -1,0 +1,35 @@
+<ul class="list-inline">
+    <li>Per Page:
+        <select ng-model="params.meta.perPage" ng-options="o as o for o in pageSizeChoices"
+                ng-change="getPage(1)"></select></li>
+    <li>Sort By:
+        <select ng-model="params.sort" ng-options="column.field as column.header for column in params.columns"
+                ng-change="getPage(1)"> </select></li>
+    <li><select class='fo-select' ng-model="params.order" ng-change="getPage(1)">
+        <option value="-">&#xf0d7;</option>
+        <option value="">&#xf0d8;</option>
+    </select></li>
+</ul>
+
+<table class="table nonfluid">
+    <thead>
+    <tr>
+        <th ng-repeat="column in params.columns">{{::column.header}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="row in params.data"  ng-class="{highlight: highlight}" ng-mouseenter="highlight = true" ng-mouseleave="highlight = false">
+        <td ng-repeat="column in params.columns"> {{::row[column.field]}}</td>
+        <td class="action">
+            <a href="{{editUrl+'/'+row.id}}"> <i class="fa fa-fw fa-edit"></i></a>
+            <a href="" ng-click="removeRow(row)"><i class="fa fa-fw fa-remove"></i></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<ul class="pagination" ng-hide="params.meta.pageCount === 1">
+    <li ng-class="{disabled: params.meta.page === 1}"><a ng-click="previous()">&laquo;</a></li>
+    <li ng-repeat="page in pageLinks" ng-class="{active: page === params.meta.page}"><a
+            ng-click="getPage(page)">{{page}}</a></li>
+    <li ng-class="{disabled: params.meta.page === params.meta.pageCount}"><a ng-click="next()">&raquo;</a></li>
+</ul>

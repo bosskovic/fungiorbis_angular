@@ -51,7 +51,7 @@ angular.module('directives.newHabitat', [])
     }
 
     return {
-      templateUrl: 'common/directives/newHabitat.tpl.html',
+      templateUrl: 'common/directives/characteristic/newHabitat.tpl.html',
       restrict: 'E',
       replace: false,
       scope: { storeValue: '=', habitats: '=' },

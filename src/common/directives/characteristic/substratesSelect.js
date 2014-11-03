@@ -5,7 +5,7 @@ angular.module('directives.substratesSelect', [])
   .directive('foSubstratesSelect', function (Substrates) {
 
     return {
-      templateUrl: 'common/directives/substratesSelect.tpl.html',
+      templateUrl: 'common/directives/characteristic/substratesSelect.tpl.html',
       restrict: 'E',
       replace: false,
       scope: { substrates: '=' },

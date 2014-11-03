@@ -5,9 +5,29 @@ angular.module('services.icons', [])
   .constant('ICONS', {
     undefined: 'fa-question',
 
+
     species: 'fa-book',
     systematics: 'fa-sitemap',
     incontestableCharacteristics: 'fa-bars',
+
+    usability: 'fa-money',
+    edible: 'fa-cutlery',
+    cultivated: 'fa-thumbs-o-up',
+//    poisonous: 'fa-frown-o',
+    poisonous: 'fa-warning',
+//    medicinal: 'fa-plus-square',
+    medicinal: 'fa-heart-o',
+
+    habitat: 'fa-tree',
+    substrate: 'fa-leaf',
+    description: 'fa-list-alt',
+
+    fruitingBody: 'fa-lemon-o',
+    chemistry: 'fa-flask',
+    microscopy: 'fa-search',
+    flesh: 'fa-asterisk',
+    notes: 'fa-pencil-square-o',
+
 
     specimens: 'fa-tags',
 
@@ -18,8 +38,19 @@ angular.module('services.icons', [])
     activity: 'fa-dashboard',
     stats: 'fa-bar-chart-o',
 
+    add: 'fa-plus',
     close: 'fa-close',
+    remove: 'fa-close',
+    delete: 'fa-trash-o',
     cancel: 'fa-close',
+    save: 'fa-save',
+    confirm: 'fa-check',
+    edit: 'fa-edit',
+    refresh: 'fa-refresh',
+    spinner: 'fa-spinner fa-spin',
+//    helpText: 'fa-question-circle',
+//    helpText: 'fa-question',
+    helpText: 'fa-info-circle',
 
 //    backHistory: 'fa-arrow-circle-o-left',
     backHistory: 'fa-reply',

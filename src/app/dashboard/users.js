@@ -22,8 +22,7 @@ angular.module('dashboard.users', [])
       });
   })
 
-  .controller('UsersController', function ($scope, $state, ICONS, users) {
-    $scope.icon = ICONS;
+  .controller('UsersController', function ($scope, $state, users) {
     var that = this;
 
     this.tableParams = {

@@ -2,7 +2,7 @@
 
 angular.module('navigation.userToolbar', [])
 
-  .directive('foUserToolbar', function (icons, authentication) {
+  .directive('foUserToolbar', function (authentication) {
     return {
       templateUrl: 'app/navigation/userToolbar.tpl.html',
       restrict: 'E',
@@ -12,7 +12,6 @@ angular.module('navigation.userToolbar', [])
         $scope.isAuthenticated = authentication.isAuthenticated();
 
         $scope.showSignIn = false;
-        $scope.icon = icons.get;
 
         $scope.$watch(function () {
           return authentication.currentUser();
@@ -28,7 +27,7 @@ angular.module('navigation.userToolbar', [])
             .then(function () {
               $scope.showSignIn = false;
               $scope.isAuthenticated = true;
-            }, function (error) {
+            }, function () {
               $scope.showSignIn = true;
               $scope.isAuthenticated = false;
               // TODO error handler
@@ -44,8 +43,9 @@ angular.module('navigation.userToolbar', [])
           authentication.signOut()
             .then(function () {
               $scope.isAuthenticated = false;
-            }, function (error) {
-              console.log(error);
+            }, function () {
+              // TODO error handler
+//              console.log(error);
             });
         };
 

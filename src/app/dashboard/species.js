@@ -30,8 +30,7 @@ angular.module('dashboard.species', [])
       });
   })
 
-  .controller('SpeciesController', function ($scope, $state, ICONS, species) {
-    $scope.icon = ICONS;
+  .controller('SpeciesController', function ($scope, $state, species) {
     var that = this;
 
     this.tableParams = {
@@ -55,8 +54,7 @@ angular.module('dashboard.species', [])
     };
   })
 
-  .controller('ASpeciesController', function ($scope, ICONS, species, $filter) {
-    $scope.icon = ICONS;
+  .controller('ASpeciesController', function ($scope, species, $filter) {
     $scope.species = species;
 
     $scope.systematics = [

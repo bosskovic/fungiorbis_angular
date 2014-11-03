@@ -5,12 +5,11 @@
         </li>
         <li ng-class="{open: NavCtrl.isActiveTab('dashboard')}" ng-show="NavCtrl.hasAccess('supervisor')">
             <a href="dashboard" ng-click="NavCtrl.setActiveTab('dashboard')">
-                <i class="fa {{::NavCtrl.icon('dashboard')}}"></i> Dashboard</a>
+                <fo-icon icon="dashboard"></fo-icon> Dashboard</a>
         </li>
         <li ng-class="{open: NavCtrl.isActiveTab(item.name)}" ng-repeat="item in NavCtrl.publicItems">
-            <a href="{{::item.name}}" ng-click="NavCtrl.setActiveTab(item.name)"><i
-                    class="fa {{::NavCtrl.icon(item.name)}}"></i>
-                {{item.text}}</a>
+            <a href="{{::item.name}}" ng-click="NavCtrl.setActiveTab(item.name)">
+                <fo-icon icon="{{item.name}}"></fo-icon> {{item.text}}</a>
         </li>
     </ul>
 

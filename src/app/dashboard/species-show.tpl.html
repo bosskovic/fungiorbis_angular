@@ -1,8 +1,10 @@
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
-            <a ui-sref="dashboard.species"><i class="fa fa-fw {{ icon.backHistory }}"></i><i
-                    class="fa fa-fw {{ icon.species }}"></i></a>
+            <a ui-sref="dashboard.species">
+                <fo-icon icon="backHistory"></fo-icon>
+                <fo-icon icon="species"></fo-icon>
+            </a>
             {{ species.genus }} {{ species.name }}</h1>
     </div>
 </div>
@@ -19,7 +21,7 @@
 <div class="row">
     <div class="col-lg-6 col-md-6">
         <table class="table">
-            <caption class="text-left"><h4><i class="fa fa-fw {{ icon.systematics }}"></i> Systematics</h4></caption>
+            <caption class="text-left"><h4><fo-icon icon="systematics"></fo-icon> Systematics</h4></caption>
             <tr ng-repeat="field in systematics">
                 <th>{{field.label}}</th>
                 <td>
@@ -30,7 +32,7 @@
     </div>
     <div class="col-lg-6 col-md-6">
         <table class="table">
-            <caption class="text-left"><h4><i class="fa fa-fw {{ icon.incontestableCharacteristics }}"></i> Incontestable characteristics</h4></caption>
+            <caption class="text-left"><h4><fo-icon icon="incontestableCharacteristics"></fo-icon> Incontestable characteristics</h4></caption>
             <tr>
                 <th>Synonyms</th>
                 <td>

@@ -1,27 +1,45 @@
 <ul class="nav navbar-right top-nav">
     <li class="dropdown" ng-show="isAuthenticated">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa {{::icon('user')}}"></i> {{currentUser.displayName}} <b
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <fo-icon icon="user"></fo-icon>
+            {{currentUser.displayName}} <b
                 class="caret"></b></a>
         <ul class="dropdown-menu">
-            <li><a href="#"><i class="fa fa-fw {{::icon('user')}}"></i> Profile</a></li>
-            <li><a href="#"><i class="fa fa-fw {{::icon('support')}}"></i> Support</a></li>
+            <li><a href="#">
+                <fo-icon icon="user"></fo-icon>
+                Profile</a></li>
+            <li><a href="#">
+                <fo-icon icon="support"></fo-icon>
+                Support</a></li>
             <!--<li><a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a></li>-->
-            <li><a href="#"><i class="fa fa-fw {{::icon('specimens')}}"></i> My Specimens</a></li>
+            <li><a href="#">
+                <fo-icon icon="specimens"></fo-icon>
+                My Specimens</a></li>
             <li class="divider"></li>
-            <li><a href="" ng-click="signOut()"><i class="fa fa-fw {{::icon('signOut')}}"></i> Sign Out</a></li>
+            <li><a href="" ng-click="signOut()">
+                <fo-icon icon="signOut"></fo-icon>
+                Sign Out</a></li>
         </ul>
     </li>
     <li ng-hide="isAuthenticated || showSignIn">
-        <a href="" ng-click="showSignIn = true"><i class="fa {{::icon('signIn')}}"></i> Sign in</a>
+        <a href="" ng-click="showSignIn = true">
+            <fo-icon icon="signIn"></fo-icon>
+            Sign in</a>
     </li>
     <li ng-hide="isAuthenticated || showSignIn">
-        <a href=""><i class="fa {{::icon('register')}}"></i> Register</a>
+        <a href="">
+            <fo-icon icon="register"></fo-icon>
+            Register</a>
     </li>
     <li ng-hide="isAuthenticated || !showSignIn" class="form-group navbar-form">
         <input class="form-control" type="text" name="email" placeholder="email" ng-model="email"/>
         <input class="form-control" type="password" name="password" placeholder="password"
                ng-model="password"/>
-        <button class="btn btn-default fa {{::icon('signIn')}}" ng-click="signIn()"> Sign In</button>
-        <button class="btn btn-default fa {{::icon('cancel')}}" ng-click="showSignIn = false"></button>
+    </li>
+    <li ng-hide="isAuthenticated || !showSignIn">
+        <a class="btn btn-sm" ng-click="signIn()"><fo-icon icon="signIn"></fo-icon>Sign In</a>
+    </li>
+    <li ng-hide="isAuthenticated || !showSignIn">
+        <a class="btn btn-sm" ng-click="showSignIn = false"><fo-icon icon="cancel"></fo-icon></a>
     </li>
 </ul>

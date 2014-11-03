@@ -21,8 +21,8 @@
     <tr ng-repeat="row in params.data"  ng-class="{highlight: highlight}" ng-mouseenter="highlight = true" ng-mouseleave="highlight = false">
         <td ng-repeat="column in params.columns"> {{::row[column.field]}}</td>
         <td class="action">
-            <a href="{{editUrl+'/'+row.id}}"> <i class="fa fa-fw fa-edit"></i></a>
-            <a href="" ng-click="removeRow(row)"><i class="fa fa-fw fa-remove"></i></a>
+            <a href="{{editUrl+'/'+row.id}}"> <fo-icon icon="edit"></fo-icon></a>
+            <a href="" ng-click="removeRow(row)"> <fo-icon icon="remove"></fo-icon></a>
         </td>
     </tr>
     </tbody>

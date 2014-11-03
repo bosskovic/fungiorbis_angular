@@ -20,9 +20,7 @@ angular.module('dashboard', [
       });
   })
 
-  .controller('DashboardController', function (ICONS, $scope) {
-    $scope.icons = ICONS;
-
+  .controller('DashboardController', function () {
     this.activityCollapsed = false;
     this.activeTab = 'activity';
     this.toggleActivity = function () {
@@ -42,9 +40,9 @@ angular.module('dashboard', [
     };
 
     this.activityItems = [
-      { name: 'users', icon: ICONS.users, text: 'Users'},
-      { name: 'species', icon: ICONS.species, text: 'Species'},
-      { name: 'specimens', icon: ICONS.specimens, text: 'Specimens'},
-      { name: 'references', icon: ICONS.references, text: 'References'}
+      { name: 'users', text: 'Users'},
+      { name: 'species', text: 'Species'},
+      { name: 'specimens', text: 'Specimens'},
+      { name: 'references', text: 'References'}
     ];
   });

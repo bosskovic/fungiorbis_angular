@@ -1,0 +1,5 @@
+<span ng-repeat="section in sections" title="{{::section.title}}" ng-show="edit || characteristic[section.key]">
+    <fo-icon icon="{{section.key}}"></fo-icon>
+    <input type="checkbox" ng-model="characteristic[section.key]" ng-show="edit">
+    <span ng-show="showLabels">{{::section.title}}<br></span>
+</span>

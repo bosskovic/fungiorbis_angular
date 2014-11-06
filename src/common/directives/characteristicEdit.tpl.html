@@ -1,15 +1,21 @@
 <tabset class="new-characteristic-tabset">
-    <tab title="usability">
+    <tab title="Description">
         <tab-heading>
-            <fo-icon icon="usability"></fo-icon>
-            {{ ::section.usability.title }}
+            <span ng-class="{'icon-alert': translationMissing.length > 0}">
+                <fo-icon icon="description"></fo-icon>
+                {{ ::section.description.title }}
+            </span>
         </tab-heading>
         <div class="tab-body">
-            <fo-help-text text="{{ ::section.usability.helpText }}"></fo-help-text>
-            <fo-usability characteristic="characteristic" edit="true" show-labels="true"></fo-usability>
+
+            <div class="alert alert-warning" ng-show="translationMissing.length > 0">
+                <i class="fa fa-exclamation-triangle"></i> <strong>Translations missing:</strong> {{translationMissing}}
+            </div>
+
+            <fo-help-text text="{{ ::section.description.helpText }}"></fo-help-text>
+            <fo-description-edit characteristic="characteristic"></fo-description-edit>
         </div>
     </tab>
-
     <tab title="Habitats">
         <tab-heading>
             <fo-icon icon="habitat"></fo-icon>
@@ -30,14 +36,14 @@
             <fo-substrates-select substrates="characteristic.substrates"></fo-substrates-select>
         </div>
     </tab>
-    <tab title="Description">
+    <tab title="usability">
         <tab-heading>
-            <fo-icon icon="description"></fo-icon>
-            {{ ::section.description.title }}
+            <fo-icon icon="usability"></fo-icon>
+            {{ ::section.usability.title }}
         </tab-heading>
         <div class="tab-body">
-            <fo-help-text text="{{ ::section.description.helpText }}"></fo-help-text>
-            <fo-description-edit characteristic="characteristic"></fo-description-edit>
+            <fo-help-text text="{{ ::section.usability.helpText }}"></fo-help-text>
+            <fo-usability characteristic="characteristic" edit="true" show-labels="true"></fo-usability>
         </div>
     </tab>
 </tabset>

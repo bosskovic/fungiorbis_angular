@@ -6,6 +6,7 @@
 
 .new-characteristic-tabset {
     margin: 20px 0;
+    min-width: 550px;
 }
 
 .new-characteristic-box .new-characteristic-tabset {

@@ -9,10 +9,8 @@ angular.module('dashboard.references', [])
         templateUrl: '/app/dashboard/references-index.tpl.html',
         controller: 'ReferencesController as referencesCtrl',
         resolve: {
-          references: function (References) {
-            return References.$collection().$fetch().$asPromise().then(function (references) {
-              return references;
-            });
+          referencesResponse: function (References) {
+            return References.index();
           }
         }
       })
@@ -21,75 +19,177 @@ angular.module('dashboard.references', [])
         templateUrl: '/app/dashboard/references-show.tpl.html',
         controller: 'ReferenceController as referenceCtrl',
         resolve: {
-          species: function (References, $stateParams) {
-            return References.$find($stateParams.referenceId).$asPromise().then(function (reference) {
-              return reference;
-            });
+          referenceResponse: function (References, $stateParams) {
+            return References.show($stateParams.referenceId);
+          },
+          preloadHabitats: function (Habitats) {
+            return Habitats.load();
+          },
+          preloadSubstrates: function (Substrates) {
+            return Substrates.load();
           }
         }
       });
   })
 
-  .controller('ReferencesController', function ($scope, $state, ICONS, references) {
-    $scope.icon = ICONS;
+  .controller('ReferencesController', function ($scope, $state, referencesResponse, References) {
     var that = this;
+    var references = referencesResponse.data.references;
+    var meta = referencesResponse.data.meta;
 
     this.tableParams = {
       prefix: 'references',
       data: references,
-      columns: [
-        { header: 'Authors', field: 'authors' },
-        { header: 'Title', field: 'title' },
-        { header: 'ISBN', field: 'isbn' },
-        { header: 'URL', field: 'url' }
-      ],
-      meta: references.$metadata.references,
+      columns: References.fields(),
+      meta: meta.references,
       sort: 'authors',
       editUrl: $state.current.url,
       paginatorPages: 10,
       getData: function (attrs) {
-        references.$refresh(attrs).$asPromise().then(function (sp) {
-          that.tableParams.meta = sp.$metadata.references;
+        References.index(attrs).success(function (data) {
+          that.tableParams.meta = data.meta.references;
+          that.tableParams.data = data.references;
         });
       }
     };
   })
 
-  .controller('ReferenceController', function ($scope, ICONS, reference, $filter) {
-    $scope.icon = ICONS;
-//    $scope.species = species;
-//
-//    $scope.systematics = [
-//      { label: 'Name', field: 'name' },
-//      { label: 'Genus', field: 'genus' },
-//      { label: 'Familia', field: 'familia' },
-//      { label: 'Ordo', field: 'ordo' },
-//      { label: 'Subclassis', field: 'subclassis' },
-//      { label: 'Classis', field: 'classis' },
-//      { label: 'Subphylum', field: 'subphylum' },
-//      { label: 'Phylum', field: 'phylum' }
-//    ];
-//
-//    $scope.growthTypes = [
-//      { value: 'single', text: 'Single' },
-//      { value: 'group', text: 'Group' }
-//    ];
-//
-//    $scope.showGrowthType = function() {
-//      var selected = $filter('filter')($scope.growthTypes, {value: $scope.species.growthType});
-//      return ($scope.species.growthType && selected.length) ? selected[0].text : 'Not set';
-//    };
-//
-//    $scope.nutritiveGroups = [
-//      { value: 'parasitic', text: 'Parasitic' },
-//      { value: 'mycorrhizal', text: 'Mycorrhizal' },
-//      { value: 'saprotrophic', text: 'Saprotrophic' },
-//      { value: 'parasitic-saprotrophic', text: 'Parasitic-saprotrophic' },
-//      { value: 'saprotrophic-parasitic', text: 'Saprotrophic-parasitic' }
-//    ];
-//
-//    $scope.showNutritiveGroup = function() {
-//      var selected = $filter('filter')($scope.nutritiveGroups, {value: $scope.species.nutritiveGroup});
-//      return ($scope.species.nutritiveGroup && selected.length) ? selected[0].text : 'Not set';
-//    };
+  .controller('ReferenceController', function ($scope, referenceResponse, Species, Characteristics, $modal, characteristicComponent, References) {
+    var reference = referenceResponse.data.references;
+    $scope.reference = reference;
+
+    $scope.$watch('referenceDirty', function () {
+
+    });
+
+    this.fields = References.fields();
+
+    var initialCharacteristic = {
+      referenceId: reference.id
+    };
+
+    var that = this;
+
+    // show characteristic component as soon as a species is selected
+    $scope.$watch('speciesId', function (speciesId) {
+      if (angular.isDefined(speciesId)) {
+        Characteristics.get({ speciesId: speciesId, referenceId: reference.id}).success(function (data, status, headers, config) {
+          $scope.characteristic = angular.isDefined(data.characteristics[0]) ? data.characteristics[0]
+            : angular.copy(initialCharacteristic);
+
+          characteristicComponent.initialize($scope.characteristic.id, $scope.characteristic, config.url);
+        });
+      }
+    });
+
+
+    // hide characteristic component if species name is manually altered
+    $scope.$watch('speciesFullName', function (newValue) {
+      if ($scope.speciesId && (angular.isUndefined(newValue) || newValue.length === 0)) {
+        that.reset(true);
+      }
+    });
+
+    // track changes of characteristics (only for updating existing)
+    $scope.$watch('characteristic', function (newValue, oldValue) {
+      if (angular.isDefined(oldValue) && angular.isDefined(newValue)) {
+        $scope.dirty = characteristicComponent.trackChanges(newValue);
+      }
+      $scope.emptyParams = characteristicComponent.emptyParams(newValue);
+    }, true);
+
+    this.saveCharacteristic = function () {
+      Characteristics.save(characteristicComponent.getAttrs($scope.characteristic))
+        .success(function () {
+          that.reset();
+          References.show($scope.reference.id).success(function (data) {
+            $scope.reference.characteristics = data.references.characteristics;
+          });
+        });
+    };
+
+    this.reset = function (keepSpeciesName) {
+      $scope.dirty = false;
+      $scope.emptyParams = false;
+      $scope.speciesId = undefined;
+      if (angular.isUndefined(keepSpeciesName)) {
+        $scope.speciesFullName = undefined;
+      }
+      characteristicComponent.reset($scope.characteristic);
+      $scope.characteristic = undefined;
+    };
+
+    var pendingIndex;
+
+    this.showCharacteristicRow = function (index) {
+      if (!characteristicComponent.emptyParams($scope.characteristic) && characteristicComponent.isDirty($scope.characteristic)) {
+        pendingIndex = index;
+        that.referencesModal.show();
+      }
+      else {
+        pendingIndex = undefined;
+        that.reset();
+        $scope.characteristic = angular.copy($scope.reference.characteristics[index]);
+        characteristicComponent.initialize($scope.characteristic.id, $scope.characteristic);
+      }
+    };
+
+    this.hideCharacteristicRow = function (index) {
+      if (!characteristicComponent.emptyParams($scope.characteristic) && characteristicComponent.isDirty($scope.characteristic)) {
+        pendingIndex = index;
+        that.referencesModal.show();
+      }
+      else {
+        pendingIndex = undefined;
+        that.reset();
+      }
+    };
+
+    this.characteristicRowActive = function (id) {
+      return $scope.speciesId === undefined && $scope.characteristic && $scope.characteristic.id === id;
+    };
+
+    this.referencesModalDelete = $modal({
+      scope: $scope,
+      template: 'app/dashboard/references-modal-delete.tpl.html',
+      show: false
+    });
+
+    this.referencesModal = $modal({
+      scope: $scope,
+      template: 'app/dashboard/references-modal-save.tpl.html',
+      show: false
+    });
+
+    $scope.modalSave = function () {
+      that.saveCharacteristic();
+      that.referencesModal.hide();
+      if (angular.isDefined(pendingIndex)) {
+        that.showCharacteristicRow(pendingIndex);
+      }
+    };
+
+    $scope.modalReset = function () {
+      that.reset();
+      that.referencesModal.hide();
+      if (angular.isDefined(pendingIndex)) {
+        that.showCharacteristicRow(pendingIndex);
+      }
+    };
+
+    $scope.modalClose = function () {
+      that.referencesModal.hide();
+      pendingIndex = undefined;
+    };
+
+    $scope.modalDelete = function () {
+      Characteristics.httpDelete(characteristicComponent.getAttrs($scope.characteristic))
+        .success(function () {
+          that.reset();
+          References.show($scope.reference.id).success(function (data) {
+            $scope.reference.characteristics = data.references.characteristics;
+            that.referencesModalDelete.hide();
+          });
+        });
+    };
   });

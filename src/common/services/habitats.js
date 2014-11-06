@@ -2,7 +2,7 @@
 
 angular.module('services.habitats', [])
 
-  .factory('Habitats', ['$http', '$q', 'SERVER_BASE_URL', function ($http, $q, SERVER_BASE_URL) {
+  .factory('Habitats', function ($http, $q, SERVER_BASE_URL) {
 
     var rawData;
 
@@ -101,4 +101,4 @@ angular.module('services.habitats', [])
       toString: toString
     };
 
-  }]);
+  });

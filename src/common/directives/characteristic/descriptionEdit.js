@@ -2,7 +2,7 @@
 
 angular.module('directives.descriptionEdit', [])
 
-  .directive('foDescriptionEdit', function () {
+  .directive('foDescriptionEdit', function (Characteristics, FoI18n) {
 
     return {
       templateUrl: 'common/directives/characteristic/descriptionEdit.tpl.html',
@@ -10,17 +10,8 @@ angular.module('directives.descriptionEdit', [])
       replace: false,
       scope: { characteristic: '=' },
       link: function (scope) {
-        scope.locales = [
-          { key: 'sr', title: 'srpski' },
-          { key: 'en', title: 'English'}
-        ];
-        scope.sections = [
-          { key: 'fruitingBody', title: 'Fruiting Body', locale: scope.locales[0] },
-          { key: 'flesh', title: 'Flesh', locale: scope.locales[0] },
-          { key: 'microscopy', title: 'Microscopy', locale: scope.locales[0] },
-          { key: 'chemistry', title: 'Chemistry', locale: scope.locales[0] },
-          { key: 'notes', title: 'Notes', locale: scope.locales[0] }
-        ];
+        scope.locales = FoI18n.localesArray();
+        scope.sections = Characteristics.sectionsArray(scope.locales);
 
         var activeDescTab = scope.sections[0];
 

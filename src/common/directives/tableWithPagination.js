@@ -36,13 +36,14 @@ angular.module('directives.tableWithPagination', [])
     };
 
     var metaParams = function (params, changed) {
-      changed = typeof changed === 'undefined' ? {} : changed;
+      changed = changed === undefined ? {} : changed;
       var meta = params.meta;
       var result = {};
 
       var page = changed.page === undefined ? meta.page : changed.page;
       var perPage = changed.perPage === undefined ? meta.perPage : changed.perPage;
       var sort = changed.sort === undefined ? params.sort : changed.sort;
+      var order = params.order === undefined ? '' : params.order;
 
       if (page > 1) {
         result.page = page;
@@ -50,7 +51,7 @@ angular.module('directives.tableWithPagination', [])
       if (perPage !== 10) {
         result.perPage = perPage;
       }
-      result.sort = params.order + sort;
+      result.sort = order + sort;
 
       return result;
     };

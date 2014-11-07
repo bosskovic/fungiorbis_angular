@@ -1,9 +1,0 @@
-<fo-icon icon="species" klass="fa fa-fw species-typeahead-icon"></fo-icon>
-<input type="text" ng-model="fullName" placeholder="{{::placeholder}}"
-       typeahead="species.fullName for species in getSpecies($viewValue)"
-       typeahead-min-length="3"
-       typeahead-wait-ms="300"
-       typeahead-editable="false"
-       typeahead-on-select="select($item, $model, $label)"
-       typeahead-loading="loadingSpecies" class="form-control species-typeahead">
-<span ng-show="loadingSpecies"><fo-icon icon="spinner"></fo-icon></span>

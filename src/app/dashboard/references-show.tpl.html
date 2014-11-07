@@ -41,8 +41,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <fo-species-typeahead id="speciesId" full-name="speciesFullName"
-                              placeholder="To add or edit characteristic type in the species name"></fo-species-typeahead>
+        <fo-typeahead id="speciesId" value="speciesFullName" properties="referenceCtrl.typeAheadProperties"></fo-typeahead>
     </div>
 </div>
 
@@ -67,55 +66,17 @@
 </div>
 
 
-<div class="row species-characteristics-row">
+<div class="row species-characteristics-row" ng-show="reference.characteristics.length > 0">
     <div class="col-lg-12">
-        <table class="table">
-            <thead>
-            <tr>
-                <th>
-                    <fo-icon icon="species"></fo-icon>
-                    Species
-                </th>
-                <th> Characteristics</th>
-                <th class="full-width"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="c in reference.characteristics" class="text-nowrap"
-                ng-switch on="referenceCtrl.characteristicRowActive(c.id)"
-                ng-class="{edit: referenceCtrl.characteristicRowActive(c.id)}">
-
-                <td ng-hide="referenceCtrl.characteristicRowActive(c.id)"
-                    ng-click="referenceCtrl.showCharacteristicRow($index)" class="pointer link" title="Click to expand">
-                    {{ c.species.fullName }}
-                </td>
-                <td ng-hide="referenceCtrl.characteristicRowActive(c.id)">
-                    <fo-characteristic-preview
-                            characteristic="c"></fo-characteristic-preview>
-                </td>
-                <td ng-switch-when="true" colspan="2">
-                    <div class="pointer link" ng-click="referenceCtrl.hideCharacteristicRow($index)"
-                         title="Click to collapse">
-                        {{ c.species.fullName }}
-                    </div>
-                    <fo-characteristic-edit characteristic="characteristic"></fo-characteristic-edit>
-
-                    <button class="btn btn-primary" ng-click="referenceCtrl.saveCharacteristic()" ng-disabled="!dirty">
-                        <fo-icon icon="confirm"></fo-icon>
-                        Save
-                    </button>
-                    <button class="btn btn-primary" ng-click="referenceCtrl.reset()">
-                        <fo-icon icon="cancel"></fo-icon>
-                        Reset and close
-                    </button>
-                    <button class="btn btn-danger" ng-click="referenceCtrl.referencesModalDelete.show()">
-                        <fo-icon icon="delete"></fo-icon>
-                        Delete
-                    </button>
-                </td>
-                <td></td>
-            </tr>
-            </tbody>
-        </table>
+        <fo-characteristics-table
+                parent="species"
+                parent-id="speciesId"
+                characteristic="characteristic"
+                characteristics="reference.characteristics"
+                characteristic-row="characteristicRow"
+                reset-dialog="resetDialog"
+                delete-dialog="deleteDialog"
+                save-characteristic="referenceCtrl.saveCharacteristic"
+                reset="referenceCtrl.reset"></fo-characteristics-table>
     </div>
 </div>

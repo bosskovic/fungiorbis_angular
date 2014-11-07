@@ -5,7 +5,7 @@ angular.module('directives.characteristicEdit', [])
   .directive('foCharacteristicEdit', function (characteristicComponent) {
 
     return {
-      templateUrl: 'common/directives/characteristicEdit.tpl.html',
+      templateUrl: 'common/directives/characteristic/characteristicEdit.tpl.html',
       restrict: 'E',
       replace: false,
       scope: { characteristic: '=' },
@@ -57,7 +57,16 @@ angular.module('directives.characteristicEdit', [])
       if (angular.isDefined(characteristic)) {
         original[characteristicId] = angular.copy(characteristic);
         if (angular.isDefined(characteristic.species)) {
+          // reference.characteristics.species
           speciesId[characteristicId] = characteristic.species.id;
+        }
+        else if (angular.isDefined(characteristic.links) && angular.isDefined(characteristic.links.species)) {
+          // species.characteristics.links.species
+          speciesId[characteristicId] = characteristic.links.species;
+        }
+        else {
+          speciesId[characteristicId] = characteristic.speciesId;
+          delete characteristic.speciesId;
         }
       }
       else {
@@ -110,7 +119,9 @@ angular.module('directives.characteristicEdit', [])
     }
 
     function isDirty(characteristic) {
-      return angular.isDefined(characteristic) && (angular.isUndefined(characteristic.id) || dirty[characteristic.id].length > 0);
+      return !emptyParams(characteristic) &&
+        angular.isDefined(characteristic) &&
+        (angular.isUndefined(characteristic.id) || dirty[characteristic.id].length > 0);
     }
 
     function clean(characteristic) {
@@ -173,7 +184,9 @@ angular.module('directives.characteristicEdit', [])
     }
 
     function existingDescription(characteristic, section, locale) {
-      return existing(characteristic) && original[characteristic.id][section] !== null && angular.isDefined(original[characteristic.id][section][locale]);
+      return existing(characteristic) &&
+        original[characteristic.id][section] !== null &&
+        angular.isDefined(original[characteristic.id][section][locale]);
     }
 
     function undefinedOrNull(value) {
@@ -186,27 +199,37 @@ angular.module('directives.characteristicEdit', [])
 
     function translationMissing(characteristic) {
       var localesMissing = [];
-      if (angular.isDefined(characteristic)){
+      if (angular.isDefined(characteristic)) {
         var locales = FoI18n.localesArray();
         var sectionLocales;
 
-        Characteristics.sectionsArray(locales).forEach(function(section){
+        Characteristics.sectionsArray(locales).forEach(function (section) {
           if (characteristic[section.key]) {
             sectionLocales = {};
             sectionLocales[section.key] = [];
-            locales.forEach(function (locale){
+            locales.forEach(function (locale) {
               if (angular.isUndefined(characteristic[section.key][locale.key])) {
                 sectionLocales[section.key].push(locale.title);
               }
             });
-            if (sectionLocales[section.key].length > 0){
-              localesMissing.push( sectionLocales );
+            if (sectionLocales[section.key].length > 0) {
+              localesMissing.push(sectionLocales);
             }
           }
         });
       }
       return localesMissing;
     }
+
+    function saveCharacteristic(characteristic, reset, dialog, refresh) {
+      Characteristics.save(getAttrs(characteristic))
+        .success(function () {
+          reset();
+          dialog.hide();
+          refresh();
+        });
+    }
+
 
     return {
       initialize: initialize,
@@ -216,6 +239,7 @@ angular.module('directives.characteristicEdit', [])
       isDirty: isDirty,
       emptyParams: emptyParams,
       clean: clean,
-      translationMissing: translationMissing
+      translationMissing: translationMissing,
+      saveCharacteristic: saveCharacteristic
     };
   });

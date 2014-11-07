@@ -289,18 +289,6 @@ tr.highlight td.action {
     border-top: 0px;
 }
 
-.species-typeahead {
-    padding-left: 28px;
-}
-
-.species-typeahead-icon {
-    position: relative;
-    top: 27px;
-    left: 7px;
-    z-index: 100;
-    color: #555;
-}
-
 .dimmed {
     color: #808080;
 }

@@ -4,7 +4,7 @@
              ng-click="activate(section)"
              title="{{ ::section.title}}">
 
-            <tab-heading>
+            <tab-heading class="text-nowrap">
                 <fo-icon icon="{{::section.key}}"></fo-icon>
                 <span ng-show="active(section)">{{ ::section.title }}<br>
                     <span ng-repeat="locale in locales"

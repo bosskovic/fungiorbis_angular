@@ -27,17 +27,19 @@
                 <td>
                     <a href="" editable-text="species[field.field]">{{species[field.field]}}</a>
                 </td>
+                <td class="full-width"></td>
             </tr>
         </table>
     </div>
     <div class="col-lg-6 col-md-6">
-        <table class="table">
+        <table class="table text-nowrap">
             <caption class="text-left"><h4><fo-icon icon="incontestableCharacteristics"></fo-icon> Incontestable characteristics</h4></caption>
             <tr>
                 <th>Synonyms</th>
                 <td>
                     <a href="" editable-text="species.synonyms">{{species.synonyms}}</a>
                 </td>
+                <td class="full-width"></td>
             </tr>
             <tr>
                 <th>Growth Type</th>
@@ -46,6 +48,7 @@
                         {{ showGrowthType() }}
                     </a>
                 </td>
+                <td></td>
             </tr>
             <tr>
                 <th>Nutritive Group</th>
@@ -54,6 +57,18 @@
                         {{ showNutritiveGroup() }}
                     </a>
                 </td>
+                <td></td>
+            </tr>
+        </table>
+
+        <table class="table text-nowrap" ng-show="missingCharacteristics.length > 0">
+            <caption class="text-left icon-alert"><h4><fo-icon icon="missingCharacteristics"></fo-icon> Missing characteristics</h4></caption>
+            <tr>
+                <td colspan="3">
+                    <ul>
+                        <li ng-repeat="c in missingCharacteristics">{{ c }}</li>
+                    </ul>
+                </td>
             </tr>
         </table>
     </div>
@@ -61,6 +76,43 @@
 
 <div class="row">
     <div class="col-lg-12">
-        Species characteristics
+        <fo-typeahead id="referenceId" value="referenceFullTitle" properties="speciesCtrl.typeAheadProperties"></fo-typeahead>
+    </div>
+</div>
+
+
+<div class="row auto-width" ng-class="{'new-characteristic-box': referenceId}" ng-switch on="referenceId === undefined">
+    <div class="col-lg-12 auto-width" ng-switch-when="false">
+        <em class="dimmed" ng-show="characteristic.id">Existing record: </em>
+        <em class="dimmed" ng-hide="characteristic.id">New record: </em>
+        <em class="dimmed">{{ referenceFullTitle }}</em>
+
+        <fo-characteristic-edit characteristic="characteristic"></fo-characteristic-edit>
+
+        <button class="btn btn-primary" ng-click="speciesCtrl.saveCharacteristic()"
+                ng-disabled="!dirty || emptyParams">
+            <fo-icon icon="confirm"></fo-icon>
+            Save
+        </button>
+        <button class="btn btn-primary" ng-click="speciesCtrl.reset()">
+            <fo-icon icon="cancel"></fo-icon>
+            Reset and close
+        </button>
+    </div>
+</div>
+
+
+<div class="row species-characteristics-row" ng-show="species.characteristics.length > 0">
+    <div class="col-lg-12">
+        <fo-characteristics-table
+                parent="references"
+                parent-id="referenceId"
+                characteristic="characteristic"
+                characteristics="species.characteristics"
+                characteristic-row="characteristicRow"
+                reset-dialog="resetDialog"
+                delete-dialog="deleteDialog"
+                save-characteristic="speciesCtrl.saveCharacteristic"
+                reset="speciesCtrl.reset"></fo-characteristics-table>
     </div>
 </div>

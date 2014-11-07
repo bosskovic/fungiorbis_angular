@@ -9,6 +9,7 @@ angular.module('services.icons', [])
     species: 'fa-book',
     systematics: 'fa-sitemap',
     incontestableCharacteristics: 'fa-bars',
+    missingCharacteristics: 'fa-exclamation',
 
     usability: 'fa-money',
     edible: 'fa-cutlery',

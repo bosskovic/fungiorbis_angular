@@ -2,7 +2,17 @@
 
 angular.module('resources.characteristics', [])
 
-  .factory('Characteristics', function ($http, $q, $cookieStore, SERVER_BASE_URL) {
+  .factory('Characteristics', function ($http, $q, $cookieStore, SERVER_BASE_URL, authentication) {
+
+    function headers() {
+      var currentUser = authentication.currentUser();
+      return {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-User-Email': currentUser.email,
+        'X-User-Token': currentUser.authToken
+      };
+    }
 
     function baseUrl(speciesId) {
       return SERVER_BASE_URL + '/species/' + speciesId + '/characteristics';
@@ -50,6 +60,7 @@ angular.module('resources.characteristics', [])
       return $http({
         url: url,
         method: method,
+        headers: headers(),
         data: {
           characteristics: data
         }

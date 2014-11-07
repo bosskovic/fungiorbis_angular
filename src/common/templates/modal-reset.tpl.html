@@ -1,0 +1,20 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="resetDialog.close()">&times;</button>
+                <!--reference.fullTitle || characteristic.reference.fullTitle-->
+                <h4 class="modal-title"><fo-icon icon="references"></fo-icon> {{ resetDialog.title() }}</h4>
+                <!-- speciesFullName || characteristic.species.fullName || species.fullName -->
+                <fo-icon icon="species"></fo-icon>{{ resetDialog.subtitle() }}
+            </div>
+            <div class="modal-body">
+                Do you want to save the changes made to the {{ resetDialog.subtitle() }}?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="resetDialog.save()"><fo-icon icon="save"></fo-icon> Save</button>
+                <button type="button" class="btn btn-default" ng-click="resetDialog.reset()"><fo-icon icon="cancel"></fo-icon> No</button>
+            </div>
+        </div>
+    </div>
+</div>

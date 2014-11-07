@@ -5,7 +5,8 @@
                 <fo-icon icon="backHistory"></fo-icon>
                 <fo-icon icon="species"></fo-icon>
             </a>
-            {{ species.genus }} {{ species.name }}</h1>
+            {{ species.genus }} {{ species.name }}
+        </h1>
     </div>
 </div>
 
@@ -13,7 +14,7 @@
     <div class="col-lg-12">
         <div class="alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <i class="fa fa-exclamation-triangle"></i>  <strong>Error!</strong> Error message text here...
+            <i class="fa fa-exclamation-triangle"></i> <strong>Error!</strong> Error message text here...
         </div>
     </div>
 </div>
@@ -21,11 +22,16 @@
 <div class="row">
     <div class="col-lg-6 col-md-6">
         <table class="table">
-            <caption class="text-left"><h4><fo-icon icon="systematics"></fo-icon> Systematics</h4></caption>
+            <caption class="text-left">
+                <h4>
+                    <fo-icon icon="systematics"></fo-icon>
+                    Systematics
+                </h4>
+            </caption>
             <tr ng-repeat="field in systematics">
                 <th>{{field.label}}</th>
                 <td>
-                    <a href="" editable-text="species[field.field]">{{species[field.field]}}</a>
+                    <a class="pointer" editable-text="species[field.field]" onbeforesave="updateField(field.field, $data)">{{species[field.field]}}</a>
                 </td>
                 <td class="full-width"></td>
             </tr>
@@ -33,18 +39,27 @@
     </div>
     <div class="col-lg-6 col-md-6">
         <table class="table text-nowrap">
-            <caption class="text-left"><h4><fo-icon icon="incontestableCharacteristics"></fo-icon> Incontestable characteristics</h4></caption>
+            <caption class="text-left">
+                <h4>
+                    <fo-icon icon="incontestableCharacteristics"></fo-icon>
+                    Incontestable characteristics
+                </h4>
+            </caption>
             <tr>
                 <th>Synonyms</th>
                 <td>
-                    <a href="" editable-text="species.synonyms">{{species.synonyms}}</a>
+                    <a class="pointer" editable-text="species.synonyms" onbeforesave="updateField('synonyms', $data)">{{species.synonyms}}</a>
                 </td>
                 <td class="full-width"></td>
             </tr>
             <tr>
                 <th>Growth Type</th>
                 <td>
-                    <a href="" editable-select="species.growthType" e-ng-options="s.value as s.text for s in growthTypes">
+                    <a class="pointer"
+                       editable-select="species.growthType"
+                       buttons="no"
+                       onbeforesave="updateField('growthType', $data)"
+                       e-ng-options="s.value as s.text for s in growthTypes">
                         {{ showGrowthType() }}
                     </a>
                 </td>
@@ -53,7 +68,11 @@
             <tr>
                 <th>Nutritive Group</th>
                 <td>
-                    <a href="" editable-select="species.nutritiveGroup" e-ng-options="s.value as s.text for s in nutritiveGroups">
+                    <a class="pointer"
+                       onbeforesave="updateField('nutritiveGroup', $data)"
+                       editable-select="species.nutritiveGroup"
+                       buttons="no"
+                       e-ng-options="s.value as s.text for s in nutritiveGroups">
                         {{ showNutritiveGroup() }}
                     </a>
                 </td>
@@ -62,7 +81,12 @@
         </table>
 
         <table class="table text-nowrap" ng-show="missingCharacteristics.length > 0">
-            <caption class="text-left icon-alert"><h4><fo-icon icon="missingCharacteristics"></fo-icon> Missing characteristics</h4></caption>
+            <caption class="text-left icon-alert">
+                <h4>
+                    <fo-icon icon="missingCharacteristics"></fo-icon>
+                    Missing characteristics
+                </h4>
+            </caption>
             <tr>
                 <td colspan="3">
                     <ul>
@@ -76,7 +100,8 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <fo-typeahead id="referenceId" value="referenceFullTitle" properties="speciesCtrl.typeAheadProperties"></fo-typeahead>
+        <fo-typeahead id="referenceId" value="referenceFullTitle"
+                      properties="speciesCtrl.typeAheadProperties"></fo-typeahead>
     </div>
 </div>
 

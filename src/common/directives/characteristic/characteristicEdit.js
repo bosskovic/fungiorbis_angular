@@ -221,6 +221,29 @@ angular.module('directives.characteristicEdit', [])
       return localesMissing;
     }
 
+    function missingCharacteristics(characteristics) {
+      var allCharacteristics = ['habitats', 'substrates', 'flesh', 'microscopy', 'chemistry', 'fruitingBody'];
+//      var missing = [];
+//      var found;
+//      allCharacteristics.forEach(function(characteristic){
+//        found = false;
+//        characteristics.forEach(function(c){
+//          Object.keys(c).forEach(function (cKey){
+//            if (!found && cKey === characteristic){
+//console.log(c);
+//              found = true;
+//            }
+//          });
+//        });
+//
+//        if (!found){
+//          missing.push(characteristic);
+//        }
+//      });
+//      return missing;
+      return allCharacteristics;
+    }
+
     function saveCharacteristic(characteristic, reset, dialog, refresh) {
       Characteristics.save(getAttrs(characteristic))
         .success(function () {
@@ -240,6 +263,7 @@ angular.module('directives.characteristicEdit', [])
       emptyParams: emptyParams,
       clean: clean,
       translationMissing: translationMissing,
+      missingCharacteristics: missingCharacteristics,
       saveCharacteristic: saveCharacteristic
     };
   });

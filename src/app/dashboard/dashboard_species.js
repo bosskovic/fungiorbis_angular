@@ -78,6 +78,18 @@ angular.module('dashboard.species', [])
       return ($scope.species.nutritiveGroup && selected.length) ? selected[0].text : 'Not set';
     };
 
+    $scope.updateField = function (field, value) {
+      var data = {
+        id: species.id
+      };
+      data[field] = value;
+      return Species.save({
+        data: data,
+        url: speciesResponse.data.links.species
+      }).then(function(){}, function (response) {
+        return response.data.errors.details[0];
+      });
+    };
 
     // show characteristic component as soon as a reference is selected
     $scope.$watch('referenceId', function (referenceId) {

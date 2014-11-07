@@ -2,19 +2,17 @@
 
 angular.module('resources.species', [])
 
-//  .factory('Species', function (restmod) {
-
   .factory('Species', function ($http, $q, $cookieStore, SERVER_BASE_URL, authentication) {
 
-//    function headers() {
-//      var currentUser = authentication.currentUser();
-//      return {
-//        'Content-Type': 'application/json',
-//        'Accept': 'application/json',
-//        'X-User-Email': currentUser.email,
-//        'X-User-Token': currentUser.authToken
-//      };
-//    }
+    function headers() {
+      var currentUser = authentication.currentUser();
+      return {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-User-Email': currentUser.email,
+        'X-User-Token': currentUser.authToken
+      };
+    }
 
     function baseUrl() {
       return SERVER_BASE_URL + '/species/';
@@ -43,34 +41,40 @@ angular.module('resources.species', [])
     /**
      * @param {object} attrs - keys: data, dirty, url, speciesId
      */
-//    function save(attrs) {
+    function save(attrs) {
 //      var url = attrs.url ? attrs.url : baseUrl(attrs.speciesId);
-//      var method;
-//      var data = {};
-//
-//      if (angular.isDefined(attrs.data.id)) {
-//        url += '/' + attrs.data.id;
-//
-//        angular.forEach(attrs.dirty, function (value) {
-//          data[value] = attrs.data[value];
-//        });
-//
-//        method = 'PATCH';
-//      }
-//      else {
-//        data = attrs.data;
-//        method = 'POST';
-//      }
-//
-//      return $http({
-//        url: url,
-//        method: method,
-//        headers: headers(),
-//        data: {
-//          characteristics: data
-//        }
-//      });
-//    }
+      var url;
+      var method;
+      var data = {};
+
+      if (angular.isDefined(attrs.data.id)) {
+        url = attrs.url + '/' + attrs.data.id;
+
+        if (angular.isDefined(attrs.dirty)) {
+          angular.forEach(attrs.dirty, function (value) {
+            data[value] = attrs.data[value];
+          });
+        }
+        else {
+          data = attrs.data;
+        }
+
+        method = 'PATCH';
+      }
+      else {
+        data = attrs.data;
+        method = 'POST';
+      }
+
+      return $http({
+        url: url,
+        method: method,
+        headers: headers(),
+        data: {
+          species: data
+        }
+      });
+    }
 
 
     function systematics(){
@@ -106,6 +110,7 @@ angular.module('resources.species', [])
     return {
       index: index,
       show: show,
+      save: save,
       systematics: systematics,
       growthTypes: growthTypes,
       nutritiveGroups: nutritiveGroups

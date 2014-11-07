@@ -25,7 +25,9 @@
             <tr ng-repeat="field in referenceCtrl.fields">
                 <th class="text-nowrap">{{field.header}}</th>
                 <td class="text-nowrap">
-                    <a class="pointer" editable-text="reference[field.field]">{{reference[field.field] ||
+                    <a class="pointer"
+                       editable-text="reference[field.field]"
+                       onbeforesave="updateField(field.field, $data)">{{reference[field.field] ||
                         field.placeholder}}</a>
                 </td>
                 <td class="full-width"></td>

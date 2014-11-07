@@ -65,6 +65,18 @@ angular.module('dashboard.references', [])
 
     $scope.reference = reference;
 
+    $scope.updateField = function (field, value) {
+      var data = {
+        id: reference.id
+      };
+      data[field] = value;
+      return References.save({
+        data: data,
+        url: referenceResponse.data.links.references
+      }).then(function(){}, function (response) {
+        return response.data.errors.details[0];
+      });
+    };
 
     // show characteristic component as soon as a species is selected
     $scope.$watch('speciesId', function (speciesId) {

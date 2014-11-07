@@ -42,16 +42,21 @@ angular.module('resources.references', [])
      * @param {object} attrs - keys: data, dirty, url, speciesId
      */
     function save(attrs) {
-      var url = attrs.url ? attrs.url : baseUrl(attrs.speciesId);
+      var url;
       var method;
       var data = {};
 
       if (angular.isDefined(attrs.data.id)) {
-        url += '/' + attrs.data.id;
+        url = attrs.url + '/' + attrs.data.id;
 
-        angular.forEach(attrs.dirty, function (value) {
-          data[value] = attrs.data[value];
-        });
+        if (angular.isDefined(attrs.dirty)){
+          angular.forEach(attrs.dirty, function (value) {
+            data[value] = attrs.data[value];
+          });
+        }
+        else {
+          data = attrs.data;
+        }
 
         method = 'PATCH';
       }
@@ -65,7 +70,7 @@ angular.module('resources.references', [])
         method: method,
         headers: headers(),
         data: {
-          characteristics: data
+          references: data
         }
       });
     }

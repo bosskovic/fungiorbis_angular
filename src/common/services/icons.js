@@ -52,9 +52,18 @@ angular.module('services.icons', [])
 //    helpText: 'fa-question-circle',
 //    helpText: 'fa-question',
     helpText: 'fa-info-circle',
+//    sortDown: 'fa-sort-down',
+    sortDown: 'fa-chevron-down',
+//    sortUp: 'fa-sort-up',
+    sortUp: 'fa-chevron-up',
 
 //    backHistory: 'fa-arrow-circle-o-left',
     backHistory: 'fa-reply',
+
+    successAlert: 'fa-check',
+    dangerAlert: 'fa-flash',
+    infoAlert: 'fa-info-circle',
+    warningAlert: 'fa-exclamation-triangle',
 
     user: 'fa-user',
     users: 'fa-users',

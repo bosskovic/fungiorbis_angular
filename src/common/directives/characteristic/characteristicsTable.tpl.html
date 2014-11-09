@@ -29,15 +29,15 @@
             </div>
             <fo-characteristic-edit characteristic="characteristic"></fo-characteristic-edit>
 
-            <button class="btn btn-primary" ng-click="saveCharacteristic()" ng-disabled="!isDirty()">
+            <button class="btn btn-default btn-sm" ng-click="saveCharacteristic()" ng-disabled="!isDirty()">
                 <fo-icon icon="confirm"></fo-icon>
                 Save
             </button>
-            <button class="btn btn-primary" ng-click="reset()">
+            <button class="btn btn-default btn-sm" ng-click="resetCharacteristic()">
                 <fo-icon icon="cancel"></fo-icon>
                 Reset and close
             </button>
-            <button class="btn btn-danger" ng-click="deleteDialog.show()">
+            <button class="btn btn-danger btn-sm" ng-click="deleteDialog.show()">
                 <fo-icon icon="delete"></fo-icon>
                 Delete
             </button>

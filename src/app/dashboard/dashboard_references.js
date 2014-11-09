@@ -14,6 +14,11 @@ angular.module('dashboard.references', [])
           }
         }
       })
+      .state('dashboard.references/new', {
+        url: '^/dashboard/references/new',
+        templateUrl: '/app/dashboard/references-show.tpl.html',
+        controller: 'NewReferenceController as referenceCtrl'
+      })
       .state('dashboard.references/detail', {
         url: '^/dashboard/references/:referenceId',
         templateUrl: '/app/dashboard/references-show.tpl.html',
@@ -40,6 +45,7 @@ angular.module('dashboard.references', [])
     this.tableParams = {
       prefix: 'references',
       data: references,
+      firstColumn: { header: 'Title', field: 'title' },
       columns: References.fields(),
       meta: meta.references,
       sort: 'authors',
@@ -54,12 +60,90 @@ angular.module('dashboard.references', [])
     };
   })
 
+  .controller('NewReferenceController', function ($scope, References, Util) {
+    var referenceCtrl = this;
+    var mandatoryFields = ['title'];
+    var checked = {};
+
+    referenceCtrl.context = 'create';
+
+    referenceCtrl.pageTitle = 'Create new reference';
+
+    referenceCtrl.createReference = function () {
+      References.save({ data: $scope.reference }).then(function (response) {
+        console.log(response);
+      });
+    };
+
+    $scope.reference = {};
+
+    referenceCtrl.fields = References.fields();
+
+    $scope.$watch('reference', function (reference) {
+      Util.cleanParams(reference);
+      if (Object.keys(reference).length === 0) {
+        referenceCtrl.referenceIsEmpty = true;
+        referenceCtrl.missingFields = mandatoryFields;
+      }
+      else {
+        referenceCtrl.referenceIsEmpty = false;
+        referenceCtrl.missingFields = Util.arrayDifference(mandatoryFields, Object.keys(reference));
+
+        if (reference.url && checked.url !== reference.url) {
+          References.index({ url: reference.url, fields: 'fullTitle,url' })
+            .then(function (response) {
+              var responseReferences = response.data.references;
+              if (responseReferences.length === 1) {
+                referenceCtrl.urlTaken = true;
+                referenceCtrl.referenceFullTitle = responseReferences.fullTitle;
+                referenceCtrl.matchingUrlId = responseReferences[0].id;
+              }
+              else {
+                referenceCtrl.urlTaken = false;
+              }
+              checked.url = reference.url;
+              referenceCtrl.readyToSave = !referenceCtrl.isbnTaken && !referenceCtrl.urlTaken && referenceCtrl.missingFields.length === 0;
+            });
+        }
+        else {
+          referenceCtrl.readyToSave = !referenceCtrl.isbnTaken && !referenceCtrl.urlTaken && referenceCtrl.missingFields.length === 0;
+        }
+
+        if (reference.url && checked.isbn !== reference.isbn) {
+          References.index({ isbn: reference.isbn, fields: 'fullTitle,isbn' })
+            .then(function (response) {
+              var responseReferences = response.data.references;
+              if (responseReferences.length === 1) {
+                referenceCtrl.isbnTaken = true;
+                referenceCtrl.referenceFullTitle = responseReferences.fullTitle;
+                referenceCtrl.matchingIsbnId = responseReferences[0].id;
+              }
+              else {
+                referenceCtrl.isbnTaken = false;
+              }
+              checked.isbn = reference.isbn;
+              referenceCtrl.readyToSave = !referenceCtrl.isbnTaken && !referenceCtrl.urlTaken && referenceCtrl.missingFields.length === 0;
+            });
+        }
+        else {
+          referenceCtrl.readyToSave = !referenceCtrl.isbnTaken && !referenceCtrl.urlTaken && referenceCtrl.missingFields.length === 0;
+        }
+      }
+
+    }, true);
+  })
+
   .controller('ReferenceController', function ($scope, referenceResponse, Species, Characteristics, $modal, characteristicComponent, References, $timeout) {
     var referenceCtrl = this;
     var reference = referenceResponse.data.references;
     var initialCharacteristic = {
       referenceId: reference.id
     };
+
+    referenceCtrl.context = 'edit';
+    referenceCtrl.pageTitle = reference.authors ? reference.authors + ' - ' : '';
+    referenceCtrl.pageTitle += reference.title;
+
 
     referenceCtrl.fields = References.fields();
 
@@ -73,7 +157,8 @@ angular.module('dashboard.references', [])
       return References.save({
         data: data,
         url: referenceResponse.data.links.references
-      }).then(function(){}, function (response) {
+      }).then(function () {
+      }, function (response) {
         return response.data.errors.details[0];
       });
     };
@@ -110,11 +195,17 @@ angular.module('dashboard.references', [])
 
     referenceCtrl.saveCharacteristic = function () {
       characteristicComponent.saveCharacteristic($scope.characteristic, referenceCtrl.reset, $scope.resetDialog, referenceCtrl.refresh);
+      $scope.characteristic = undefined;
+    };
+
+    referenceCtrl.resetCharacteristic = function () {
+      referenceCtrl.reset();
+      $scope.characteristic = undefined;
     };
 
     referenceCtrl.refresh = function () {
-      References.show($scope.reference.id).success(function (data) {
-        $scope.reference.characteristics = data.references.characteristics;
+      References.show($scope.reference.id).then(function (response) {
+        $scope.reference.characteristics = response.data.references.characteristics;
         $scope.characteristicRow.show();
       });
     };
@@ -127,7 +218,6 @@ angular.module('dashboard.references', [])
         $scope.speciesFullName = undefined;
       }
       characteristicComponent.reset($scope.characteristic);
-      $scope.characteristic = undefined;
     };
 
     $scope.resetDialog = {
@@ -158,6 +248,7 @@ angular.module('dashboard.references', [])
       },
       reset: function () {
         referenceCtrl.reset();
+        $scope.characteristic = undefined;
         this.modal.hide();
         $timeout(function () {
           $scope.characteristicRow.show();
@@ -196,6 +287,7 @@ angular.module('dashboard.references', [])
             References.show($scope.reference.id).success(function (data) {
               deleteDialogContext.hide();
               referenceCtrl.reset();
+              $scope.characteristic = undefined;
               $scope.reference.characteristics = data.references.characteristics;
             });
           });

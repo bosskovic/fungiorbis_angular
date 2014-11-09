@@ -10,23 +10,27 @@ angular.module('directives.characteristicsTable', [])
       replace: true,
       scope: { parent: '@', characteristic: '=', characteristics: '=', characteristicRow: '=', deleteDialog: '=', resetDialog: '=', saveCharacteristic: '=', reset: '=', parentId: '='},
       link: function (scope) {
-        scope.isDirty = function()  {
+        scope.isDirty = function () {
           return characteristicComponent.isDirty(scope.characteristic);
         };
 
-        if (scope.parent === 'species'){
+        if (scope.parent === 'species') {
           scope.parentColumnTitle = 'Species';
-          scope.parentValue = function(hash){
+          scope.parentValue = function (hash) {
             return hash.species.fullName;
           };
         }
-        else if (scope.parent === 'references'){
+        else if (scope.parent === 'references') {
           scope.parentColumnTitle = 'References';
-          scope.parentValue = function(hash){
+          scope.parentValue = function (hash) {
             return hash.reference.fullTitle;
           };
         }
 
+        scope.resetCharacteristic = function(){
+          scope.reset();
+          scope.characteristic = undefined;
+        };
 
         scope.characteristicRow = {
           show: function (index) {
@@ -51,6 +55,7 @@ angular.module('directives.characteristicsTable', [])
             else {
               this.pendingIndex = undefined;
               scope.reset();
+              scope.characteristic = undefined;
             }
           },
           isActive: function (id) {

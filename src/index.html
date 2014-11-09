@@ -18,6 +18,10 @@
 
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/newCharacteristic.css">
+    <link rel="stylesheet" href="styles/helpText.css">
+    <link rel="stylesheet" href="common/directives/typeahead/typeahead.css">
+    <link rel="stylesheet" href="common/directives/table/table.css">
     <!-- endbuild -->
 </head>
 
@@ -55,24 +59,43 @@
 <script src="bower_components/angular-restmod/dist/angular-restmod-bundle.min.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 <script src="bower_components/angular-restmod/dist/styles/ams.min.js"></script>
+<script src="bower_components/angular-restmod/dist/plugins/dirty.min.js"></script>
+
 
 <!-- build:js scripts/scripts.js -->
 <script src="app/app.js"></script>
 <script src="app/dashboard/dashboard.js"></script>
 <script src="app/dashboard/users.js"></script>
-<script src="app/dashboard/species.js"></script>
-<script src="app/dashboard/references.js"></script>
+<script src="app/dashboard/dashboard_species.js"></script>
+<script src="app/dashboard/dashboard_references.js"></script>
 <script src="app/dashboard/stats/stats.js"></script>
 <script src="app/navigation/userToolbar.js"></script>
 <script src="common/services/icons.js"></script>
 <script src="common/services/authentication.js"></script>
+<script src="common/services/habitats.js"></script>
+<script src="common/services/substrates.js"></script>
+<script src="common/services/i18n.js"></script>
+<script src="common/services/util.js"></script>
 <script src="common/resources/users.js"></script>
 <script src="common/resources/species.js"></script>
 <script src="common/resources/references.js"></script>
-<script src="common/directives/tableWithPagination.js"></script>
+<script src="common/resources/characteristics.js"></script>
+<script src="common/directives/table/tableWithPagination.js"></script>
+<script src="common/directives/characteristic/newHabitat.js"></script>
+<script src="common/directives/characteristic/substratesSelect.js"></script>
+<script src="common/directives/characteristic/descriptionEdit.js"></script>
+<script src="common/directives/characteristic/usability.js"></script>
+<script src="common/directives/characteristic/characteristicsTable.js"></script>
+<script src="common/directives/characteristic/characteristicEdit.js"></script>
+<script src="common/directives/characteristic/characteristicPreview.js"></script>
+<script src="common/directives/typeahead/typeahead.js"></script>
+<script src="common/directives/icon.js"></script>
+<script src="common/directives/helpText.js"></script>
+<script src="common/directives/alert/alert.js"></script>
 <!-- endbuild -->
 </body>
 </html>

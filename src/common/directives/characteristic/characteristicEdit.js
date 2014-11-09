@@ -41,13 +41,14 @@ angular.module('directives.characteristicEdit', [])
     };
   })
 
-  .factory('characteristicComponent', function (Characteristics, FoI18n) {
+  .factory('characteristicComponent', function (Characteristics, FoI18n, Util) {
 
     var dirty = {},
       original = {},
       url = {},
       speciesId = {};
 
+    var undefinedOrNull = Util.undefinedOrNull;
 
     function initialize(characteristicId, characteristic, _url) {
       if (angular.isUndefined(characteristicId)) {
@@ -189,10 +190,6 @@ angular.module('directives.characteristicEdit', [])
         angular.isDefined(original[characteristic.id][section][locale]);
     }
 
-    function undefinedOrNull(value) {
-      return angular.isUndefined(value) || value === null;
-    }
-
     function blankString(value) {
       return angular.isUndefined(value) || value === null || value.length === 0;
     }
@@ -246,7 +243,7 @@ angular.module('directives.characteristicEdit', [])
 
     function saveCharacteristic(characteristic, reset, dialog, refresh) {
       Characteristics.save(getAttrs(characteristic))
-        .success(function () {
+        .then(function () {
           reset();
           dialog.hide();
           refresh();

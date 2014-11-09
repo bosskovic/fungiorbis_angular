@@ -244,12 +244,12 @@ fo-table ul.pagination {
 tr.highlight, tr.highlight td {
     background-color: #eee;
     /*color: #fff;*/
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 
-td.action {
-    display: none;
-}
+/*td.action {*/
+    /*display: none;*/
+/*}*/
 
 tr.highlight td.action {
     display: block;
@@ -299,6 +299,7 @@ tr.highlight td.action {
 
 .link {
     color: #428bca;
+    cursor: pointer;
 }
 
 .auto-width {

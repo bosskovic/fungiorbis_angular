@@ -9,7 +9,7 @@ angular.module('directives.alert', [])
       restrict: 'E',
       replace: false,
       transclude: true,
-      scope: { type: '@', title: '@', notDismissable: '@'  },
+      scope: { type: '@', title: '@', notDismissable: '='  },
       link: function (scope) {
         if (scope.danger){
           scope.type = 'danger';

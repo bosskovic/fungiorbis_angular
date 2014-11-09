@@ -15,7 +15,7 @@ angular.module('resources.species', [])
     }
 
     function baseUrl() {
-      return SERVER_BASE_URL + '/species/';
+      return SERVER_BASE_URL + '/species';
     }
 
     function index(params) {
@@ -42,13 +42,12 @@ angular.module('resources.species', [])
      * @param {object} attrs - keys: data, dirty, url, speciesId
      */
     function save(attrs) {
-//      var url = attrs.url ? attrs.url : baseUrl(attrs.speciesId);
-      var url;
+      var url = attrs.url ? attrs.url : baseUrl();
       var method;
       var data = {};
 
       if (angular.isDefined(attrs.data.id)) {
-        url = attrs.url + '/' + attrs.data.id;
+        url += '/' + attrs.data.id;
 
         if (angular.isDefined(attrs.dirty)) {
           angular.forEach(attrs.dirty, function (value) {
@@ -76,6 +75,14 @@ angular.module('resources.species', [])
       });
     }
 
+    function httpDelete(attrs) {
+      var url = attrs.url + '/' + attrs.data.id;
+
+      return $http({
+        url: url,
+        method: 'DELETE'
+      });
+    }
 
     function systematics(){
       return [
@@ -113,6 +120,7 @@ angular.module('resources.species', [])
       save: save,
       systematics: systematics,
       growthTypes: growthTypes,
-      nutritiveGroups: nutritiveGroups
+      nutritiveGroups: nutritiveGroups,
+      delete: httpDelete
     };
   });

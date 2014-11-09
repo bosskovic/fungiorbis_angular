@@ -5,23 +5,43 @@
                 <fo-icon icon="backHistory"></fo-icon>
                 <fo-icon icon="species"></fo-icon>
             </a>
-            {{ species.genus }} {{ species.name }}
+            {{ speciesCtrl.pageTitle }}
         </h1>
     </div>
 </div>
 
-<div class="row" ng-hide="true">
+<div class="row" ng-show="speciesCtrl.missingFields.length > 0 && !speciesCtrl.speciesIsEmpty">
     <div class="col-lg-12">
-        <div class="alert alert-danger alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <i class="fa fa-exclamation-triangle"></i> <strong>Error!</strong> Error message text here...
-        </div>
+        <fo-alert type="warning" title="These mandatory fields are missing:">
+            {{ speciesCtrl.missingFields.join(', ') }}.
+        </fo-alert>
     </div>
 </div>
 
+<div class="row" ng-show="speciesCtrl.nameGenusTaken">
+    <div class="col-lg-12">
+        <fo-alert type="warning" title="Species already exists:">
+            <strong>{{speciesCtrl.speciesFullName}}</strong>
+            Please input another <strong>name</strong> and <strong>genus</strong>. To edit
+            the species instead, please
+            <a ui-sref="dashboard.species/detail" speciesId="speciesCtrl.matchingSpeciesId" >test</a>
+            <a ng-href="/dashboard/species/{{speciesCtrl.matchingSpeciesId}}">click here</a>.
+        </fo-alert>
+    </div>
+</div>
+
+<div class="row" ng-show="speciesCtrl.readyToSave">
+    <div class="col-lg-12">
+        <fo-alert type="info" title="All mandatory fields present!">
+            Click <strong>Save</strong> button to save the species.
+        </fo-alert>
+    </div>
+</div>
+
+
 <div class="row">
     <div class="col-lg-6 col-md-6">
-        <table class="table">
+        <table class="table text-nowrap">
             <caption class="text-left">
                 <h4>
                     <fo-icon icon="systematics"></fo-icon>
@@ -31,7 +51,11 @@
             <tr ng-repeat="field in systematics">
                 <th>{{field.label}}</th>
                 <td>
-                    <a class="pointer" editable-text="species[field.field]" onbeforesave="updateField(field.field, $data)">{{species[field.field]}}</a>
+                    <a class="pointer"
+                       editable-text="species[field.field]"
+                       onbeforesave="speciesCtrl.updateField(field.field, $data)">
+                        {{species[field.field] || 'Not set'}}
+                    </a>
                 </td>
                 <td class="full-width"></td>
             </tr>
@@ -40,15 +64,13 @@
     <div class="col-lg-6 col-md-6">
         <table class="table text-nowrap">
             <caption class="text-left">
-                <h4>
-                    <fo-icon icon="incontestableCharacteristics"></fo-icon>
-                    Incontestable characteristics
-                </h4>
+                <h4>&nbsp;</h4>
             </caption>
             <tr>
                 <th>Synonyms</th>
                 <td>
-                    <a class="pointer" editable-text="species.synonyms" onbeforesave="updateField('synonyms', $data)">{{species.synonyms}}</a>
+                    <a class="pointer" editable-text="species.synonyms"
+                       onbeforesave="speciesCtrl.updateField('synonyms', $data)">{{species.synonyms || 'Not set' }}</a>
                 </td>
                 <td class="full-width"></td>
             </tr>
@@ -58,7 +80,7 @@
                     <a class="pointer"
                        editable-select="species.growthType"
                        buttons="no"
-                       onbeforesave="updateField('growthType', $data)"
+                       onbeforesave="speciesCtrl.updateField('growthType', $data)"
                        e-ng-options="s.value as s.text for s in growthTypes">
                         {{ showGrowthType() }}
                     </a>
@@ -69,7 +91,7 @@
                 <th>Nutritive Group</th>
                 <td>
                     <a class="pointer"
-                       onbeforesave="updateField('nutritiveGroup', $data)"
+                       onbeforesave="speciesCtrl.updateField('nutritiveGroup', $data)"
                        editable-select="species.nutritiveGroup"
                        buttons="no"
                        e-ng-options="s.value as s.text for s in nutritiveGroups">
@@ -80,7 +102,7 @@
             </tr>
         </table>
 
-        <table class="table text-nowrap" ng-show="missingCharacteristics.length > 0">
+        <table class="table text-nowrap" ng-show="speciesCtrl.context === 'edit' && missingCharacteristics.length > 0">
             <caption class="text-left icon-alert">
                 <h4>
                     <fo-icon icon="missingCharacteristics"></fo-icon>
@@ -95,10 +117,28 @@
                 </td>
             </tr>
         </table>
+        <button class="btn btn-danger"
+                ng-click="deleteSpeciesDialog.show()"
+                ng-show="speciesCtrl.context === 'edit'">
+            <fo-icon icon="delete"></fo-icon>
+            Delete the species
+        </button>
+        <a class="btn btn-default" ng-href="/dashboard/species/new"
+                ng-show="speciesCtrl.context === 'edit'">
+            <fo-icon icon="add"></fo-icon>
+            Add new species
+        </a>
+        <button class="btn btn-default"
+                ng-click="speciesCtrl.createSpecies()"
+                ng-disabled="speciesCtrl.missingFields.length > 0 || speciesCtrl.nameGenusTaken"
+                ng-show="speciesCtrl.context === 'create'">
+            <fo-icon icon="add"></fo-icon>
+            Save
+        </button>
     </div>
 </div>
 
-<div class="row">
+<div class="row" ng-show="speciesCtrl.context === 'edit'">
     <div class="col-lg-12">
         <fo-typeahead id="referenceId" value="referenceFullTitle"
                       properties="speciesCtrl.typeAheadProperties"></fo-typeahead>
@@ -114,12 +154,12 @@
 
         <fo-characteristic-edit characteristic="characteristic"></fo-characteristic-edit>
 
-        <button class="btn btn-primary" ng-click="speciesCtrl.saveCharacteristic()"
+        <button class="btn btn-default btn-sm" ng-click="speciesCtrl.saveCharacteristic()"
                 ng-disabled="!dirty || emptyParams">
             <fo-icon icon="confirm"></fo-icon>
             Save
         </button>
-        <button class="btn btn-primary" ng-click="speciesCtrl.reset()">
+        <button class="btn btn-default btn-sm" ng-click="speciesCtrl.resetCharacteristic()">
             <fo-icon icon="cancel"></fo-icon>
             Reset and close
         </button>

@@ -11,21 +11,49 @@
 angular.module('angularFungiorbisApp', [
   'ngAnimate',
   'ui.router',
+  'ui.bootstrap',
   'ngCookies',
   'restmod',
-  'ui.bootstrap',
+  'ngResource',
   'xeditable',
+  'mgcrea.ngStrap',
   'dashboard',
   'navigation.userToolbar',
   'services.authentication',
   'services.icons',
+  'services.habitats',
+  'services.substrates',
+  'services.i18n',
+  'services.util',
   'resources.users',
   'resources.species',
   'resources.references',
-  'directives.tableWithPagination'
+  'resources.characteristics',
+  'directives.alert',
+  'directives.icon',
+  'directives.tableWithPagination',
+  'directives.newHabitat',
+  'directives.descriptionEdit',
+  'directives.usability',
+  'directives.typeahead',
+  'directives.substratesSelect',
+  'directives.helpText',
+  'directives.characteristicEdit',
+  'directives.characteristicPreview',
+  'directives.characteristicsTable'
 ])
 
   .constant('SERVER_BASE_URL', 'http://0.0.0.0:3000')
+
+  .config(function ($httpProvider) {
+    //Enable cross domain calls
+    $httpProvider.defaults.useXDomain = true;
+    $httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
+    $httpProvider.defaults.headers.common.Accept = 'application/json';
+
+    //Remove the header used to identify ajax call  that would prevent CORS from working
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+  })
 
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
@@ -37,14 +65,20 @@ angular.module('angularFungiorbisApp', [
       });
   })
 
+  .run(function ($http, authentication) {
+    var currentUser = authentication.currentUser();
+    if (currentUser) {
+      $http.defaults.headers.common['X-User-Email'] = currentUser.email;
+      $http.defaults.headers.common['X-User-Token'] = currentUser.authToken;
+    }
+  })
+
   .config(function (restmodProvider, SERVER_BASE_URL) {
-    restmodProvider.rebase('AMSApi');
-    restmodProvider.rebase('DefaultPacker');
     restmodProvider.rebase({
       $config: {
         urlPrefix: SERVER_BASE_URL
       }
-    }, 'setHeaders');
+    }, 'setHeaders', 'DefaultPacker', 'AMSApi', 'DirtyModel');
   })
 
   .run(function (editableOptions) {
@@ -78,9 +112,8 @@ angular.module('angularFungiorbisApp', [
   })
 
 
-  .controller('NavigationController', function (icons, authentication) {
+  .controller('NavigationController', function (authentication) {
     this.activeTab = 'home';
-    this.icon = icons.get;
     this.hasAccess = authentication.hasAccess;
 
     this.publicItems = [

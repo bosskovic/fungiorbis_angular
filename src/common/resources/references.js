@@ -15,7 +15,7 @@ angular.module('resources.references', [])
     }
 
     function baseUrl(){
-      return SERVER_BASE_URL + '/references/';
+      return SERVER_BASE_URL + '/references';
     }
 
     function index(params) {
@@ -42,12 +42,12 @@ angular.module('resources.references', [])
      * @param {object} attrs - keys: data, dirty, url, speciesId
      */
     function save(attrs) {
-      var url;
+      var url = attrs.url ? attrs.url : baseUrl();
       var method;
       var data = {};
 
       if (angular.isDefined(attrs.data.id)) {
-        url = attrs.url + '/' + attrs.data.id;
+        url += '/' + attrs.data.id;
 
         if (angular.isDefined(attrs.dirty)){
           angular.forEach(attrs.dirty, function (value) {
@@ -77,8 +77,8 @@ angular.module('resources.references', [])
 
     function fields(){
       return [
-        { header: 'Authors', field: 'authors', placeholder: 'Type in authors' },
         { header: 'Title', field: 'title', placeholder: 'Type in title' },
+        { header: 'Authors', field: 'authors', placeholder: 'Type in authors' },
         { header: 'ISBN', field: 'isbn', placeholder: 'Type in ISBN (optional)' },
         { header: 'URL', field: 'url', placeholder: 'Type in URL (optional)' }
       ];

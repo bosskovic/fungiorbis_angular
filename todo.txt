@@ -1,0 +1,3 @@
+CHARACTERISTICS MANIPULATION (dashboard.species.show, dashboard.references.show)
+- static typeahead
+- invoke confirmation if characteristic is dirty when initiating typeahead

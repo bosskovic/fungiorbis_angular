@@ -14,6 +14,11 @@ angular.module('dashboard.species', [])
           }
         }
       })
+      .state('dashboard.species/new', {
+        url: '^/dashboard/species/new',
+        templateUrl: '/app/dashboard/species-show.tpl.html',
+        controller: 'NewSpeciesController as speciesCtrl'
+      })
       .state('dashboard.species/detail', {
         url: '^/dashboard/species/:speciesId',
         templateUrl: '/app/dashboard/species-show.tpl.html',
@@ -40,8 +45,9 @@ angular.module('dashboard.species', [])
     this.tableParams = {
       prefix: 'species',
       data: species,
+      firstColumn: { header: 'Species name', field: 'fullName' },
       columns: [
-        { header: 'Species name', field: 'fullName' },
+//        { header: 'Species name', field: 'fullName' },
         { header: 'Family', field: 'familia' },
         { header: 'Order', field: 'ordo' },
         { header: 'Phylum', field: 'phylum' }
@@ -59,9 +65,80 @@ angular.module('dashboard.species', [])
     };
   })
 
+  .controller('NewSpeciesController', function ($scope, $filter, Species, Util) {
+    var speciesCtrl = this;
+    var mandatoryFields = [];
+    var checked = {};
+
+    speciesCtrl.context = 'create';
+
+    speciesCtrl.pageTitle = 'Create new species';
+
+    speciesCtrl.createSpecies = function () {
+      Species.save({ data: $scope.species }).then(function (response) {
+        console.log(response);
+      });
+    };
+
+
+    $scope.species = {};
+    $scope.systematics = Species.systematics();
+    $scope.growthTypes = Species.growthTypes();
+    $scope.nutritiveGroups = Species.nutritiveGroups();
+
+    $scope.showGrowthType = function () {
+      var selected = $filter('filter')($scope.growthTypes, {value: $scope.species.growthType});
+      return ($scope.species.growthType && selected.length) ? selected[0].text : 'Not set';
+    };
+
+    $scope.showNutritiveGroup = function () {
+      var selected = $filter('filter')($scope.nutritiveGroups, {value: $scope.species.nutritiveGroup});
+      return ($scope.species.nutritiveGroup && selected.length) ? selected[0].text : 'Not set';
+    };
+
+    angular.forEach($scope.systematics, function (field) {
+      mandatoryFields.push(field.field);
+    });
+    $scope.$watch('species', function (species) {
+      Util.cleanParams(species);
+      if (Object.keys(species).length === 0) {
+        speciesCtrl.speciesIsEmpty = true;
+        speciesCtrl.missingFields = mandatoryFields;
+      }
+      else {
+        speciesCtrl.speciesIsEmpty = false;
+        speciesCtrl.missingFields = Util.arrayDifference(mandatoryFields, Object.keys(species));
+        if (species.name && species.genus && (checked.name !== species.name || checked.genus !== species.genus)) {
+          Species.index({ name: species.name, genus: species.genus, fields: 'name,genus' })
+            .then(function (response) {
+              var responseSpecies = response.data.species;
+              if (responseSpecies.length === 1) {
+                speciesCtrl.nameGenusTaken = true;
+                speciesCtrl.speciesFullName = species.genus + ' ' + species.name;
+                speciesCtrl.matchingSpeciesId = responseSpecies[0].id;
+              }
+              else {
+                speciesCtrl.nameGenusTaken = false;
+              }
+              checked.name = species.name;
+              checked.genus = species.genus;
+              speciesCtrl.readyToSave = !speciesCtrl.nameGenusTaken && speciesCtrl.missingFields.length === 0;
+            });
+        }
+        else {
+          speciesCtrl.readyToSave = !speciesCtrl.nameGenusTaken && speciesCtrl.missingFields.length === 0;
+        }
+      }
+    }, true);
+  })
+
   .controller('ASpeciesController', function ($scope, speciesResponse, $filter, Characteristics, characteristicComponent, $modal, Species, References, $timeout) {
     var speciesCtrl = this;
     var species = speciesResponse.data.species;
+
+    speciesCtrl.context = 'edit';
+
+    speciesCtrl.pageTitle = species.genus + ' ' + species.name;
 
     $scope.species = species;
     $scope.systematics = Species.systematics();
@@ -78,7 +155,7 @@ angular.module('dashboard.species', [])
       return ($scope.species.nutritiveGroup && selected.length) ? selected[0].text : 'Not set';
     };
 
-    $scope.updateField = function (field, value) {
+    speciesCtrl.updateField = function (field, value) {
       var data = {
         id: species.id
       };
@@ -86,7 +163,8 @@ angular.module('dashboard.species', [])
       return Species.save({
         data: data,
         url: speciesResponse.data.links.species
-      }).then(function(){}, function (response) {
+      }).then(function () {
+      }, function (response) {
         return response.data.errors.details[0];
       });
     };
@@ -126,6 +204,12 @@ angular.module('dashboard.species', [])
 
     speciesCtrl.saveCharacteristic = function () {
       characteristicComponent.saveCharacteristic($scope.characteristic, speciesCtrl.reset, $scope.resetDialog, speciesCtrl.refresh);
+      $scope.characteristic = undefined;
+    };
+
+    speciesCtrl.resetCharacteristic = function () {
+      speciesCtrl.reset();
+      $scope.characteristic = undefined;
     };
 
     speciesCtrl.refresh = function () {
@@ -145,7 +229,6 @@ angular.module('dashboard.species', [])
         $scope.referenceFullTitle = undefined;
       }
       characteristicComponent.reset($scope.characteristic);
-      $scope.characteristic = undefined;
     };
 
     $scope.resetDialog = {
@@ -177,6 +260,7 @@ angular.module('dashboard.species', [])
       },
       reset: function () {
         speciesCtrl.reset();
+        $scope.characteristic = undefined;
         this.modal.hide();
         $timeout(function () {
           $scope.characteristicRow.show();
@@ -212,15 +296,33 @@ angular.module('dashboard.species', [])
         Characteristics
           .httpDelete(characteristicComponent.getAttrs($scope.characteristic))
           .success(function () {
-            speciesCtrl.reset();
             Species.show($scope.species.id).success(function (data) {
-              $scope.species.characteristics = data.species.characteristics;
               deleteDialogContext.hide();
+              speciesCtrl.reset();
+              $scope.characteristic = undefined;
               $scope.missingCharacteristics = characteristicComponent.missingCharacteristics(species.characteristics);
+              $scope.species.characteristics = data.species.characteristics;
             });
           });
       }
     };
+
+    $scope.deleteSpeciesDialog = $modal({
+      scope: $scope,
+      template: 'common/templates/modal-delete-species.tpl.html',
+      show: false,
+//      controllerAs: 'ctrl',
+      controller: function () {
+        console.log(this);
+//        this.species = 1;
+        this.destroy = function () {
+          console.log('!');
+          console.log($scope.speciesId);
+//          Species.delete({ url: speciesResponse.data.links.species, data: {id: species.id }});
+        };
+      }
+    });
+
 
     speciesCtrl.typeAheadProperties = {
       icon: 'references',

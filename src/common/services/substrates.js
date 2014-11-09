@@ -2,7 +2,7 @@
 
 angular.module('services.substrates', [])
 
-  .factory('Substrates', ['$http', '$q', 'SERVER_BASE_URL', function ($http, $q, SERVER_BASE_URL) {
+  .factory('Substrates', function ($http, $q, SERVER_BASE_URL) {
 
     var rawData;
 
@@ -27,7 +27,7 @@ angular.module('services.substrates', [])
       return rawData;
     }
 
-    function substrates(){
+    function substrates() {
       return rawData.en.substrates;
     }
 
@@ -36,4 +36,4 @@ angular.module('services.substrates', [])
       load: load,
       substrates: substrates
     };
-  }]);
+  });

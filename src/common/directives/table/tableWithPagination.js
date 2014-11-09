@@ -57,7 +57,7 @@ angular.module('directives.tableWithPagination', [])
     };
 
     return {
-      templateUrl: 'common/directives/table.tpl.html',
+      templateUrl: 'common/directives/table/table.tpl.html',
       restrict: 'E',
       replace: false,
       scope: { params: '=' },

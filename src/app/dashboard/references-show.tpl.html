@@ -5,17 +5,48 @@
                 <fo-icon icon="backHistory"></fo-icon>
                 <fo-icon icon="references"></fo-icon>
             </a>
-            {{ reference.authors }}: {{ reference.title }}
+            {{ referenceCtrl.pageTitle}}
         </h1>
     </div>
 </div>
 
-<div class="row" ng-hide="true">
+<div class="row" ng-show="referenceCtrl.missingFields.length > 0 && !referenceCtrl.referenceIsEmpty">
     <div class="col-lg-12">
-        <div class="alert alert-danger alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <i class="fa fa-exclamation-triangle"></i> <strong>Error!</strong> Error message text here...
-        </div>
+        <fo-alert type="warning" title="These mandatory fields are missing:">
+            {{ referenceCtrl.missingFields.join(', ') }}.
+        </fo-alert>
+    </div>
+</div>
+
+<div class="row" ng-show="referenceCtrl.urlTaken">
+    <div class="col-lg-12">
+        <fo-alert type="warning" title="Url already exists for this title:">
+            <strong>{{referenceCtrl.referenceFullTitle}}</strong>
+            Please input another <strong>url</strong>. To edit
+            the existing reference instead, please
+            <!--<a ui-sref="dashboard.references/detail" speciesId="speciesCtrl.matchingSpeciesId" >test</a>-->
+            <a ng-href="/dashboard/references/{{referenceCtrl.matchingUrlId}}">click here</a>.
+        </fo-alert>
+    </div>
+</div>
+
+<div class="row" ng-show="referenceCtrl.isbnTaken">
+    <div class="col-lg-12">
+        <fo-alert type="warning" title="ISBN already exists for this title:">
+            <strong>{{referenceCtrl.referenceFullTitle}}</strong>
+            Please input another <strong>ISBN</strong>. To edit
+            the existing reference instead, please
+            <!--<a ui-sref="dashboard.references/detail" speciesId="speciesCtrl.matchingSpeciesId" >test</a>-->
+            <a ng-href="/dashboard/references/{{referenceCtrl.matchingIsbnId}}">click here</a>.
+        </fo-alert>
+    </div>
+</div>
+
+<div class="row" ng-show="referenceCtrl.readyToSave">
+    <div class="col-lg-12">
+        <fo-alert type="info" title="All mandatory fields present!">
+            Click <strong>Save</strong> button to save the reference.
+        </fo-alert>
     </div>
 </div>
 
@@ -32,16 +63,34 @@
                 </td>
                 <td class="full-width"></td>
             </tr>
-            <tr>
+            <tr ng-show="referenceCtrl.context === 'edit'">
                 <th class="text-nowrap">Species characteristics</th>
                 <td>{{ reference.characteristics.length }}</td>
                 <td></td>
             </tr>
         </table>
+        <button class="btn btn-danger"
+                ng-click="deleteReferenceDialog.show()"
+                ng-show="referenceCtrl.context === 'edit'">
+            <fo-icon icon="delete"></fo-icon>
+            Delete the reference
+        </button>
+        <a class="btn btn-default" ng-href="/dashboard/references/new"
+           ng-show="referenceCtrl.context === 'edit'">
+            <fo-icon icon="add"></fo-icon>
+            Add new references
+        </a>
+        <button class="btn btn-default"
+                ng-click="referenceCtrl.createReference()"
+                ng-disabled="referenceCtrl.missingFields.length > 0 || referenceCtrl.urlTaken || referenceCtrl.isbnTaken"
+                ng-show="referenceCtrl.context === 'create'">
+            <fo-icon icon="add"></fo-icon>
+            Save
+        </button>
     </div>
 </div>
 
-<div class="row">
+<div class="row" ng-show="referenceCtrl.context === 'edit'">
     <div class="col-lg-12">
         <fo-typeahead id="speciesId" value="speciesFullName" properties="referenceCtrl.typeAheadProperties"></fo-typeahead>
     </div>
@@ -60,7 +109,7 @@
             <fo-icon icon="confirm"></fo-icon>
             Save
         </button>
-        <button class="btn btn-primary" ng-click="referenceCtrl.reset()">
+        <button class="btn btn-primary" ng-click="referenceCtrl.resetCharacteristic()">
             <fo-icon icon="cancel"></fo-icon>
             Reset and close
         </button>

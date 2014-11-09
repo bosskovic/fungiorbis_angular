@@ -114,13 +114,23 @@ angular.module('resources.species', [])
       ];
     }
 
+    function fields(){
+      return [
+        { header: 'Species name', field: 'fullName' },
+        { header: 'Family', field: 'familia' },
+        { header: 'Order', field: 'ordo' },
+        { header: 'Phylum', field: 'phylum' }
+      ];
+    }
+
     return {
       index: index,
       show: show,
       save: save,
+      delete: httpDelete,
       systematics: systematics,
       growthTypes: growthTypes,
       nutritiveGroups: nutritiveGroups,
-      delete: httpDelete
+      fields: fields
     };
   });

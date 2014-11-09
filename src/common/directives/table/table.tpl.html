@@ -20,7 +20,7 @@
 <table class="table text-nowrap fo-pagination-table">
     <thead>
     <tr>
-        <th>{{::params.firstColumn.header}}</th>
+        <th>{{::params.columns[0].header}}</th>
         <th ng-repeat="column in params.columns">{{::column.header}}</th>
         <th class="full-width">
         </th>
@@ -32,12 +32,12 @@
         <td class="link"
             ng-hide="isActive[$index]"
             ng-click="isActive[$index] = true">
-            {{::row[params.firstColumn.field]}}
+            {{::row[params.columns[0].field]}}
         </td>
         <td class="link"
             ng-show="isActive[$index]"
             ng-click="isActive[$index] = false">
-            {{::row[params.firstColumn.field]}}
+            {{::row[params.columns[0].field]}}
             <div class="btn-group-xs">
                 <a class="btn btn-xs" ng-href="{{editUrl+'/'+row.id}}">
                     <fo-icon icon="edit"></fo-icon>
@@ -47,7 +47,7 @@
                     Delete</a>
             </div>
         </td>
-        <td ng-repeat="column in params.columns"> {{::row[column.field]}}</td>
+        <td ng-repeat="column in columns"> {{::row[column.field]}}</td>
 
         <td class="full-width">
         </td>

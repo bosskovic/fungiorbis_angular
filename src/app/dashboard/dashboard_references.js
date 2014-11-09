@@ -45,7 +45,6 @@ angular.module('dashboard.references', [])
     this.tableParams = {
       prefix: 'references',
       data: references,
-      firstColumn: { header: 'Title', field: 'title' },
       columns: References.fields(),
       meta: meta.references,
       sort: 'authors',

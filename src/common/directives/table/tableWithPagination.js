@@ -95,6 +95,16 @@ angular.module('directives.tableWithPagination', [])
           scope.params.removeRow(row.id);
         };
 
+        scope.params.columns.forEach(function(column){
+          if(angular.isDefined(scope.columns)){
+            scope.columns.push(column);
+          }
+          else{
+            // excludes first element this way
+            scope.columns = [];
+          }
+        });
+
         scope.pageSizeChoices = scope.params.pageSizeChoices === undefined ?
           [10, 25, 50, 100] : scope.params.pageSizeChoices;
 

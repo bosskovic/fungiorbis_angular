@@ -45,13 +45,7 @@ angular.module('dashboard.species', [])
     this.tableParams = {
       prefix: 'species',
       data: species,
-      firstColumn: { header: 'Species name', field: 'fullName' },
-      columns: [
-//        { header: 'Species name', field: 'fullName' },
-        { header: 'Family', field: 'familia' },
-        { header: 'Order', field: 'ordo' },
-        { header: 'Phylum', field: 'phylum' }
-      ],
+      columns: Species.fields(),
       meta: meta.species,
       sort: 'fullName',
       editUrl: $state.current.url,

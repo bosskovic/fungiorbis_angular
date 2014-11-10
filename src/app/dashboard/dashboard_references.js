@@ -59,7 +59,7 @@ angular.module('dashboard.references', [])
     };
   })
 
-  .controller('NewReferenceController', function ($scope, References, Util) {
+  .controller('NewReferenceController', function ($scope, $state, References, Util) {
     var referenceCtrl = this;
     var mandatoryFields = ['title'];
     var checked = {};
@@ -69,8 +69,9 @@ angular.module('dashboard.references', [])
     referenceCtrl.pageTitle = 'Create new reference';
 
     referenceCtrl.createReference = function () {
-      References.save({ data: $scope.reference }).then(function (response) {
-        console.log(response);
+      References.save({ data: $scope.reference }).success(function (data, status, headers) {
+        var a = headers('Location').split('/');
+        $state.go('dashboard.references/detail', {referenceId: a[a.length - 1]});
       });
     };
 
@@ -193,20 +194,27 @@ angular.module('dashboard.references', [])
 
 
     referenceCtrl.saveCharacteristic = function () {
-      characteristicComponent.saveCharacteristic($scope.characteristic, referenceCtrl.reset, $scope.resetDialog, referenceCtrl.refresh);
-      $scope.characteristic = undefined;
+      characteristicComponent
+        .saveCharacteristic($scope.characteristic)
+        .then(function (characteristic) {
+          if (angular.isDefined($scope.characteristic.id)){
+            $scope.reference.characteristics[$scope.characteristicRow.currentIndex] = characteristic;
+          }
+          else {
+            $scope.reference.characteristics.push(characteristic);
+          }
+
+          referenceCtrl.resetCharacteristic();
+          $timeout(function () {
+            $scope.characteristicRow.show();
+          }, 1);
+          $scope.resetDialog.hide();
+        });
     };
 
     referenceCtrl.resetCharacteristic = function () {
       referenceCtrl.reset();
       $scope.characteristic = undefined;
-    };
-
-    referenceCtrl.refresh = function () {
-      References.show($scope.reference.id).then(function (response) {
-        $scope.reference.characteristics = response.data.references.characteristics;
-        $scope.characteristicRow.show();
-      });
     };
 
     referenceCtrl.reset = function (keepSpeciesName) {

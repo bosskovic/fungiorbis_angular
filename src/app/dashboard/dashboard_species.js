@@ -59,7 +59,7 @@ angular.module('dashboard.species', [])
     };
   })
 
-  .controller('NewSpeciesController', function ($scope, $filter, Species, Util) {
+  .controller('NewSpeciesController', function ($scope, $filter, Species, Util, $state) {
     var speciesCtrl = this;
     var mandatoryFields = [];
     var checked = {};
@@ -69,11 +69,11 @@ angular.module('dashboard.species', [])
     speciesCtrl.pageTitle = 'Create new species';
 
     speciesCtrl.createSpecies = function () {
-      Species.save({ data: $scope.species }).then(function (response) {
-        console.log(response);
+      Species.save({ data: $scope.species }).success(function (data, status, headers) {
+        var a = headers('Location').split('/');
+        $state.go('dashboard.species/detail', {speciesId: a[a.length - 1]});
       });
     };
-
 
     $scope.species = {};
     $scope.systematics = Species.systematics();
@@ -197,23 +197,29 @@ angular.module('dashboard.species', [])
 
 
     speciesCtrl.saveCharacteristic = function () {
-      characteristicComponent.saveCharacteristic($scope.characteristic, speciesCtrl.reset, $scope.resetDialog, speciesCtrl.refresh);
-      $scope.characteristic = undefined;
+      characteristicComponent
+        .saveCharacteristic($scope.characteristic)
+        .then(function (characteristic) {
+          if (angular.isDefined($scope.characteristic.id)){
+            $scope.species.characteristics[$scope.characteristicRow.currentIndex] = characteristic;
+          }
+          else {
+            $scope.species.characteristics.push(characteristic);
+          }
+
+          $scope.missingCharacteristics = characteristicComponent.missingCharacteristics($scope.species.characteristics);
+          speciesCtrl.resetCharacteristic();
+          $timeout(function () {
+            $scope.characteristicRow.show();
+          }, 1);
+          $scope.resetDialog.hide();
+        });
     };
 
     speciesCtrl.resetCharacteristic = function () {
       speciesCtrl.reset();
       $scope.characteristic = undefined;
     };
-
-    speciesCtrl.refresh = function () {
-      Species.show($scope.species.id).success(function (data) {
-        $scope.species.characteristics = data.species.characteristics;
-        $scope.missingCharacteristics = characteristicComponent.missingCharacteristics(species.characteristics);
-        $scope.characteristicRow.show();
-      });
-    };
-
 
     speciesCtrl.reset = function (keepSpeciesName) {
       $scope.dirty = false;

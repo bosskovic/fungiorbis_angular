@@ -241,13 +241,12 @@ angular.module('directives.characteristicEdit', [])
       return allCharacteristics;
     }
 
-    function saveCharacteristic(characteristic, reset, dialog, refresh) {
-      Characteristics.save(getAttrs(characteristic))
-        .then(function () {
-          reset();
-          dialog.hide();
-          refresh();
-        });
+    function saveCharacteristic(characteristic) {
+      var attrs = getAttrs(characteristic);
+      attrs.params = {respondWithBody: true};
+      return Characteristics.save(attrs).then(function (response) {
+        return response.data.characteristics;
+      });
     }
 
 

@@ -35,6 +35,7 @@ angular.module('directives.characteristicsTable', [])
         scope.characteristicRow = {
           show: function (index) {
             index = angular.isDefined(index) ? index : this.pendingIndex;
+            this.currentIndex = index;
             if (angular.isDefined(index)) {
               if (scope.isDirty()) {
                 this.pendingIndex = index;
@@ -61,7 +62,8 @@ angular.module('directives.characteristicsTable', [])
           isActive: function (id) {
             return scope.parentId === undefined && scope.characteristic && scope.characteristic.id === id;
           },
-          pendingIndex: undefined
+          pendingIndex: undefined,
+          currentIndex: undefined
         };
       }
     };

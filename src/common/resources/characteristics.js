@@ -5,7 +5,7 @@ angular.module('resources.characteristics', [])
   .factory('Characteristics', function ($http, $q, $cookieStore, SERVER_BASE_URL, authentication) {
 
     function headers() {
-      var currentUser = authentication.currentUser();
+      var currentUser = authentication.currentUser;
       return {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -41,19 +41,25 @@ angular.module('resources.characteristics', [])
     function save(attrs) {
       var url = attrs.url ? attrs.url : baseUrl(attrs.speciesId);
       var method;
-      var data = {};
+      var data = { characteristics: {} };
+
+      if (angular.isDefined(attrs.params)) {
+        Object.keys(attrs.params).forEach(function (key) {
+          data[key] = attrs.params[key];
+        });
+      }
 
       if (angular.isDefined(attrs.data.id)) {
         url += '/' + attrs.data.id;
 
         angular.forEach(attrs.dirty, function (value) {
-          data[value] = attrs.data[value];
+          data.characteristics[value] = attrs.data[value];
         });
 
         method = 'PATCH';
       }
       else {
-        data = attrs.data;
+        data.characteristics = attrs.data;
         method = 'POST';
       }
 
@@ -61,9 +67,7 @@ angular.module('resources.characteristics', [])
         url: url,
         method: method,
         headers: headers(),
-        data: {
-          characteristics: data
-        }
+        data: data
       });
     }
 
@@ -87,7 +91,7 @@ angular.module('resources.characteristics', [])
       ];
     }
 
-    function usabilitiesArray(){
+    function usabilitiesArray() {
       return [ 'edible', 'cultivated', 'medicinal', 'poisonous'];
     }
 

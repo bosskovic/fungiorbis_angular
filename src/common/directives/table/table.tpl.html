@@ -12,8 +12,8 @@
         <select ng-model="params.sort" ng-options="column.field as column.header for column in params.columns"
                 ng-change="getPage(1)"> </select></li>
     <li class="pointer" title="click to change ordering">
-        <fo-icon ng-show="params.order === '-'" icon="sortDown" ng-click="params.order=''"></fo-icon>
-        <fo-icon ng-hide="params.order === '-'" icon="sortUp" ng-click="params.order='-'"></fo-icon>
+        <fo-icon ng-show="params.order === '-'" icon="sortDown" ng-click="changeOrder('')"></fo-icon>
+        <fo-icon ng-hide="params.order === '-'" icon="sortUp" ng-click="changeOrder('-')"></fo-icon>
     </li>
 </ul>
 

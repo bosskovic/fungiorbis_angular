@@ -109,6 +109,11 @@ angular.module('directives.tableWithPagination', [])
           [10, 25, 50, 100] : scope.params.pageSizeChoices;
 
         scope.editUrl =  scope.params.editUrl[0] === '^' ? scope.params.editUrl.substring(1) : scope.params.editUrl;
+
+        scope.changeOrder = function(order){
+          scope.params.order = order;
+          scope.getPage(1);
+        };
       }
     };
   });

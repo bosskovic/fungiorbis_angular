@@ -66,11 +66,20 @@ angular.module('angularFungiorbisApp', [
   })
 
   .run(function ($http, authentication) {
-    var currentUser = authentication.currentUser();
+    var currentUser = authentication.currentUser;
     if (currentUser) {
       $http.defaults.headers.common['X-User-Email'] = currentUser.email;
       $http.defaults.headers.common['X-User-Token'] = currentUser.authToken;
     }
+  })
+
+  .run(function ($rootScope, $state, authentication) {
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+      if (angular.isDefined(toState.data) && toState.data.authenticate && !authentication.isSupervisor()) {
+        $state.go('home');
+        event.preventDefault();
+      }
+    });
   })
 
   .config(function (restmodProvider, SERVER_BASE_URL) {
@@ -88,7 +97,7 @@ angular.module('angularFungiorbisApp', [
   .factory('setHeaders', function (restmod, authentication) {
     var headers;
     if (authentication.isAuthenticated()) {
-      var currentUser = authentication.currentUser();
+      var currentUser = authentication.currentUser;
       headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

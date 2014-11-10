@@ -2,7 +2,7 @@
 
 angular.module('services.authentication', [])
 
-  .factory('authentication', ['$http', '$q', '$cookieStore', 'SERVER_BASE_URL', function ($http, $q, $cookieStore, SERVER_BASE_URL) {
+  .factory('authentication', function ($http, $q, $cookieStore, SERVER_BASE_URL) {
     var currentUser;
 
     function signIn(email, password) {
@@ -53,17 +53,13 @@ angular.module('services.authentication', [])
       return deferred.promise;
     }
 
-    function getCurrentUser() {
-      return currentUser;
-    }
-
     function hasAccess(requiredRole) {
       if (requiredRole === undefined || requiredRole === '' || requiredRole === 'visitor') {
         return true;
-      } else if (getCurrentUser() === null){
+      } else if (currentUser === null){
         return false;
       } else {
-        switch(getCurrentUser().role){
+        switch(currentUser.role){
           case undefined:
             return false;
           case 'user':
@@ -82,25 +78,22 @@ angular.module('services.authentication', [])
 
     init();
 
-    // The public API of the service
-    var service = {
+    return {
       signIn: signIn,
       signOut: signOut,
-      currentUser: getCurrentUser,
+      currentUser: currentUser,
       hasAccess: hasAccess,
 
       isAuthenticated: function () {
-        return getCurrentUser() !== null;
+        return currentUser !== null;
       },
 
       isSupervisor: function () {
-        return !!(service.currentUser && service.currentUser.role === 'supervisor');
+        return this.isAuthenticated() && currentUser.role === 'supervisor';
       },
 
       isContributor: function () {
-        return !!(service.currentUser && service.currentUser.role === 'contributor');
+        return this.isAuthenticated() && currentUser.role === 'contributor';
       }
     };
-
-    return service;
-  }]);
+  });

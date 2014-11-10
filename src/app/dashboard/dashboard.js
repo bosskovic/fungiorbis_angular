@@ -12,7 +12,10 @@ angular.module('dashboard', [
       .state('dashboard', {
         url: '/dashboard',
         templateUrl: '/app/dashboard/dashboard.tpl.html',
-        controller: 'DashboardController as dashboardNav'
+        controller: 'DashboardController as dashboardNav',
+        data: {
+          authenticate: true
+        }
       })
       .state('dashboard.activity', {
         url: '/activity',

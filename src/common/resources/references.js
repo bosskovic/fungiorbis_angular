@@ -5,7 +5,7 @@ angular.module('resources.references', [])
   .factory('References', function ($http, $q, $cookieStore, SERVER_BASE_URL, authentication) {
 
     function headers() {
-      var currentUser = authentication.currentUser();
+      var currentUser = authentication.currentUser;
       return {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

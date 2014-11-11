@@ -1,0 +1,28 @@
+<div class="description-tabset">
+    <tabset>
+        <tab ng-repeat="section in sections"
+             ng-click="activate(section)"
+             title="{{ ::section.title}}">
+
+            <tab-heading class="text-nowrap">
+                <fo-icon icon="{{::section.key}}"></fo-icon>
+                <span ng-show="active(section)">{{ ::section.title }}<br>
+                    <span ng-repeat="locale in locales"
+                          class="btn locale-selector" ng-model="section.locale"
+                          btn-radio="locale">{{locale.key}}
+                    </span>
+                </span>
+            </tab-heading>
+
+            <div class="tab-body">
+                <div>
+                    <textarea ng-repeat="locale in locales"
+                              ng-show="section.locale === locale"
+                              placeholder="type in {{section.title}} text in {{ locale.title }} here..."
+                              ng-model="characteristic[section.key][locale.key]"></textarea>
+                </div>
+            </div>
+
+        </tab>
+    </tabset>
+</div>

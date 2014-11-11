@@ -1,0 +1,18 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title"><fo-icon icon="references"></fo-icon> {{ deleteDialog.title() }}</h4>
+                <fo-icon icon="species"></fo-icon>{{ deleteDialog.subtitle() }}
+            </div>
+            <div class="modal-body">
+                Do you want to delete the characteristic for: {{ deleteDialog.subtitle() }}?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" ng-click="deleteDialog.destroy()"><fo-icon icon="delete"></fo-icon> Delete</button>
+                <button type="button" class="btn btn-default" ng-click="$hide()"><fo-icon icon="cancel"></fo-icon> Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

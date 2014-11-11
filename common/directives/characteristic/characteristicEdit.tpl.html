@@ -1,0 +1,49 @@
+<tabset class="new-characteristic-tabset">
+    <tab title="Description">
+        <tab-heading>
+            <span ng-class="{'icon-alert': translationMissing.length > 0}">
+                <fo-icon icon="description"></fo-icon>
+                {{ ::section.description.title }}
+            </span>
+        </tab-heading>
+        <div class="tab-body">
+
+            <div class="alert alert-warning" ng-show="translationMissing.length > 0">
+                <i class="fa fa-exclamation-triangle"></i> <strong>Translations missing:</strong> {{translationMissing}}
+            </div>
+
+            <fo-help-text text="{{ ::section.description.helpText }}"></fo-help-text>
+            <fo-description-edit characteristic="characteristic"></fo-description-edit>
+        </div>
+    </tab>
+    <tab title="Habitats">
+        <tab-heading>
+            <fo-icon icon="habitat"></fo-icon>
+            {{ ::section.habitats.title }}
+        </tab-heading>
+        <div class="tab-body">
+            <fo-help-text text="{{ ::section.habitats.helpText }}"></fo-help-text>
+            <fo-new-habitat store-value="appendHabitats" habitats="characteristic.habitats"></fo-new-habitat>
+        </div>
+    </tab>
+    <tab title="Substrates">
+        <tab-heading>
+            <fo-icon icon="substrate"></fo-icon>
+            {{ ::section.substrates.title }}
+        </tab-heading>
+        <div class="tab-body">
+            <fo-help-text text="{{ ::section.substrates.helpText }}"></fo-help-text>
+            <fo-substrates-select substrates="characteristic.substrates"></fo-substrates-select>
+        </div>
+    </tab>
+    <tab title="usability">
+        <tab-heading>
+            <fo-icon icon="usability"></fo-icon>
+            {{ ::section.usability.title }}
+        </tab-heading>
+        <div class="tab-body">
+            <fo-help-text text="{{ ::section.usability.helpText }}"></fo-help-text>
+            <fo-usability characteristic="characteristic" edit="true" show-labels="true"></fo-usability>
+        </div>
+    </tab>
+</tabset>

@@ -1,0 +1,56 @@
+.new-characteristic-box {
+    margin: 10px 0 40px 0;
+    padding: 10px;
+    border: solid #ddd 1px;
+}
+
+.new-characteristic-tabset {
+    margin: 20px 0;
+    min-width: 550px;
+}
+
+.new-characteristic-box .new-characteristic-tabset {
+    margin-top: 10px;
+}
+
+.description-tabset textarea {
+    border: none;
+    padding: 10px;
+    width: 100%;
+    min-height: 80px;
+}
+
+.description-tabset .locale-selector {
+    padding-bottom: 0;
+    padding-left: 0;
+    box-shadow: none;
+    color: #428bca;
+}
+
+.description-tabset .locale-selector.active {
+    color: #000;
+}
+
+.description-tabset .tab-body {
+    padding: 0;
+}
+
+.description-tabset .nav-tabs a {
+    padding-bottom: 26px;
+}
+
+.description-tabset .nav-tabs .active a {
+    padding-bottom: 0;
+}
+
+.species-characteristics-row {
+    margin-top: 30px;
+}
+
+.species-characteristics-row tbody tr:hover {
+    background-color: #eee;
+}
+
+.species-characteristics-row tbody tr.edit:hover {
+    background-color: #ffffff;
+}

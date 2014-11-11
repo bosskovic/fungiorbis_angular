@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <ul class="nav navbar-left top-nav" ng-controller="NavigationController as NavCtrl">
+        <li ng-class="{open: NavCtrl.isActiveTab('home')}">
+            <a class="navbar-brand" href="/" ng-click="NavCtrl.setActiveTab('home')">Fungiorbis</a>
+        </li>
+        <li ng-class="{open: NavCtrl.isActiveTab('dashboard')}" ng-show="NavCtrl.hasAccess('supervisor')">
+            <a href="dashboard" ng-click="NavCtrl.setActiveTab('dashboard')">
+                <fo-icon icon="dashboard"></fo-icon> Dashboard</a>
+        </li>
+        <li ng-class="{open: NavCtrl.isActiveTab(item.name)}" ng-repeat="item in NavCtrl.publicItems">
+            <a href="{{::item.name}}" ng-click="NavCtrl.setActiveTab(item.name)">
+                <fo-icon icon="{{item.name}}"></fo-icon> {{item.text}}</a>
+        </li>
+    </ul>
+
+    <fo-user-toolbar></fo-user-toolbar>
+</div>

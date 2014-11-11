@@ -1,0 +1,26 @@
+<div class="navbar-collapse navbar-inverse">
+    <ul class="nav navbar-nav side-nav">
+        <li ng-class="{active: dashboardNav.isActiveTab('activity')}">
+            <a href="/dashboard/activity" ng-click="dashboardNav.toggleActivity()">
+                <fo-icon icon="activity"></fo-icon> Activity
+                <i class="fa fa-fw" ng-class="{'fa-caret-down': dashboardNav.activityCollapsed, 'fa-caret-up': !dashboardNav.activityCollapsed}"></i>
+            </a>
+            <ul collapse="dashboardNav.activityCollapsed">
+                <li ng-repeat="item in dashboardNav.activityItems" ng-class="{active: dashboardNav.isActiveTab(item.name)}">
+                    <a href="dashboard/{{item.name}}" ng-click="dashboardNav.setActiveTab(item.name)">
+                        <fo-icon icon="{{item.name}}"></fo-icon> {{item.text}}
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li ng-class="{active: dashboardNav.isActiveTab('stats')}">
+            <a href="/dashboard/stats" ng-click="dashboardNav.setActiveTab('stats')">
+                <fo-icon icon="stats"></fo-icon> Stats
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<div class="container-fluid" ui-view>
+</div>

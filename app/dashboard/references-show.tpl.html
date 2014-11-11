@@ -1,0 +1,133 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            <a ui-sref="dashboard.references">
+                <fo-icon icon="backHistory"></fo-icon>
+                <fo-icon icon="references"></fo-icon>
+            </a>
+            {{ referenceCtrl.pageTitle}}
+        </h1>
+    </div>
+</div>
+
+<div class="row" ng-show="referenceCtrl.missingFields.length > 0 && !referenceCtrl.referenceIsEmpty">
+    <div class="col-lg-12">
+        <fo-alert type="warning" title="These mandatory fields are missing:">
+            {{ referenceCtrl.missingFields.join(', ') }}.
+        </fo-alert>
+    </div>
+</div>
+
+<div class="row" ng-show="referenceCtrl.urlTaken">
+    <div class="col-lg-12">
+        <fo-alert type="warning" title="Url already exists for this title:">
+            <strong>{{referenceCtrl.referenceFullTitle}}</strong>
+            Please input another <strong>url</strong>. To edit
+            the existing reference instead, please
+            <!--<a ui-sref="dashboard.references/detail" speciesId="speciesCtrl.matchingSpeciesId" >test</a>-->
+            <a ng-href="/dashboard/references/{{referenceCtrl.matchingUrlId}}">click here</a>.
+        </fo-alert>
+    </div>
+</div>
+
+<div class="row" ng-show="referenceCtrl.isbnTaken">
+    <div class="col-lg-12">
+        <fo-alert type="warning" title="ISBN already exists for this title:">
+            <strong>{{referenceCtrl.referenceFullTitle}}</strong>
+            Please input another <strong>ISBN</strong>. To edit
+            the existing reference instead, please
+            <!--<a ui-sref="dashboard.references/detail" speciesId="speciesCtrl.matchingSpeciesId" >test</a>-->
+            <a ng-href="/dashboard/references/{{referenceCtrl.matchingIsbnId}}">click here</a>.
+        </fo-alert>
+    </div>
+</div>
+
+<div class="row" ng-show="referenceCtrl.readyToSave">
+    <div class="col-lg-12">
+        <fo-alert type="info" title="All mandatory fields present!">
+            Click <strong>Save</strong> button to save the reference.
+        </fo-alert>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table">
+            <tr ng-repeat="field in referenceCtrl.fields">
+                <th class="text-nowrap">{{field.header}}</th>
+                <td class="text-nowrap">
+                    <a class="pointer"
+                       editable-text="reference[field.field]"
+                       onbeforesave="updateField(field.field, $data)">{{reference[field.field] ||
+                        field.placeholder}}</a>
+                </td>
+                <td class="full-width"></td>
+            </tr>
+            <tr ng-show="referenceCtrl.context === 'edit'">
+                <th class="text-nowrap">Species characteristics</th>
+                <td>{{ reference.characteristics.length }}</td>
+                <td></td>
+            </tr>
+        </table>
+        <button class="btn btn-danger"
+                ng-click="deleteReferenceDialog.show()"
+                ng-show="referenceCtrl.context === 'edit'">
+            <fo-icon icon="delete"></fo-icon>
+            Delete the reference
+        </button>
+        <a class="btn btn-default" ng-href="/dashboard/references/new"
+           ng-show="referenceCtrl.context === 'edit'">
+            <fo-icon icon="add"></fo-icon>
+            Add new references
+        </a>
+        <button class="btn btn-default"
+                ng-click="referenceCtrl.createReference()"
+                ng-disabled="referenceCtrl.missingFields.length > 0 || referenceCtrl.urlTaken || referenceCtrl.isbnTaken"
+                ng-show="referenceCtrl.context === 'create'">
+            <fo-icon icon="add"></fo-icon>
+            Save
+        </button>
+    </div>
+</div>
+
+<div class="row" ng-show="referenceCtrl.context === 'edit'">
+    <div class="col-lg-12">
+        <fo-typeahead id="speciesId" value="speciesFullName" properties="referenceCtrl.typeAheadProperties"></fo-typeahead>
+    </div>
+</div>
+
+<div class="row auto-width" ng-class="{'new-characteristic-box': speciesId}" ng-switch on="speciesId === undefined">
+    <div class="col-lg-12 auto-width" ng-switch-when="false">
+        <em class="dimmed" ng-show="characteristic.id">Existing record: </em>
+        <em class="dimmed" ng-hide="characteristic.id">New record: </em>
+        <em class="dimmed">{{ speciesFullName }}</em>
+
+        <fo-characteristic-edit characteristic="characteristic"></fo-characteristic-edit>
+
+        <button class="btn btn-primary" ng-click="referenceCtrl.saveCharacteristic()"
+                ng-disabled="!dirty || emptyParams">
+            <fo-icon icon="confirm"></fo-icon>
+            Save
+        </button>
+        <button class="btn btn-primary" ng-click="referenceCtrl.resetCharacteristic()">
+            <fo-icon icon="cancel"></fo-icon>
+            Reset and close
+        </button>
+    </div>
+</div>
+
+
+<div class="row species-characteristics-row" ng-show="reference.characteristics.length > 0">
+    <div class="col-lg-12">
+        <fo-characteristics-table
+                parent="species"
+                parent-id="speciesId"
+                characteristic="characteristic"
+                characteristics="reference.characteristics"
+                characteristic-row="characteristicRow"
+                reset-dialog="resetDialog"
+                delete-dialog="deleteDialog"
+                save-characteristic="referenceCtrl.saveCharacteristic"
+                reset="referenceCtrl.reset"></fo-characteristics-table>
+    </div>
+</div>

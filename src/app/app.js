@@ -43,7 +43,8 @@ angular.module('angularFungiorbisApp', [
   'directives.characteristicsTable'
 ])
 
-  .constant('SERVER_BASE_URL', 'http://0.0.0.0:3000')
+//  .constant('SERVER_BASE_URL', 'http://0.0.0.0:3000')
+  .constant('SERVER_BASE_URL', 'http://fungiorbis.herokuapp.com')
 
   .config(function ($httpProvider) {
     //Enable cross domain calls

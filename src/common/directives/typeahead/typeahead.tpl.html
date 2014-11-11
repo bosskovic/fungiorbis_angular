@@ -1,9 +1,0 @@
-<fo-icon icon="{{::properties.icon}}" klass="fa fa-fw fo-typeahead-icon"></fo-icon>
-<input type="text" ng-model="value" placeholder="{{::properties.placeholder}}"
-       typeahead="rows['{{::properties.key}}'] for rows in properties.getData($viewValue)"
-       typeahead-min-length="3"
-       typeahead-wait-ms="300"
-       typeahead-editable="false"
-       typeahead-on-select="select($item, $model, $label)"
-       typeahead-loading="loading" class="form-control fo-typeahead">
-<span ng-show="loading"><fo-icon icon="spinner"></fo-icon></span>

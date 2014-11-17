@@ -39,7 +39,7 @@
                e-multiple
                e-size="{{h.availableSpecies.length}}"
                editable-select="h.species"
-               e-ng-options="species.key as species.value for species in h.availableSpecies"
+               e-ng-options="species.key as speciesLabel(species) for species in h.availableSpecies"
                onbeforesave="updateSpecies(h.id, $data)">
                 {{ displaySpecies(h.species) || '-' }}
             </a>

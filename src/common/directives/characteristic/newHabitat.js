@@ -123,6 +123,11 @@ angular.module('directives.newHabitat', [])
         scope.subhabitatsFor = function (habitat) {
           return Habitats.subhabitats(habitat);
         };
+
+        scope.speciesLabel = function(species) {
+          var latinName = angular.copy(species.key);
+          return latinName.charAt(0).toUpperCase() + latinName.slice(1) + ' (' + species.value + ')';
+        };
       }
     };
   });

@@ -76,7 +76,8 @@ angular.module('resources.species', [])
     }
 
     function httpDelete(attrs) {
-      var url = attrs.url + '/' + attrs.data.id;
+      var url = attrs.url ? attrs.url : baseUrl();
+      url += '/' + attrs.id;
 
       return $http({
         url: url,

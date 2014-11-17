@@ -1,8 +1,8 @@
 <ul class="list-inline">
-    <li>
+    <li ng-show="params.createNewLabel">
         <a class="btn btn-default btn-sm" ng-href="{{editUrl+'/new'}}">
             <fo-icon icon="add"></fo-icon>
-            Create new Species
+            {{ params.createNewLabel }}
         </a>
     </li>
     <li>Per Page:

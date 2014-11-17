@@ -43,6 +43,7 @@ angular.module('dashboard.species', [])
     var meta = speciesResponse.data.meta;
 
     this.tableParams = {
+      createNewLabel: 'Create new Species',
       prefix: 'species',
       data: species,
       columns: Species.fields(),
@@ -55,11 +56,14 @@ angular.module('dashboard.species', [])
           that.tableParams.meta = data.meta.species;
           that.tableParams.data = data.species;
         });
+      },
+      removeRow: function (id) {
+        return Species.delete({ id: id});
       }
     };
   })
 
-  .controller('NewSpeciesController', function ($scope, $filter, Species, Util, $state) {
+  .controller('NewSpeciesController', function ($scope, $state, $filter, Util, Species) {
     var speciesCtrl = this;
     var mandatoryFields = [];
     var checked = {};
@@ -126,7 +130,7 @@ angular.module('dashboard.species', [])
     }, true);
   })
 
-  .controller('ASpeciesController', function ($scope, speciesResponse, $filter, Characteristics, characteristicComponent, $modal, Species, References, $timeout) {
+  .controller('ASpeciesController', function ($scope, $timeout, $state, $modal, $filter, speciesResponse, characteristicComponent, Characteristics, Species, References) {
     var speciesCtrl = this;
     var species = speciesResponse.data.species;
 
@@ -200,7 +204,7 @@ angular.module('dashboard.species', [])
       characteristicComponent
         .saveCharacteristic($scope.characteristic)
         .then(function (characteristic) {
-          if (angular.isDefined($scope.characteristic.id)){
+          if (angular.isDefined($scope.characteristic.id)) {
             $scope.species.characteristics[$scope.characteristicRow.currentIndex] = characteristic;
           }
           else {
@@ -307,22 +311,27 @@ angular.module('dashboard.species', [])
       }
     };
 
-    $scope.deleteSpeciesDialog = $modal({
-      scope: $scope,
-      template: 'common/templates/modal-delete-species.tpl.html',
-      show: false,
-//      controllerAs: 'ctrl',
-      controller: function () {
-        console.log(this);
-//        this.species = 1;
-        this.destroy = function () {
-          console.log('!');
-          console.log($scope.speciesId);
-//          Species.delete({ url: speciesResponse.data.links.species, data: {id: species.id }});
-        };
-      }
-    });
+//    $scope.deleteSpeciesDialog = $modal({
+//      scope: $scope,
+//      template: 'common/templates/modal-delete-species.tpl.html',
+//      show: false,
+////      controllerAs: 'ctrl',
+//      controller: function () {
+//        console.log(this);
+////        this.species = 1;
+//        this.destroy = function () {
+//          console.log('!');
+//          console.log($scope.speciesId);
+////          Species.delete({ url: speciesResponse.data.links.species, data: {id: species.id }});
+//        };
+//      }
+//    });
 
+    speciesCtrl.deleteSpecies = function () {
+      Species.delete({ id: $scope.species.id}).success(function () {
+        $state.go('dashboard.species');
+      });
+    };
 
     speciesCtrl.typeAheadProperties = {
       icon: 'references',
@@ -335,4 +344,5 @@ angular.module('dashboard.species', [])
           });
       }
     };
-  });
+  })
+;

@@ -43,6 +43,7 @@ angular.module('dashboard.references', [])
     var meta = referencesResponse.data.meta;
 
     this.tableParams = {
+      createNewLabel: 'Create new Reference',
       prefix: 'references',
       data: references,
       columns: References.fields(),
@@ -55,6 +56,9 @@ angular.module('dashboard.references', [])
           that.tableParams.meta = data.meta.references;
           that.tableParams.data = data.references;
         });
+      },
+      removeRow: function (id) {
+        return References.delete({ id: id});
       }
     };
   })
@@ -133,7 +137,7 @@ angular.module('dashboard.references', [])
     }, true);
   })
 
-  .controller('ReferenceController', function ($scope, referenceResponse, Species, Characteristics, $modal, characteristicComponent, References, $timeout) {
+  .controller('ReferenceController', function ($scope, $timeout, $state, $modal, referenceResponse, characteristicComponent, Characteristics, References, Species) {
     var referenceCtrl = this;
     var reference = referenceResponse.data.references;
     var initialCharacteristic = {
@@ -299,6 +303,12 @@ angular.module('dashboard.references', [])
             });
           });
       }
+    };
+
+    referenceCtrl.deleteReference = function () {
+      References.delete({ id: $scope.reference.id}).success(function () {
+        $state.go('dashboard.references');
+      });
     };
 
     referenceCtrl.typeAheadProperties = {

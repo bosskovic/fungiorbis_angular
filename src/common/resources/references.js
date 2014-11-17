@@ -75,6 +75,17 @@ angular.module('resources.references', [])
       });
     }
 
+    function httpDelete(attrs) {
+      var url = attrs.url ? attrs.url : baseUrl();
+      url += '/' + attrs.id;
+
+      return $http({
+        url: url,
+        method: 'DELETE'
+      });
+    }
+
+
     function fields(){
       return [
         { header: 'Title', field: 'title', placeholder: 'Type in title' },
@@ -88,6 +99,7 @@ angular.module('resources.references', [])
       index: index,
       show: show,
       save: save,
+      delete: httpDelete,
       fields: fields
     };
   });

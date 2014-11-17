@@ -92,7 +92,9 @@ angular.module('directives.tableWithPagination', [])
         };
 
         scope.removeRow = function(row) {
-          scope.params.removeRow(row.id);
+          scope.params.removeRow(row.id).success(function () {
+            scope.getPage(scope.params.meta.page);
+          });
         };
 
         scope.params.columns.forEach(function(column){

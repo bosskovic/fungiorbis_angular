@@ -188,7 +188,15 @@ module.exports = function (grunt) {
             src: [
               '.tmp',
               'dist/{,*/}*',
-              '!dist/.git*'
+              '!dist/.git',
+              '!dist/.git/',
+              '!dist/.git/*',
+              '!dist/lib',
+              '!dist/lib/*',
+              '!dist/Capfile',
+              '!dist/config',
+              '!dist/config/*',
+              '!dist/.gitignore'
             ]
           }
         ]

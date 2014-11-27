@@ -31,6 +31,7 @@ module.exports = function (grunt) {
     'copy:dist',
     'cdnify',
     'uglify',
+    'cssmin',
     'filerev',
     'usemin',
     'htmlmin'
@@ -144,7 +145,7 @@ module.exports = function (grunt) {
           open: true,
           middleware: function (connect) {
             return [
-              require('connect-modrewrite') (['!(\\..+)$ /index.html [L]']),
+              require('connect-modrewrite')(['!(\\..+)$ /index.html [L]']),
               connect.static('.tmp'),
               connect().use('/bower_components', connect.static('./bower_components')),
               connect().use('/fonts', connect.static('./bower_components/font-awesome/fonts')),
@@ -235,19 +236,20 @@ module.exports = function (grunt) {
       }
     },
 
+
     // The following *-min tasks will produce minified files in the dist folder
     // By default, your `index.html`'s <!-- Usemin block --> will take care of
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       'dist/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
+//    cssmin: {
+//       dist: {
+//         files: {
+//           'dist/styles/main.css': [
+//             '.tmp/styles/{,*/}*.css'
+//           ]
+//         }
+//       }
+//    },
     // uglify: {
     //   dist: {
     //     files: {
@@ -343,6 +345,7 @@ module.exports = function (grunt) {
               '.htaccess',
               '*.html',
               'app/{,*/}*.html',
+              'common/{,*/}*.html',
               'assets/img/{,*/}*.{webp}',
               'fonts/*'
             ]
@@ -355,7 +358,7 @@ module.exports = function (grunt) {
           },
           {
             expand: true,
-            cwd: 'bower_components/bootstrap/dist',
+            cwd: 'bower_components/font-awesome',
             src: 'fonts/*',
             dest: 'dist'
           }
@@ -363,9 +366,10 @@ module.exports = function (grunt) {
       },
       styles: {
         expand: true,
-        cwd: 'src/styles',
         dest: '.tmp/styles/',
-        src: '{,*/}*.css'
+        src: ['src/styles/{,*/}*.css', 'src/common/directives/{,*/}*.css'],
+        filter: 'isFile',
+        flatten: true
       }
     },
 

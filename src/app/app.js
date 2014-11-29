@@ -13,7 +13,6 @@ angular.module('angularFungiorbisApp', [
   'ui.router',
   'ui.bootstrap',
   'ngCookies',
-  'restmod',
   'ngResource',
   'xeditable',
   'mgcrea.ngStrap',
@@ -83,44 +82,9 @@ angular.module('angularFungiorbisApp', [
     });
   })
 
-  .config(function (restmodProvider, SERVER_BASE_URL) {
-    restmodProvider.rebase({
-      $config: {
-        urlPrefix: SERVER_BASE_URL
-      }
-    }, 'setHeaders', 'DefaultPacker', 'AMSApi', 'DirtyModel');
-  })
-
   .run(function (editableOptions) {
     editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
   })
-
-  .factory('setHeaders', function (restmod, authentication) {
-    var headers;
-    if (authentication.isAuthenticated()) {
-      var currentUser = authentication.currentUser;
-      headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-User-Email': currentUser.email,
-        'X-User-Token': currentUser.authToken
-      };
-    } else {
-      headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      };
-    }
-
-    return restmod.mixin({
-      $hooks: {
-        'before-request': function (_req) {
-          _req.headers = headers;
-        }
-      }
-    });
-  })
-
 
   .controller('NavigationController', function (authentication) {
     this.activeTab = 'home';

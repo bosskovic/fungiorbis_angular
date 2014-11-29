@@ -1,9 +1,5 @@
 'use strict';
 
-angular.module('species', []).factory('Species', function (restmod) {
-  return restmod.model('/species');
-});
-
 angular.module('dashboard.users', [])
 
   .config(function ($stateProvider) {
@@ -13,37 +9,30 @@ angular.module('dashboard.users', [])
         templateUrl: '/app/dashboard/users-index.tpl.html',
         controller: 'UsersController as usersCtrl',
         resolve: {
-          users: function (Users) {
-            return Users.$collection().$fetch().$asPromise().then(function (users) {
-              return users;
-            });
+          usersResponse: function (Users) {
+            return Users.index({sort: 'role'});
           }
         }
       });
   })
 
-  .controller('UsersController', function ($scope, $state, users) {
+  .controller('UsersController', function ($scope, $state, usersResponse, Users) {
     var that = this;
+    var users = usersResponse.data.users;
+    var meta = usersResponse.data.meta;
 
     this.tableParams = {
       prefix: 'users',
       data: users,
-      columns: [
-        { header: 'First Name', field: 'firstName' },
-        { header: 'Last Name', field: 'lastName' },
-        { header: 'Title', field: 'title' },
-        { header: 'Email', field: 'email' },
-        { header: 'Institution', field: 'institution' },
-        { header: 'Phone', field: 'phone' },
-        { header: 'Role', field: 'role' }
-      ],
-      meta: users.$metadata.users,
-      sort: 'firstName',
+      columns: Users.fields(),
+      meta: meta.users,
+      sort: 'role',
       editUrl: $state.current.url,
       paginatorPages: 10,
       getData: function (attrs) {
-        users.$refresh(attrs).$asPromise().then(function (sp) {
-          that.tableParams.meta = sp.$metadata.users;
+        Users.index(attrs).success(function (data) {
+          that.tableParams.meta = data.meta.users;
+          that.tableParams.data = data.users;
         });
       }
     };

@@ -8,9 +8,6 @@ angular.module('services.authentication', [])
     function signIn(email, password) {
       var deferred = $q.defer();
 
-      email = 'ela@fungiorbis.edu';
-      password = 'Ela12345!';
-
       $http({
         url: SERVER_BASE_URL + '/users/sign_in',
         method: 'POST',

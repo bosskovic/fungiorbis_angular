@@ -16,6 +16,7 @@ angular.module('angularFungiorbisApp', [
   'ngResource',
   'xeditable',
   'mgcrea.ngStrap',
+  'public',
   'dashboard',
   'navigation.userToolbar',
   'services.authentication',
@@ -55,16 +56,6 @@ angular.module('angularFungiorbisApp', [
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
   })
 
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
-    $locationProvider.html5Mode(true);
-    $urlRouterProvider.otherwise('/');
-    $stateProvider
-      .state('home', {
-        url: '/',
-        templateUrl: 'app/home.tpl.html'
-      });
-  })
-
   .run(function ($http, authentication) {
     var currentUser = authentication.currentUser;
     if (currentUser) {
@@ -84,22 +75,4 @@ angular.module('angularFungiorbisApp', [
 
   .run(function (editableOptions) {
     editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
-  })
-
-  .controller('NavigationController', function (authentication) {
-    this.activeTab = 'home';
-    this.hasAccess = authentication.hasAccess;
-
-    this.publicItems = [
-      {name: 'species', text: 'Species'},
-      {name: 'specimens', text: 'Specimens'}
-    ];
-
-    this.isActiveTab = function (tab) {
-      return tab === this.activeTab;
-    };
-
-    this.setActiveTab = function (tab) {
-      this.activeTab = tab;
-    };
   });

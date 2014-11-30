@@ -67,7 +67,8 @@ angular.module('services.icons', [])
     infoAlert: 'fa-info-circle',
     warningAlert: 'fa-exclamation-triangle',
 
-    bulletHabitatPublic: 'fa-long-arrow-right',
+//    bulletHabitatPublic: 'fa-long-arrow-right',
+    bulletHabitatPublic: 'fa-angle-right',
 
     user: 'fa-user',
     users: 'fa-users',

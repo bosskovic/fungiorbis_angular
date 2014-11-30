@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('directives.newHabitat', [])
+angular.module('directives.newHabitat', ['directives.habitatSpecies'])
 
   .directive('foNewHabitat', function (Habitats) {
 
@@ -75,7 +75,16 @@ angular.module('directives.newHabitat', [])
         });
 
         scope.availableHabitats = Habitats.habitats();
+        scope.availableHabitatsHash = function(){
+          var h = {};
+          Habitats.habitats().forEach(function(item){
+            h[item.key] = item.title;
+          });
+          return h;
+        };
 
+        scope.translateHabitat = Habitats.translateHabitat;
+        scope.translateSubhabitat = Habitats.translateSubhabitat;
 
         scope.updateHabitat = function (id, newHabitat) {
           angular.forEach(scope.habitatsInternal, function (hash) {
@@ -100,15 +109,6 @@ angular.module('directives.newHabitat', [])
           scope.storeValue(scope.habitatsExternal);
         };
 
-        scope.updateSpecies = function (id, newSpecies) {
-          angular.forEach(scope.habitatsInternal, function (hash) {
-            if (hash.id === id) {
-              hash.species = newSpecies;
-            }
-          }, scope.habitatsInternal);
-          scope.habitatsExternal = convertHabitats(scope.habitatsInternal);
-          scope.storeValue(scope.habitatsExternal);
-        };
 
         scope.deleteHabitat = function (index) {
           scope.habitatsInternal.splice(index, 1);
@@ -116,17 +116,8 @@ angular.module('directives.newHabitat', [])
           scope.storeValue(scope.habitatsExternal);
         };
 
-        scope.displaySpecies = function (species) {
-          return angular.isDefined(species) ? species.join(', ') : 'select species';
-        };
-
         scope.subhabitatsFor = function (habitat) {
           return Habitats.subhabitats(habitat);
-        };
-
-        scope.speciesLabel = function(species) {
-          var latinName = angular.copy(species.key);
-          return latinName.charAt(0).toUpperCase() + latinName.slice(1) + ' (' + species.value + ')';
         };
       }
     };

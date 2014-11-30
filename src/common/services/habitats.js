@@ -94,11 +94,23 @@ angular.module('services.habitats', [])
       return result;
     }
 
+    function translateHabitat(habitatKey){
+      return rawData.en.habitats[habitatKey].title;
+    }
+
+    function translateSubhabitat(habitatKey, subhabitatKey){
+      if (angular.isDefined(rawData.en.habitats[habitatKey].subhabitat) &&
+        angular.isDefined(rawData.en.habitats[habitatKey].subhabitat[subhabitatKey])){
+        return rawData.en.habitats[habitatKey].subhabitat[subhabitatKey].title;
+      }
+    }
 
     return {
       load: load,
       habitats: habitats,
+      translateHabitat: translateHabitat,
       subhabitats: subhabitats,
+      translateSubhabitat: translateSubhabitat,
       species: species,
       toString: toString
     };

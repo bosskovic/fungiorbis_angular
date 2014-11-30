@@ -1,0 +1,7 @@
+.newHabitatBullet {
+    margin-bottom: 10px;
+}
+
+.newHabitatSpecies .species:hover {
+    text-decoration: line-through;
+}

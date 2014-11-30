@@ -246,3 +246,38 @@ tr.highlight td.action {
 .full-width {
     width: 100%;
 }
+
+.searchResults .searchParams {
+    color:#999;
+    font-style: italic;
+}
+
+.searchResults .searchParams .hits {
+    color: #000000;
+    font-weight: bold;
+}
+
+.searchResults .speciesName {
+    font-style: italic;
+    font-size: 24px;
+}
+
+.habitat.forest i {
+    color: green;
+}
+
+.habitat.meadow i {
+    color: greenyellow;
+}
+
+.habitat.sands i {
+    color: #ffff00;
+}
+
+.habitat.peat i {
+    color: darkolivegreen;
+}
+
+.habitat.anthropogenic i {
+    color: #000000;
+}

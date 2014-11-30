@@ -38,3 +38,38 @@
 .side-nav > li > ul > li > a:hover {
     color: #fff;
 }
+
+.side-nav.public {
+    color: #999;
+    padding-top: 10px;
+    /*padding-left: 25px;*/
+}
+
+.side-nav .sideContainer {
+    padding: 10px 0 10px 0;
+}
+
+.side-nav .sideContainer:hover {
+    background-color: #000000;
+}
+
+.side-nav .sideContainer .title {
+    padding-left: 15px;
+    padding-bottom: 5px;
+}
+
+.side-nav .sideContainer .content {
+    padding: 5px 0 5px 25px;
+}
+
+.side-nav.public select {
+    padding: 0;
+    height: auto;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+}
+
+.side-nav .sideContainer:hover .title {
+    color: #ffffff;
+}

@@ -1,19 +1,17 @@
-<div>
-    <div ng-repeat="s in substrates">
-        <div>
-            {{ allSubstrates[s] }}
-            <span class="pointer" ng-click="deleteSubstrate($index)"><fo-icon icon="delete"></fo-icon></span>
-        </div>
-    </div>
+<div class="substratesSelect">
+    <span ng-repeat="s in substrates">
+        <a class="pointer substrate" ng-click="deleteSubstrate($index)" title="obriši">{{ allSubstrates[s] }}</a>
+        <span ng-show="$index < substrates.length-1">, </span>
+    </span>
 
-    <div>
-        <span class="pointer" ng-hide="editSubstrate" ng-click="editSubstrate = true">
-            <fo-icon icon="add"></fo-icon>dodaj
-        </span>
-        <select ng-model="newSubstrate"
-                ng-options="k as v for (k,v) in availableSubstrates()"
-                ng-show="editSubstrate">
-            <option value="" disabled="disabled">Odaberi supstrat</option>
-        </select>
-    </div>
+    <span class="pointer" ng-hide="editSubstrate" ng-click="editSubstrate = true">
+        <span ng-hide="substrates.length === 0"><fo-icon icon="add"></fo-icon></span>
+        <span ng-show="substrates.length === 0"><fo-icon icon="add"></fo-icon>dodaj</span>
+    </span>
+
+    <select ng-model="newSubstrate"
+            ng-options="k as v for (k,v) in availableSubstrates()"
+            ng-show="editSubstrate">
+        <option value="" disabled="disabled">Odaberi supstrat</option>
+    </select>
 </div>

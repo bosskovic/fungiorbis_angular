@@ -95,11 +95,40 @@ angular.module('resources.characteristics', [])
       return [ 'edible', 'cultivated', 'medicinal', 'poisonous'];
     }
 
+    function translateUsability(u, locale) {
+      if (angular.isUndefined(locale)) {
+        locale = 'sr';
+      }
+
+      return {
+        edible: { sr: 'jestiva', en: 'Edible'},
+        cultivated: { sr: 'uzgajana', en: 'Cultivated'},
+        medicinal: { sr: 'lekovita', en: 'Medicinal'},
+        poisonous: { sr: 'otrovna', en: 'Poisonous'}
+      }[u][locale];
+    }
+
+    function translateSection(u, locale) {
+      if (angular.isUndefined(locale)) {
+        locale = 'sr';
+      }
+
+      return {
+        fruitingBody: { sr: 'plodno telo', en: 'Fruiting Body'},
+        microscopy: { sr: 'mikroskopske karakteristike', en: 'Microscopy'},
+        flesh: { sr: 'meso', en: 'Flesh'},
+        chemistry: { sr: 'hemijska reakcija', en: 'Chemistry'},
+        notes: { sr: 'napomena', en: 'Notes'}
+      }[u][locale];
+    }
+
     return {
       get: get,
       save: save,
       httpDelete: httpDelete,
       sectionsArray: sectionsArray,
-      usabilitiesArray: usabilitiesArray
+      usabilitiesArray: usabilitiesArray,
+      translateSection: translateSection,
+      translateUsability: translateUsability
     };
   });

@@ -26,6 +26,13 @@ angular.module('resources.species', [])
       });
     }
 
+    function stats(section){
+      return $http({
+        url: SERVER_BASE_URL + '/stats/' + section,
+        method: 'GET'
+      });
+    }
+
     function index(params) {
       var url = baseUrl();
 
@@ -152,6 +159,7 @@ angular.module('resources.species', [])
       growthTypes: growthTypes,
       nutritiveGroups: nutritiveGroups,
       nutritiveGroupsHash: nutritiveGroupsHash,
-      fields: fields
+      fields: fields,
+      stats: stats
     };
   });

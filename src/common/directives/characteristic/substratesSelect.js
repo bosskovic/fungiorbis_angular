@@ -18,9 +18,11 @@ angular.module('directives.substratesSelect', [])
 
         scope.availableSubstrates = function(){
           var allSubstratesCopy = angular.copy(scope.allSubstrates);
-          scope.substrates.forEach(function(item){
-            delete allSubstratesCopy[item];
-          });
+          if (angular.isArray(scope.substrates)){
+            scope.substrates.forEach(function(item){
+              delete allSubstratesCopy[item];
+            });
+          }
           return allSubstratesCopy;
         };
 

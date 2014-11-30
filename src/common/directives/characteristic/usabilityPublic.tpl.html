@@ -1,9 +1,9 @@
 <span class="usabilityPublic">
-    <span ng-repeat="u in allUsabilities"
-          title="{{::u.title}}"
-          ng-class="{selected: u.selected}"
-          ng-click="toggleUsability(u.key)"
+    <span ng-repeat="(key, value) in allUsabilities"
+          title="{{::value.title}}"
+          ng-class="{selected: value.selected}"
+          ng-click="toggleUsability(key)"
           class="pointer">
-                <fo-icon icon="{{::u.key}}"></fo-icon>
+                <fo-icon icon="{{::key}}"></fo-icon>
     </span>
 </span>

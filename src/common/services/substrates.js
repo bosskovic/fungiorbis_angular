@@ -31,9 +31,13 @@ angular.module('services.substrates', [])
       return rawData.en.substrates;
     }
 
+    function translateSubstrate(substrateKey){
+      return rawData.en.substrates[substrateKey];
+    }
 
     return {
       load: load,
-      substrates: substrates
+      substrates: substrates,
+      translateSubstrate: translateSubstrate
     };
   });

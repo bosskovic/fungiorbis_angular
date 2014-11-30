@@ -1,0 +1,22 @@
+.side-nav .systematicsTypeAhead {
+    padding-right: 15px;
+}
+
+.side-nav .sideContainer .systematicsTypeAhead .title {
+    padding-bottom: 0;
+}
+
+.side-nav .sideContainer .systematicsTypeAhead .content {
+    padding-top: 0;
+}
+
+.side-nav .systematicsTypeAhead input {
+    background-color: #222;
+    color: #ffffff;
+}
+
+.side-nav .sideContainer:hover .systematicsTypeAhead input,
+.side-nav .sideContainer:hover .systematicsTypeAhead select {
+    background-color: #ffffff;
+    color: #000000;
+}

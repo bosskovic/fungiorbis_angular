@@ -1,0 +1,16 @@
+<div class="systematicsTypeAhead">
+    <em class="title">
+        Unesi&nbsp;
+        <a class="pointer"
+           editable-select="systematicsCategory"
+           buttons="no"
+           e-ng-options="s.key as s.value for s in allSystematics">
+            {{ systematicsCategoryLabel }}
+            <i class="fa fa-caret-down"></i>
+        </a>
+    </em>
+
+    <div class="content">
+        <fo-typeahead id="id" value="systematics" properties="typeAheadProperties"></fo-typeahead>
+    </div>
+</div>

@@ -33,6 +33,7 @@ angular.module('angularFungiorbisApp', [
   'directives.icon',
   'directives.tableWithPagination',
   'directives.newHabitat',
+  'directives.habitatPublic',
   'directives.descriptionEdit',
   'directives.usability',
   'directives.typeahead',
@@ -40,7 +41,8 @@ angular.module('angularFungiorbisApp', [
   'directives.helpText',
   'directives.characteristicEdit',
   'directives.characteristicPreview',
-  'directives.characteristicsTable'
+  'directives.characteristicsTable',
+  'directives.systematicsTypeAhead'
 ])
 
   .constant('SERVER_BASE_URL', 'http://0.0.0.0:3000')
@@ -65,7 +67,8 @@ angular.module('angularFungiorbisApp', [
   })
 
   .run(function ($rootScope, $state, authentication) {
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+//    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeStart', function (event, toState) {
       if (angular.isDefined(toState.data) && toState.data.authenticate && !authentication.isSupervisor()) {
         $state.go('home');
         event.preventDefault();

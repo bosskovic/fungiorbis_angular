@@ -1,8 +1,19 @@
 <div>
-    <div class="bloc">
-        <select ng-model="substrates" multiple ng-multiple="true"
-                data-ng-attr-size="{{ selectSize }}"
-                ng-options="k as v for (k,v) in allSubstrates">
+    <div ng-repeat="s in substrates">
+        <div>
+            {{ allSubstrates[s] }}
+            <span class="pointer" ng-click="deleteSubstrate($index)"><fo-icon icon="delete"></fo-icon></span>
+        </div>
+    </div>
+
+    <div>
+        <span class="pointer" ng-hide="editSubstrate" ng-click="editSubstrate = true">
+            <fo-icon icon="add"></fo-icon>dodaj
+        </span>
+        <select ng-model="newSubstrate"
+                ng-options="k as v for (k,v) in availableSubstrates()"
+                ng-show="editSubstrate">
+            <option value="" disabled="disabled">Odaberi supstrat</option>
         </select>
     </div>
 </div>

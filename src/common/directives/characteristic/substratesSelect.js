@@ -10,8 +10,31 @@ angular.module('directives.substratesSelect', [])
       replace: false,
       scope: { substrates: '=' },
       link: function (scope) {
+        if (scope.substrates === undefined){
+          scope.substrates = [];
+        }
+
         scope.allSubstrates = Substrates.substrates();
-        scope.selectSize = Object.keys(scope.allSubstrates).length;
+
+        scope.availableSubstrates = function(){
+          var allSubstratesCopy = angular.copy(scope.allSubstrates);
+          scope.substrates.forEach(function(item){
+            delete allSubstratesCopy[item];
+          });
+          return allSubstratesCopy;
+        };
+
+        scope.$watch('newSubstrate', function () {
+          if (angular.isDefined(scope.newSubstrate)) {
+            scope.substrates.push(scope.newSubstrate);
+            scope.editSubstrate = false;
+            scope.newSubstrate = undefined;
+          }
+        });
+
+        scope.deleteSubstrate = function (index) {
+          scope.substrates.splice(index, 1);
+        };
       }
     };
   });

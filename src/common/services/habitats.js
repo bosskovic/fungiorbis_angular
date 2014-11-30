@@ -9,7 +9,7 @@ angular.module('services.habitats', [])
     function load() {
       if (rawData === undefined) {
         var deferred = $q.defer();
-        $http({
+        return $http({
           url: SERVER_BASE_URL + '/habitats',
           method: 'GET',
           headers: {
@@ -24,7 +24,9 @@ angular.module('services.habitats', [])
           deferred.reject(error);
         });
       }
-      return rawData;
+      else {
+        return rawData;
+      }
     }
 
     function hashToArray(data) {

@@ -33,7 +33,7 @@ angular.module('directives.systematicsTypeAhead', [])
 
         scope.typeAheadProperties = {
           icon: 'species',
-          key: 'fullTitle',
+          key: 'value',
           placeholder: '',
           getData: function (val) {
             return Species.systematicsValues(scope.systematicsCategory, {value: val})

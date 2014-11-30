@@ -18,6 +18,14 @@ angular.module('resources.species', [])
       return SERVER_BASE_URL + '/species';
     }
 
+    function systematicsValues(category, params) {
+      return $http({
+        url: baseUrl() + '_systematics/' + category,
+        method: 'GET',
+        params: params
+      });
+    }
+
     function index(params) {
       var url = baseUrl();
 
@@ -85,7 +93,7 @@ angular.module('resources.species', [])
       });
     }
 
-    function systematics(){
+    function systematics() {
       return [
         { label: 'Name', field: 'name' },
         { label: 'Genus', field: 'genus' },
@@ -98,14 +106,14 @@ angular.module('resources.species', [])
       ];
     }
 
-    function growthTypes(){
+    function growthTypes() {
       return [
         { value: 'single', text: 'Single' },
         { value: 'group', text: 'Group' }
       ];
     }
 
-    function nutritiveGroups(){
+    function nutritiveGroups() {
       return [
         { value: 'parasitic', text: 'Parasitic' },
         { value: 'mycorrhizal', text: 'Mycorrhizal' },
@@ -115,7 +123,7 @@ angular.module('resources.species', [])
       ];
     }
 
-    function fields(){
+    function fields() {
       return [
         { header: 'Species name', field: 'fullName' },
         { header: 'Family', field: 'familia' },
@@ -130,6 +138,7 @@ angular.module('resources.species', [])
       save: save,
       delete: httpDelete,
       systematics: systematics,
+      systematicsValues: systematicsValues,
       growthTypes: growthTypes,
       nutritiveGroups: nutritiveGroups,
       fields: fields

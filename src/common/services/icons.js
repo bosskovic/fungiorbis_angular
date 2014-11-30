@@ -39,6 +39,8 @@ angular.module('services.icons', [])
     activity: 'fa-dashboard',
     stats: 'fa-bar-chart-o',
 
+    speciesStatistics: 'fa-list',
+
     add: 'fa-plus',
     close: 'fa-close',
     remove: 'fa-close',
@@ -64,6 +66,8 @@ angular.module('services.icons', [])
     dangerAlert: 'fa-flash',
     infoAlert: 'fa-info-circle',
     warningAlert: 'fa-exclamation-triangle',
+
+    bulletHabitatPublic: 'fa-long-arrow-right',
 
     user: 'fa-user',
     users: 'fa-users',

@@ -5,7 +5,7 @@ angular.module('directives.alert', [])
   .directive('foAlert', function () {
 
     return {
-      templateUrl: 'common/directives/alert/alert.tpl.html',
+      templateUrl: 'common/directives/alert.tpl.html',
       restrict: 'E',
       replace: false,
       transclude: true,

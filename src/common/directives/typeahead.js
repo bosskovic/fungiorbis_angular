@@ -4,7 +4,7 @@ angular.module('directives.typeahead', [])
 
   .directive('foTypeahead', function () {
     return {
-      templateUrl: 'common/directives/typeahead/typeahead.tpl.html',
+      templateUrl: 'common/directives/typeahead.tpl.html',
       restrict: 'E',
       replace: false,
       scope: { id: '=', value: '=', properties: '='  },

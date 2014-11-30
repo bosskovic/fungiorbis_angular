@@ -5,7 +5,7 @@ angular.module('directives.characteristicPreview', [])
   .directive('foCharacteristicPreview', function (FoI18n, Characteristics) {
 
     return {
-      templateUrl: 'common/directives/characteristic/characteristicPreview.tpl.html',
+      templateUrl: 'common/directives/characteristicPreview.tpl.html',
       restrict: 'E',
       replace: false,
       scope: { characteristic: '=' },

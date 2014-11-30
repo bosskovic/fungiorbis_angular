@@ -5,7 +5,7 @@ angular.module('directives.characteristicsTable', [])
   .directive('foCharacteristicsTable', function (characteristicComponent) {
 
     return {
-      templateUrl: 'common/directives/characteristic/characteristicsTable.tpl.html',
+      templateUrl: 'common/directives/characteristicsTable.tpl.html',
       restrict: 'E',
       replace: true,
       scope: { parent: '@', characteristic: '=', characteristics: '=', characteristicRow: '=', deleteDialog: '=', resetDialog: '=', saveCharacteristic: '=', reset: '=', parentId: '='},

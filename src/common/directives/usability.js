@@ -5,7 +5,7 @@ angular.module('directives.usability', [])
   .directive('foUsability', function () {
 
     return {
-      templateUrl: 'common/directives/characteristic/usability.tpl.html',
+      templateUrl: 'common/directives/usability.tpl.html',
       restrict: 'E',
       replace: false,
       scope: { characteristic: '=', edit: '@', showLabels: '@' },

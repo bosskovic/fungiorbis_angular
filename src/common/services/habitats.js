@@ -41,11 +41,11 @@ angular.module('services.habitats', [])
     }
 
     function habitats(){
-      return hashToArray(rawData.en.habitats);
+      return hashToArray(rawData.sr.habitats);
     }
 
     function subhabitats(h){
-      return h === undefined ? [] : hashToArray(rawData.en.habitats[h].subhabitat);
+      return h === undefined ? [] : hashToArray(rawData.sr.habitats[h].subhabitat);
     }
 
     function speciesHashToArray(data) {
@@ -66,16 +66,16 @@ angular.module('services.habitats', [])
         return [];
       }
       else if (subhabitat === undefined) {
-        allowedGroups = rawData.en.habitats[habitat].allowed_species_groups;
+        allowedGroups = rawData.sr.habitats[habitat].allowed_species_groups;
       }
       else {
-        allowedGroups = rawData.en.habitats[habitat] === undefined || rawData.en.habitats[habitat].subhabitat === undefined || rawData.en.habitats[habitat].subhabitat[subhabitat] === undefined ? [] :
-          rawData.en.habitats[habitat].subhabitat[subhabitat].allowed_species_groups;
+        allowedGroups = rawData.sr.habitats[habitat] === undefined || rawData.sr.habitats[habitat].subhabitat === undefined || rawData.sr.habitats[habitat].subhabitat[subhabitat] === undefined ? [] :
+          rawData.sr.habitats[habitat].subhabitat[subhabitat].allowed_species_groups;
       }
 
       if (allowedGroups) {
         for (var i = 0; i < allowedGroups.length; i++) {
-          result = result.concat(speciesHashToArray(rawData.en.species[allowedGroups[i]]));
+          result = result.concat(speciesHashToArray(rawData.sr.species[allowedGroups[i]]));
         }
       }
 
@@ -95,13 +95,13 @@ angular.module('services.habitats', [])
     }
 
     function translateHabitat(habitatKey){
-      return rawData.en.habitats[habitatKey].title;
+      return rawData.sr.habitats[habitatKey].title;
     }
 
     function translateSubhabitat(habitatKey, subhabitatKey){
-      if (angular.isDefined(rawData.en.habitats[habitatKey].subhabitat) &&
-        angular.isDefined(rawData.en.habitats[habitatKey].subhabitat[subhabitatKey])){
-        return rawData.en.habitats[habitatKey].subhabitat[subhabitatKey].title;
+      if (angular.isDefined(rawData.sr.habitats[habitatKey].subhabitat) &&
+        angular.isDefined(rawData.sr.habitats[habitatKey].subhabitat[subhabitatKey])){
+        return rawData.sr.habitats[habitatKey].subhabitat[subhabitatKey].title;
       }
     }
 

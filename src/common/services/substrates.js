@@ -28,11 +28,11 @@ angular.module('services.substrates', [])
     }
 
     function substrates() {
-      return rawData.en.substrates;
+      return rawData.sr.substrates;
     }
 
     function translateSubstrate(substrateKey){
-      return rawData.en.substrates[substrateKey];
+      return rawData.sr.substrates[substrateKey];
     }
 
     return {

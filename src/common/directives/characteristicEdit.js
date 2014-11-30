@@ -5,7 +5,7 @@ angular.module('directives.characteristicEdit', [])
   .directive('foCharacteristicEdit', function (characteristicComponent) {
 
     return {
-      templateUrl: 'common/directives/characteristic/characteristicEdit.tpl.html',
+      templateUrl: 'common/directives/characteristicEdit.tpl.html',
       restrict: 'E',
       replace: false,
       scope: { characteristic: '=' },

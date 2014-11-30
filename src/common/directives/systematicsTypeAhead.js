@@ -5,7 +5,7 @@ angular.module('directives.systematicsTypeAhead', [])
   .directive('foSystematicsTypeAhead', function (Species) {
 
     return {
-      templateUrl: 'common/directives/species/systematicsTypeAhead.tpl.html',
+      templateUrl: 'common/directives/systematicsTypeAhead.tpl.html',
       restrict: 'E',
       replace: true,
       scope: { systematics: '=', systematicsCategory: '=' },

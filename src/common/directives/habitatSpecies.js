@@ -26,7 +26,7 @@ angular.module('directives.habitatSpecies', [])
     }
 
     return {
-      templateUrl: 'common/directives/characteristic/habitatSpecies.tpl.html',
+      templateUrl: 'common/directives/habitatSpecies.tpl.html',
       restrict: 'E',
       replace: false,
       scope: { habitat: '=', update: '=' },

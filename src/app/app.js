@@ -45,8 +45,8 @@ angular.module('angularFungiorbisApp', [
   'directives.systematicsTypeAhead'
 ])
 
-  .constant('SERVER_BASE_URL', 'http://0.0.0.0:3000')
-//  .constant('SERVER_BASE_URL', 'https://178.79.152.32/api')
+//  .constant('SERVER_BASE_URL', 'http://0.0.0.0:3000')
+  .constant('SERVER_BASE_URL', 'http://178.79.152.32/api')
 
   .config(function ($httpProvider) {
     //Enable cross domain calls

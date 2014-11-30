@@ -29,7 +29,7 @@ angular.module('directives.habitatSpecies', [])
       templateUrl: 'common/directives/characteristic/habitatSpecies.tpl.html',
       restrict: 'E',
       replace: false,
-      scope: { habitat: '=' },
+      scope: { habitat: '=', update: '=' },
       link: function (scope) {
 
         scope.species = function(){
@@ -53,6 +53,8 @@ angular.module('directives.habitatSpecies', [])
             }
             scope.habitat.species.push(scope.newSpecies);
 
+            scope.update(scope.habitat.i, scope.habitat.species);
+
             scope.addSpecies = false;
             scope.newSpecies = undefined;
           }
@@ -65,6 +67,7 @@ angular.module('directives.habitatSpecies', [])
           if (scope.habitat.species.length === 0){
             scope.habitat.species = undefined;
           }
+          scope.update(scope.habitat.i, scope.habitat.species);
           scope.availableSpecies = recalculateAvailableSpecies(scope.habitat.availableSpecies, scope.habitat.species);
         };
       }

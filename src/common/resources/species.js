@@ -123,6 +123,16 @@ angular.module('resources.species', [])
       ];
     }
 
+    function nutritiveGroupsHash() {
+      return {
+        parasitic: 'Parasitic',
+        mycorrhizal: 'Mycorrhizal',
+        saprotrophic: 'Saprotrophic',
+        'parasitic-saprotrophic': 'Parasitic-saprotrophic',
+        'saprotrophic-parasitic': 'Saprotrophic-parasitic'
+      };
+    }
+
     function fields() {
       return [
         { header: 'Species name', field: 'fullName' },
@@ -141,6 +151,7 @@ angular.module('resources.species', [])
       systematicsValues: systematicsValues,
       growthTypes: growthTypes,
       nutritiveGroups: nutritiveGroups,
+      nutritiveGroupsHash: nutritiveGroupsHash,
       fields: fields
     };
   });

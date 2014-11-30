@@ -8,7 +8,7 @@ angular.module('directives.systematicsTypeAhead', [])
       templateUrl: 'common/directives/species/systematicsTypeAhead.tpl.html',
       restrict: 'E',
       replace: true,
-      scope: { systematics: '=' },
+      scope: { systematics: '=', systematicsCategory: '=' },
       link: function (scope) {
         scope.systematicsCategory = 'genus';
 
@@ -29,6 +29,7 @@ angular.module('directives.systematicsTypeAhead', [])
               scope.systematicsCategoryLabel =  s.value;
             }
           });
+          scope.systematics = undefined;
         });
 
         scope.typeAheadProperties = {

@@ -109,6 +109,15 @@ angular.module('directives.newHabitat', ['directives.habitatSpecies'])
           scope.storeValue(scope.habitatsExternal);
         };
 
+        scope.updateSpecies = function (id, newSpecies) {
+          angular.forEach(scope.habitatsInternal, function (hash) {
+            if (hash.id === id) {
+              hash.species = newSpecies;
+            }
+          }, scope.habitatsInternal);
+          scope.habitatsExternal = convertHabitats(scope.habitatsInternal);
+          scope.storeValue(scope.habitatsExternal);
+        };
 
         scope.deleteHabitat = function (index) {
           scope.habitatsInternal.splice(index, 1);

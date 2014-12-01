@@ -1,29 +1,95 @@
-<div class="container-fluid">
+<div class="side-nav public home">
 
-<!-- Page Heading -->
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header">
-            Fungiorbis
-            <small>fungiorbis moto or short description</small>
-        </h1>
+    <div class="sideContainer">
+        <div class="content">
+            <h4>Trenutno u bazi podataka:</h4>
+        </div>
     </div>
-</div>
-<!-- /.row -->
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> About the project</h3>
-            </div>
-            <div class="panel-body">
-                Introductory text
-            </div>
+    <div class="sideContainer">
+        <div class="content">
+            <h4><fo-icon icon="species"></fo-icon> <strong>{{homeCtrl.stats.speciesCount}}</strong> vrsta</h4>
+        </div>
+    </div>
+
+    <div class="sideContainer">
+        <div class="content">
+            <h4><fo-icon icon="specimens"></fo-icon> <strong>{{homeCtrl.stats.specimenCount}}</strong> nalaza</h4>
+        </div>
+    </div>
+
+    <div class="sideContainer">
+        <div class="content">
+            <h4><fo-icon icon="location"></fo-icon> <strong>{{homeCtrl.stats.locationCount}}</strong> makrolokaliteta</h4>
+        </div>
+    </div>
+
+    <div class="sideContainer">
+        <div class="content">
+            <h4><fo-icon icon="fieldStudy"></fo-icon> <strong>{{homeCtrl.stats.fieldStudiesCount}}</strong> odlazaka na teren</h4>
         </div>
     </div>
 </div>
-<!-- /.row -->
 
+
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Fungiorbis <small>aplikacija za upravljanje bazom gljiva</small></h1>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> O projektu</h3>
+                </div>
+                <div class="panel-body">
+                    <img src="/logo.jpg" style="float:left; margin: 15px;">
+
+                    <p>Projekat Fungiorbis nastao je iz potrebe za sistematizovanjem i objedinjavanjem podataka o
+                        nalazima autohtonih makrogljiva sa teritorije AP Vojvodine, ali i iz drugih krajeva. Jedan od
+                        ciljeva projekta je formiranje jedinstvene baze nalaza gljiva (pretežno razdela Ascomycota i
+                        Basidiomycota) koja bi obuhvatala podatke o njihovoj zastupljenosti na određenim lokalitetima.
+                        Aplikacija za upravljanje bazom omogućava pretragu i prikazivanje podataka na različite načine
+                        tako da je omogućeno sistematičnije praćenje stanja diverziteta gljiva na različitim staništima
+                        tokom dužeg vremenskog perioda.</p>
+
+                    <p>Baza trenutno sadrži podatke o nalazima gljiva sakupljenih u periodu od 1985 do 2014 godine koje
+                        su prikupili učesnici projekta, odnosno istraživači sa Prirodno - matematičkog fakulteta u Novom
+                        Sadu.</p>
+
+                    <p>Deo baze posvećen je karakteristikama sakupljenih vrsta gljiva, tako da je omogućena pretraga i
+                        prikaz podataka po određenim osobinama vrste (npr. stanište, supstrat, jestivost).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p style="font-size: smaller;">Aplikacija za upravljanje bazom podataka Fungiorbis je formirana u
+                        okviru projekta "Formiranje baze podataka gljiva kao osnove za očuvanje njihovog biodiverziteta"
+                        2013-2014, rukovodilac doc Dr Maja Karaman, nosilac projekta: Prirodno-matematički fakultet u
+                        Novom Sadu. Projekat je finansiran od strane Pokrajinskog sekretarijata za
+                        nauku i tehnološki razvoj, Autonomna pokrajina Vojvodina.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <img src="/vojvodina_logo.jpg">
+            <img src="/pmf_logo.jpg">
+        </div>
+    </div>
 </div>
 <!-- /.container-fluid -->

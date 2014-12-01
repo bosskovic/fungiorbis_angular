@@ -60,6 +60,15 @@ angular.module('public.species', [])
           $scope.displayParams.push(newValue.systematics);
         }
 
+        if (angular.isArray(newValue.usabilities) && newValue.usabilities.length > 0) {
+          params = params || {};
+          newValue.usabilities.forEach(function(u){
+            params['characteristics.'+u] = true;
+            $scope.displayParams.push(Characteristics.translateUsability(u));
+          });
+
+        }
+
         if (params) {
           params.include = 'characteristics';
           Species.index(params)
@@ -142,7 +151,8 @@ console.log(response.data.species);
       $scope.searchParams = {
         systematicsCategory: 'genus',
         habitats: [],
-        substrates: []
+        substrates: [],
+        usabilities: []
       };
       $scope.resetUsabilities();
     };

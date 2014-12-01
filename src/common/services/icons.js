@@ -70,6 +70,10 @@ angular.module('services.icons', [])
 //    bulletHabitatPublic: 'fa-long-arrow-right',
     bulletHabitatPublic: 'fa-angle-right',
 
+    location: 'fa-globe',
+
+    fieldStudy: 'fa-car',
+
     user: 'fa-user',
     users: 'fa-users',
     register: 'fa-pencil-square-o',

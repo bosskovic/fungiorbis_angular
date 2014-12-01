@@ -70,6 +70,6 @@
     color: inherit;
 }
 
-.side-nav .sideContainer:hover .title {
+.side-nav .sideContainer:hover .title, .home.side-nav .sideContainer:hover {
     color: #ffffff;
 }

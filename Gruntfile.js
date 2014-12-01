@@ -355,7 +355,7 @@ module.exports = function (grunt) {
             cwd: 'src',
             dest: 'dist',
             src: [
-              '*.{ico,png,txt}',
+              '*.{ico,png,txt,jpg}',
               '.htaccess',
               '*.html',
               'app/{,*/}*.html',

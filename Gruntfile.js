@@ -113,7 +113,7 @@ module.exports = function (grunt) {
         tasks: ['newer:jshint:test', 'karma']
       },
       styles: {
-        files: ['src/styles/{,*/}*.css'],
+        files: ['src/styles/{,*/}*.css', 'src/common/{,*/}*.css'],
         tasks: ['newer:copy:styles', 'autoprefixer']
       },
       gruntfile: {
@@ -126,7 +126,7 @@ module.exports = function (grunt) {
         files: [
           'src/{,*/}*.html',
           'src/{,*/}*.tpl.html',
-          '.tmp/styles/{,*/}*.css',
+          '.tmp/styles/main_concat.css',
           'src/assets/img/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
@@ -227,7 +227,7 @@ module.exports = function (grunt) {
           html: {
             steps: {
               js: ['concat', 'uglifyjs'],
-              css: ['cssmin']
+              css: ['concat']
             },
             post: {}
           }
@@ -249,15 +249,15 @@ module.exports = function (grunt) {
     // By default, your `index.html`'s <!-- Usemin block --> will take care of
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
-//    cssmin: {
-//       dist: {
-//         files: {
-//           'dist/styles/main.css': [
-//             '.tmp/styles/{,*/}*.css'
-//           ]
-//         }
-//       }
-//    },
+    cssmin: {
+       dist: {
+         files: {
+           'dist/styles/main.css': [
+             '.tmp/styles/main_concat.css'
+           ]
+         }
+       }
+    },
     // uglify: {
     //   dist: {
     //     files: {
@@ -267,9 +267,15 @@ module.exports = function (grunt) {
     //     }
     //   }
     // },
-    // concat: {
-    //   dist: {}
-    // },
+    concat: {
+      dist: {
+        files: {
+          '.tmp/styles/main_concat.css': [
+            '.tmp/styles/{,*/}*.css'
+          ]
+        }
+      }
+    },
 
     imagemin: {
       dist: {

@@ -18,8 +18,8 @@ angular.module('public', [
     this.hasAccess = authentication.hasAccess;
 
     this.publicItems = [
-      {name: 'species', text: 'Species'},
-      {name: 'specimens', text: 'Specimens'}
+      {name: 'species', text: 'Vrste'},
+      {name: 'specimens', text: 'Uzorci'}
     ];
 
     this.isActiveTab = function (tab) {

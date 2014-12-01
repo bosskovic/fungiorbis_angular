@@ -5,7 +5,7 @@
         </li>
         <li ng-class="{open: NavCtrl.isActiveTab('dashboard')}" ng-show="NavCtrl.hasAccess('supervisor')">
             <a href="dashboard" ng-click="NavCtrl.setActiveTab('dashboard')">
-                <fo-icon icon="dashboard"></fo-icon> Dashboard</a>
+                <fo-icon icon="dashboard"></fo-icon> Kontrolna tabla</a>
         </li>
         <li ng-class="{open: NavCtrl.isActiveTab(item.name)}" ng-repeat="item in NavCtrl.publicItems">
             <a href="{{::item.name}}" ng-click="NavCtrl.setActiveTab(item.name)">

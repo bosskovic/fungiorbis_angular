@@ -82,15 +82,32 @@ angular.module('services.habitats', [])
       return result;
     }
 
-    function toString(habitat) {
+    function toString(habitat, localized) {
       var key = Object.keys(habitat)[0];
-      var result = key;
-      if (habitat[key].subhabitat) {
-        result += ' - ' + habitat[key].subhabitat;
+      var result;
+      if (angular.isDefined(localized)){
+        result = translateHabitat(key);
+        if (habitat[key].subhabitat) {
+          result += ' - ' + habitat[key].subhabitat.title;
+        }
+        if (habitat[key].species) {
+          var localizedSpecies = [];
+          habitat[key].species.forEach(function(sp){
+            localizedSpecies.push(sp);
+          });
+          result += ': '+localizedSpecies.join(', ');
+        }
       }
-      if (habitat[key].species) {
-        result += ': ' + habitat[key].species.join(', ');
+      else{
+        result = key;
+        if (habitat[key].subhabitat) {
+          result += '-' + habitat[key].subhabitat;
+        }
+        if (habitat[key].species) {
+          result += ':' + habitat[key].species.sort().join(',');
+        }
       }
+
       return result;
     }
 

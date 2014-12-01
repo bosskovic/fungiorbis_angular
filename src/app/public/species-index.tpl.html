@@ -41,7 +41,7 @@
         </em>
     </div>
 
-    <div class="text-center">
+    <div class="text-center" ng-show="species">
         <a class="btn btn-default btn-sm" ng-click="reset()">
             <fo-icon icon="cancel"></fo-icon>
             poništi
@@ -57,7 +57,6 @@
                 <fo-icon icon="species"></fo-icon>
                 Pretraga vrsta
             </h1>
-            {{searchParams}}
         </div>
     </div>
 
@@ -67,7 +66,7 @@
 
             <div class="panel panel-default searchResults">
                 <div class="panel-heading">
-                    <p class="searchParams">{{ displayParams }} --> <span class="hits">{{species.length}}</span></p>
+                    <p class="searchParams">{{ displayParams }} --> <span class="hits">{{totalHits}}</span></p>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">

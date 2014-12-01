@@ -54,10 +54,31 @@ angular.module('public.species', [])
         var params;
         $scope.displayParams = [];
 
-        if (angular.isDefined(newValue.systematics)) {
+        if (angular.isDefined(newValue.systematics) && newValue.systematics.length > 0) {
           params = params || {};
           params[newValue.systematicsCategory] = newValue.systematics;
           $scope.displayParams.push(newValue.systematics);
+        }
+
+        if (angular.isDefined(newValue.habitats) && newValue.habitats.length > 0) {
+          params = params || {};
+          params.habitats = '';
+          newValue.habitats.forEach(function(habitat){
+            $scope.displayParams.push(Habitats.toString(habitat, 'localized'));
+            params.habitats += Habitats.toString(habitat) + ',';
+          });
+        }
+
+        if (angular.isDefined(newValue.substrates) && newValue.substrates.length > 0) {
+          params = params || {};
+          params.substrates = newValue.substrates.join(',');
+          $scope.displayParams.push(newValue.substrates.join(', '));
+        }
+
+        if (angular.isDefined(newValue.nutritiveGroup) && newValue.nutritiveGroup.length > 0) {
+          params = params || {};
+          params.nutritiveGroup = newValue.nutritiveGroup;
+          $scope.displayParams.push(newValue.nutritiveGroup);
         }
 
         if (angular.isArray(newValue.usabilities) && newValue.usabilities.length > 0) {
@@ -66,21 +87,23 @@ angular.module('public.species', [])
             params['characteristics.'+u] = true;
             $scope.displayParams.push(Characteristics.translateUsability(u));
           });
-
         }
 
         if (params) {
           params.include = 'characteristics';
           Species.index(params)
             .then(function (response) {
-console.log(response.data.species);
               $scope.species = response.data.species;
               $scope.characteristics = {};
               $scope.species.forEach(function (sp) {
                 $scope.characteristics[sp.id] = $scope.displayCharacteristics(sp);
               });
 
+              $scope.totalHits = response.data.meta.species.count + ' pogodaka';
             });
+        }
+        else{
+          $scope.species = undefined;
         }
 
         $scope.displayParams = $scope.displayParams.join('; ');

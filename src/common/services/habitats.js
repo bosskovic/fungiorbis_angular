@@ -88,7 +88,7 @@ angular.module('services.habitats', [])
       if (angular.isDefined(localized)){
         result = translateHabitat(key);
         if (habitat[key].subhabitat) {
-          result += ' - ' + habitat[key].subhabitat.title;
+          result += ' - ' + translateSubhabitat(key, habitat[key].subhabitat);
         }
         if (habitat[key].species) {
           var localizedSpecies = [];

@@ -1,0 +1,307 @@
+<div class="side-nav public">
+    <div class="sideContainer">
+        <fo-systematics-type-ahead systematics="searchParams.systematics"
+                                   systematics-category="searchParams.systematicsCategory"></fo-systematics-type-ahead>
+    </div>
+
+    <div class="sideContainer">
+        <em class="title">
+            Staništa
+        </em>
+
+        <div class="content">
+            <fo-new-habitat store-value="appendHabitats" habitats="searchParams.habitats"></fo-new-habitat>
+        </div>
+    </div>
+
+    <div class="sideContainer">
+        <em class="title">
+            Supstrati</em>
+
+        <div class="content">
+            <fo-substrates-select substrates="searchParams.substrates"></fo-substrates-select>
+        </div>
+    </div>
+
+    <div class="sideContainer">
+        <div class="content">
+            <a class="pointer"
+               editable-select="searchParams.nutritiveGroup"
+               buttons="no"
+               e-ng-options="k as v for (k,v) in nutritiveGroups">
+                {{ nutritiveGroups[searchParams.nutritiveGroup] || 'Nutritivna grupa' }}
+            </a>
+        </div>
+    </div>
+
+    <div class="sideContainer">
+        <em class="title">
+            Upotrebljivost&nbsp;&nbsp;
+            <fo-usability-public usabilities="searchParams.usabilities" reset="resetUsabilities"></fo-usability-public>
+        </em>
+    </div>
+
+    <div class="text-center" ng-show="species">
+        <a class="btn btn-default btn-sm" ng-click="reset()">
+            <fo-icon icon="cancel"></fo-icon>
+            poništi
+        </a>
+    </div>
+</div>
+
+<div class="container-fluid" ng-if="selectedSpecies">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                <fo-icon icon="species"></fo-icon>
+                {{ ::selectedSpecies.fullName }}
+                <span ng-show="selectedSpecies.synonyms"> ({{::selectedSpecies.synonyms}})</span>
+            </h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 dimmed">
+            {{ ::systematics(selectedSpecies) }}
+        </div>
+    </div>
+
+    <div class="row" ng-show="selectedSpecies.nutritiveGroup || selectedSpecies.growthType">
+        <div class="col-lg-12 dimmed">
+            <span ng-show="selectedSpecies.nutritiveGroup">
+                Nutritivna grupa: {{ ::selectedSpecies.nutritiveGroup }}
+            </span>
+            <span ng-show="selectedSpecies.nutritiveGroup && selectedSpecies.growthType">; </span>
+            <span ng-show="selectedSpecies.growthType">
+                Način rasta: {{ ::selectedSpecies.growthType }}
+            </span>
+            <br><br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default searchResults">
+                <div class="panel-heading">
+                    <fo-icon icon="description"></fo-icon>
+                    Opis vrste
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <div ng-repeat="(key, s) in characteristics[selectedSpecies.id].sections">
+                            <h4 title="{{::s.title}}">
+                                <fo-icon icon="{{::s.key}}"></fo-icon>
+                                {{::s.title}}
+                            </h4>
+                            {{ s.content }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default searchResults">
+                <div class="panel-heading">
+                    <fo-icon icon="description"></fo-icon>
+                    Karakteristike
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <h4>
+                            <fo-icon icon="habitat"></fo-icon>
+                            Staništa
+                        </h4>
+                        <div ng-repeat="c in selectedSpecies.characteristics">
+                            <ul>
+                                <li ng-repeat="h in c.habitats">
+                                    {{ ::localizedHabitat(h) }}
+                                </li>
+                            </ul>
+                            [{{::selectedSpecies.references[c.links.reference].index}}]
+                        </div>
+                    </div>
+                    <div class="list-group">
+                        <h4>
+                            <fo-icon icon="substrate"></fo-icon>
+                            Supstrati
+                        </h4>
+                        <div ng-repeat="c in selectedSpecies.characteristics">
+                            <ul>
+                                <li ng-repeat="s in c.substrates">
+                                    {{ ::localizedSubstrate(s) }}
+                                </li>
+                            </ul>
+                            [{{::selectedSpecies.references[c.links.reference].index}}]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="panel panel-default searchResults">
+                <div class="panel-heading">
+                    <fo-icon icon="references"></fo-icon>
+                    Reference
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <ul>
+                            <li ng-repeat="r in selectedSpecies.references">
+                                [{{r.index}}] {{ ::r.value.display }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="selectedSpecies.imageUrl">
+        <div class="col-lg-12">
+            <div class="panel panel-default searchResults">
+                <div class="panel-heading">
+                    <fo-icon icon="foto"></fo-icon>
+                    {{ ::selectedSpecies.fullName }}
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <img ng-src="{{ ::selectedSpecies.imageUrl }}">
+                    </div>
+                    <div class="list-group dimmed">
+                        <fo-icon icon="copyright"></fo-icon> Dragiša Savić
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" ng-hide="selectedSpecies">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                <fo-icon icon="species"></fo-icon>
+                Pretraga vrsta
+            </h1>
+        </div>
+    </div>
+
+
+    <div class="row" ng-show="species">
+        <div class="col-lg-12">
+
+            <div class="panel panel-default searchResults">
+                <div class="panel-heading">
+                    <p class="searchParams">{{ displayParams }} --> <span class="hits">{{totalHits}}</span></p>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <div class="list-group-item" ng-repeat="sp in species">
+
+                            <a class="pointer" ng-click="selectSpecies(sp)">
+                                <div class="speciesName">{{sp.fullName }}
+                                    <span ng-show="sp.synonyms"> ({{sp.synonyms}})</span></div>
+                            </a>
+                            <span ng-repeat="u in characteristics[sp.id].usabilities"
+                                  title="{{::translateUsability(u)}}"
+                                  class="pointer">
+                                <fo-icon icon="{{::u}}"></fo-icon>
+                            </span>
+
+                            <span ng-repeat="h in characteristics[sp.id].habitats"
+                                  title="{{::h.title}}"
+                                  class="pointer habitat {{::h.key}}">
+                                <fo-icon icon="habitat"></fo-icon>
+                            </span>
+
+                            <span ng-repeat="s in characteristics[sp.id].substrates"
+                                  title="{{::s.title}}"
+                                  class="pointer">
+                                <fo-icon icon="substrate"></fo-icon>
+                            </span>
+
+                            <span class="dimmed">{{::characteristics[sp.id].nutritiveGroup}}</span>
+                            <span ng-show="characteristics[sp.id].growthType" class="dimmed">, {{::characteristics[sp.id].growthType}}</span>
+                            <br><br>
+
+                            <p ng-repeat="(key, s) in characteristics[sp.id].sections">
+                                <span title="{{::s.title}}"><fo-icon icon="{{::s.key}}"></fo-icon></span>
+                                {{ s.content }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-hide="species">
+        <div class="col-lg-6">
+            <p>
+                U bazi gljiva Fungiorbis je opisano ukupno <strong>{{::stats.speciesCount}}</strong> vrsta gljiva. Za
+                izlistavanje vrsta gljiva, iz menija sa
+                leve strane zadajte parametre za pretragu.
+                Rezultat pretrage su sve vrste koje ispunjavaju svaki od zadatih parametara.
+            </p>
+
+            <div><strong>Primeri:</strong></div>
+            <ol>
+                <li>Boletus + jestiva + stelja <p>sve jestive vrste roda Boletus koje rastu na stelji</p></li>
+                <li>šuma / listopadna / bukva + panj <p>sve vrste koje rastu u listopadnim bukovim šumama (stanište) na
+                    panjevima (supstrat)</p></li>
+                <li>jestiva + lekovite <p>sve vrste koje su istovremeno i jestive i lekovite (a ne zbir svih jestivih i
+                    svih lekovitih)</p></li>
+            </ol>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <fo-icon icon="speciesStatistics"></fo-icon>
+                        Broj vrsta po pojedinim kategorijama
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a class="list-group-item">
+                            <span class="badge">{{::stats.speciesCount}}</span>
+                            <fo-icon icon="species"></fo-icon>
+                            Broj vrsta
+                        </a>
+                        <a class="list-group-item">
+                            <span class="badge">{{::stats.genusCount}}</span>
+                            <fo-icon icon="systematics"></fo-icon>
+                            Broj rodova
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <span class="badge">{{::stats.edibleCount}}</span>
+                            <fo-icon icon="edible"></fo-icon>
+                            Broj jestivih vrsta
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <span class="badge">{{::stats.poisonousCount}}</span>
+                            <fo-icon icon="poisonous"></fo-icon>
+                            Broj otrovnih vrsta
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <span class="badge">{{::stats.cultivatedCount}}</span>
+                            <fo-icon icon="cultivated"></fo-icon>
+                            Broj gajenih vrsta
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <span class="badge">{{::stats.medicinalCount}}</span>
+                            <fo-icon icon="medicinal"></fo-icon>
+                            Broj lekovitih vrsta
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

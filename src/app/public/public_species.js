@@ -6,9 +6,12 @@ angular.module('public.species', [])
     $stateProvider
       .state('species', {
         url: '^/species',
-        templateUrl: '/app/public/species-index.tpl.html',
+        templateUrl: '/app/public/public_species.tpl.html',
         controller: 'PublicSpeciesController as speciesCtrl',
         resolve: {
+          referencesResponse: function (References) {
+            return References.index();
+          },
           statsResponse: function (Species) {
             return Species.stats('species');
           },
@@ -19,26 +22,11 @@ angular.module('public.species', [])
             return Substrates.load();
           }
         }
-      })
-      .state('species/detail', {
-        url: '^/species/:speciesId',
-        templateUrl: '/app/public/species-show.tpl.html',
-        controller: 'ASpeciesController as speciesCtrl',
-        resolve: {
-//          speciesResponse: function (Species, $stateParams) {
-//            return Species.show($stateParams.speciesId);
-//          },
-//          preloadHabitats: function (Habitats) {
-//            return Habitats.load();
-//          },
-//          preloadSubstrates: function (Substrates) {
-//            return Substrates.load();
-//          }
-        }
       });
   })
 
-  .controller('PublicSpeciesController', function ($scope, $state, Species, Characteristics, Habitats, Substrates, statsResponse) {
+
+  .controller('PublicSpeciesController', function ($scope, $state, Species, Characteristics, Habitats, Substrates, statsResponse, referencesResponse, SERVER_BASE_URL) {
     var that = this;
 
     $scope.searchParams = {};
@@ -47,12 +35,28 @@ angular.module('public.species', [])
       $scope.searchParams.habitats = habitats;
     };
 
+    $scope.references = {};
+    referencesResponse.data.references.forEach(function (reference, index) {
+      $scope.references[reference.id] = reference;
+      $scope.references[reference.id].display = '';
+      if ($scope.references[reference.id].isbn) {
+        if ($scope.references[reference.id].authors) {
+          $scope.references[reference.id].display += $scope.references[reference.id].authors + ', ';
+        }
+        $scope.references[reference.id].display += $scope.references[reference.id].title;
+      }
+      else {
+        $scope.references[reference.id].display += $scope.references[reference.id].url;
+      }
+    });
+
     $scope.stats = statsResponse.data.stats;
 
     $scope.$watch('searchParams', function (newValue, oldValue) {
       if (angular.isDefined(oldValue) && angular.isDefined(newValue)) {
         var params;
         $scope.displayParams = [];
+        $scope.selectedSpecies = undefined;
 
         if (angular.isDefined(newValue.systematics) && newValue.systematics.length > 0) {
           params = params || {};
@@ -63,7 +67,7 @@ angular.module('public.species', [])
         if (angular.isDefined(newValue.habitats) && newValue.habitats.length > 0) {
           params = params || {};
           params.habitats = '';
-          newValue.habitats.forEach(function(habitat){
+          newValue.habitats.forEach(function (habitat) {
             $scope.displayParams.push(Habitats.toString(habitat, 'localized'));
             params.habitats += Habitats.toString(habitat) + ',';
           });
@@ -83,8 +87,8 @@ angular.module('public.species', [])
 
         if (angular.isArray(newValue.usabilities) && newValue.usabilities.length > 0) {
           params = params || {};
-          newValue.usabilities.forEach(function(u){
-            params['characteristics.'+u] = true;
+          newValue.usabilities.forEach(function (u) {
+            params['characteristics.' + u] = true;
             $scope.displayParams.push(Characteristics.translateUsability(u));
           });
         }
@@ -102,7 +106,7 @@ angular.module('public.species', [])
               $scope.totalHits = response.data.meta.species.count + ' pogodaka';
             });
         }
-        else{
+        else {
           $scope.species = undefined;
         }
 
@@ -181,9 +185,30 @@ angular.module('public.species', [])
     };
 
     $scope.translateUsability = Characteristics.translateUsability;
-  })
 
-  .controller('ASpeciesController', function ($scope, $timeout, $state, $modal, $filter, speciesResponse, characteristicComponent, Characteristics, Species, References) {
+    $scope.selectSpecies = function (sp) {
+      $scope.selectedSpecies = sp;
+      if (angular.isDefined(sp.image)) {
+        $scope.selectedSpecies.imageUrl = SERVER_BASE_URL + sp.image;
+      }
+      $scope.selectedSpecies.references = {};
+      $scope.selectedSpecies.characteristics.forEach(function (c, index) {
+        $scope.selectedSpecies.references[c.links.reference] = {
+          index: index+1,
+          value: $scope.references[c.links.reference]
+        };
+      });
+    };
 
-  })
-;
+    $scope.systematics = function (sp) {
+      return [sp.familia, sp.ordo , sp.subclassis , sp.classis , sp.subphylum , sp.phylum].join(', ');
+    };
+
+    $scope.localizedHabitat = function (habitat) {
+      return Habitats.toString(habitat, 'localized');
+    };
+
+    $scope.localizedSubstrate = function (substrate) {
+      return Substrates.translateSubstrate(substrate);
+    };
+  });

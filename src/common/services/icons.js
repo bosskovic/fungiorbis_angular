@@ -29,6 +29,9 @@ angular.module('services.icons', [])
     flesh: 'fa-asterisk',
     notes: 'fa-pencil-square-o',
 
+    foto: 'fa-camera',
+    copyright: 'fa-copyright',
+
 
     specimens: 'fa-tags',
 

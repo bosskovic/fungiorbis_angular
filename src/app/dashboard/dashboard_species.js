@@ -6,7 +6,7 @@ angular.module('dashboard.species', [])
     $stateProvider
       .state('dashboard.species', {
         url: '^/dashboard/species',
-        templateUrl: '/app/dashboard/species-index.tpl.html',
+        templateUrl: '/app/dashboard/public_species.tpl.html',
         controller: 'SpeciesController as speciesCtrl',
         resolve: {
           speciesResponse: function (Species) {

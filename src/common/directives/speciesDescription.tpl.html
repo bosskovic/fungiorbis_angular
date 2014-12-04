@@ -1,0 +1,21 @@
+<div class="panel panel-default searchResults">
+    <div class="panel-heading">
+        <fo-icon icon="description"></fo-icon>
+        Opis vrste
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+            <div ng-repeat="s in characteristics.sections" ng-show="characteristics[s.key].length>0">
+                <h4 title="{{::s.title}}">
+                    <fo-icon icon="{{::s.key}}"></fo-icon>
+                    {{::s.title}}
+                </h4>
+                <p ng-repeat="referencedContent in characteristics[s.key]">
+                    {{ ::referencedContent.content }}
+                    <fo-reference-marker reference="reference(referencedContent.referenceId)"></fo-reference-marker>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>

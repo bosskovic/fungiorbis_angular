@@ -1,0 +1,41 @@
+<div class="sideContainer">
+    <fo-systematics-type-ahead systematics="searchParams.systematics"
+                               systematics-category="searchParams.systematicsCategory"></fo-systematics-type-ahead>
+</div>
+
+<div class="sideContainer">
+    <em class="title">
+        Staništa
+    </em>
+
+    <div class="content">
+        <fo-new-habitat store-value="appendHabitats" habitats="searchParams.habitats"></fo-new-habitat>
+    </div>
+</div>
+
+<div class="sideContainer">
+    <em class="title">
+        Supstrati</em>
+
+    <div class="content">
+        <fo-substrates-select substrates="searchParams.substrates"></fo-substrates-select>
+    </div>
+</div>
+
+<div class="sideContainer">
+    <div class="content">
+        <a class="pointer"
+           editable-select="searchParams.nutritiveGroup"
+           buttons="no"
+           e-ng-options="k as v for (k,v) in nutritiveGroups">
+            {{ nutritiveGroups[searchParams.nutritiveGroup] || 'Nutritivna grupa' }}
+        </a>
+    </div>
+</div>
+
+<div class="sideContainer">
+    <em class="title">
+        Upotrebljivost&nbsp;&nbsp;
+        <fo-usability-public usabilities="searchParams.usabilities" reset="resetUsabilities"></fo-usability-public>
+    </em>
+</div>

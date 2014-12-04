@@ -95,11 +95,26 @@ angular.module('resources.references', [])
       ];
     }
 
+    function toString(reference){
+      var display = '';
+      if (reference.isbn) {
+        if (reference.authors) {
+          display += reference.authors + ', ';
+        }
+        display += reference.title;
+      }
+      else {
+        display += reference.url;
+      }
+      return display;
+    }
+
     return {
       index: index,
       show: show,
       save: save,
       delete: httpDelete,
-      fields: fields
+      fields: fields,
+      toString: toString
     };
   });

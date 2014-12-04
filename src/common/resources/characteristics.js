@@ -2,7 +2,7 @@
 
 angular.module('resources.characteristics', [])
 
-  .factory('Characteristics', function ($http, $q, $cookieStore, SERVER_BASE_URL, authentication) {
+  .factory('Characteristics', function ($http, $q, $cookieStore, SERVER_BASE_URL, authentication, Habitats, Substrates) {
 
     function headers() {
       var currentUser = authentication.currentUser;
@@ -153,6 +153,54 @@ angular.module('resources.characteristics', [])
       return result;
     }
 
+    function speciesHabitats(species){
+      var result = [];
+      species.characteristics.forEach(function(c){
+
+        var habitats = [];
+        if (angular.isArray(c.habitats) && c.habitats.length > 0) {
+          c.habitats.forEach(function (h) {
+            var key = Object.keys(h)[0];
+            var title, hSpecies;
+            if (angular.isDefined(h[key].subhabitat)) {
+              title = Habitats.translateSubhabitat(key, h[key].subhabitat);
+            }
+            else {
+              title = Habitats.translateHabitat(key);
+            }
+            if (angular.isArray(h[key].species)) {
+              hSpecies = h[key].species.join(', ');
+            }
+            habitats.push({ key: key, title: title, species: hSpecies});
+          });
+        }
+        result.push({
+          content: habitats, referenceId: c.links.reference
+        });
+      });
+
+      return result;
+    }
+
+
+    function speciesSubstrates(species){
+      var result = [];
+      species.characteristics.forEach(function(c){
+
+        var substrates = [];
+        if (angular.isArray(c.substrates) && c.substrates.length > 0) {
+          c.substrates.forEach(function (key) {
+            substrates.push(Substrates.translateSubstrate(key));
+          });
+        }
+        result.push({
+          content: substrates.join(', '), referenceId: c.links.reference
+        });
+      });
+
+      return result;
+    }
+
     return {
       get: get,
       save: save,
@@ -162,6 +210,8 @@ angular.module('resources.characteristics', [])
       usabilitiesArray: usabilitiesArray,
       translateSection: translateSection,
       translateUsability: translateUsability,
-      speciesSections: speciesSections
+      speciesSections: speciesSections,
+      speciesHabitats: speciesHabitats,
+      speciesSubstrates: speciesSubstrates
     };
   });

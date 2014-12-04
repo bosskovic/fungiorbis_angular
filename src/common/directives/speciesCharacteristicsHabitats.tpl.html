@@ -1,0 +1,5 @@
+<span ng-repeat="h in habitats">
+    {{::h.title}}
+    <span ng-show="h.species" class="speciesHabitats">({{h.species.join(', ')}})</span>
+    <span ng-hide="$last">, </span>
+</span>

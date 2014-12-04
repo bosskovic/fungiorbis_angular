@@ -91,6 +91,17 @@ angular.module('resources.characteristics', [])
       ];
     }
 
+//    TODO sort this out
+    function sectionsArray2() {
+      return [
+        { key: 'fruitingBody', title: 'Plodno telo' },
+        { key: 'microscopy', title: 'Mikroskopske karakteristike' },
+        { key: 'flesh', title: 'Meso' },
+        { key: 'chemistry', title: 'Hemijska reakcija' },
+        { key: 'notes', title: 'Napomena' }
+      ];
+    }
+
     function usabilitiesArray() {
       return [ 'edible', 'cultivated', 'medicinal', 'poisonous'];
     }
@@ -122,13 +133,35 @@ angular.module('resources.characteristics', [])
       }[u][locale];
     }
 
+    function speciesSections(species){
+      var result = {
+        sections: sectionsArray2()
+      };
+      sectionsArray2().forEach(function(section){
+        if (angular.isUndefined(result[section.key])){
+          result[section.key] = [];
+        }
+
+        species.characteristics.forEach(function(c){
+          if (c[section.key] && c[section.key].sr.length > 0) {
+            result[section.key].push(
+              { content: c[section.key].sr, referenceId: c.links.reference }
+            );
+          }
+        });
+      });
+      return result;
+    }
+
     return {
       get: get,
       save: save,
       httpDelete: httpDelete,
       sectionsArray: sectionsArray,
+      sectionsArray2: sectionsArray2,
       usabilitiesArray: usabilitiesArray,
       translateSection: translateSection,
-      translateUsability: translateUsability
+      translateUsability: translateUsability,
+      speciesSections: speciesSections
     };
   });

@@ -1,47 +1,7 @@
 <div class="side-nav public">
-    <div class="sideContainer">
-        <fo-systematics-type-ahead systematics="searchParams.systematics"
-                                   systematics-category="searchParams.systematicsCategory"></fo-systematics-type-ahead>
-    </div>
+    <fo-species-search result="result" reset="reset"></fo-species-search>
 
-    <div class="sideContainer">
-        <em class="title">
-            Staništa
-        </em>
-
-        <div class="content">
-            <fo-new-habitat store-value="appendHabitats" habitats="searchParams.habitats"></fo-new-habitat>
-        </div>
-    </div>
-
-    <div class="sideContainer">
-        <em class="title">
-            Supstrati</em>
-
-        <div class="content">
-            <fo-substrates-select substrates="searchParams.substrates"></fo-substrates-select>
-        </div>
-    </div>
-
-    <div class="sideContainer">
-        <div class="content">
-            <a class="pointer"
-               editable-select="searchParams.nutritiveGroup"
-               buttons="no"
-               e-ng-options="k as v for (k,v) in nutritiveGroups">
-                {{ nutritiveGroups[searchParams.nutritiveGroup] || 'Nutritivna grupa' }}
-            </a>
-        </div>
-    </div>
-
-    <div class="sideContainer">
-        <em class="title">
-            Upotrebljivost&nbsp;&nbsp;
-            <fo-usability-public usabilities="searchParams.usabilities" reset="resetUsabilities"></fo-usability-public>
-        </em>
-    </div>
-
-    <div class="text-center" ng-show="species">
+    <div class="text-center">
         <a class="btn btn-default btn-sm" ng-click="reset()">
             <fo-icon icon="cancel"></fo-icon>
             poništi
@@ -81,61 +41,10 @@
 
     <div class="row">
         <div class="col-lg-6">
-            <div class="panel panel-default searchResults">
-                <div class="panel-heading">
-                    <fo-icon icon="description"></fo-icon>
-                    Opis vrste
-                </div>
-                <div class="panel-body">
-                    <div class="list-group">
-                        <div ng-repeat="(key, s) in characteristics[selectedSpecies.id].sections">
-                            <h4 title="{{::s.title}}">
-                                <fo-icon icon="{{::s.key}}"></fo-icon>
-                                {{::s.title}}
-                            </h4>
-                            {{ s.content }}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <fo-species-description species="selectedSpecies"></fo-species-description>
         </div>
         <div class="col-lg-6">
-            <div class="panel panel-default searchResults">
-                <div class="panel-heading">
-                    <fo-icon icon="description"></fo-icon>
-                    Karakteristike
-                </div>
-                <div class="panel-body">
-                    <div class="list-group">
-                        <h4>
-                            <fo-icon icon="habitat"></fo-icon>
-                            Staništa
-                        </h4>
-                        <div ng-repeat="c in selectedSpecies.characteristics">
-                            <ul>
-                                <li ng-repeat="h in c.habitats">
-                                    {{ ::localizedHabitat(h) }}
-                                </li>
-                            </ul>
-                            [{{::selectedSpecies.references[c.links.reference].index}}]
-                        </div>
-                    </div>
-                    <div class="list-group">
-                        <h4>
-                            <fo-icon icon="substrate"></fo-icon>
-                            Supstrati
-                        </h4>
-                        <div ng-repeat="c in selectedSpecies.characteristics">
-                            <ul>
-                                <li ng-repeat="s in c.substrates">
-                                    {{ ::localizedSubstrate(s) }}
-                                </li>
-                            </ul>
-                            [{{::selectedSpecies.references[c.links.reference].index}}]
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <fo-species-characteristics species="selectedSpecies"></fo-species-characteristics>
         </div>
     </div>
 
@@ -191,44 +100,44 @@
     </div>
 
 
-    <div class="row" ng-show="species">
+    <div class="row" ng-show="result.species">
         <div class="col-lg-12">
 
             <div class="panel panel-default searchResults">
                 <div class="panel-heading">
-                    <p class="searchParams">{{ displayParams }} --> <span class="hits">{{totalHits}}</span></p>
+                    <p class="searchParams">{{ result.displayParams }} --> <span class="hits">{{result.totalHits}}</span></p>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
-                        <div class="list-group-item" ng-repeat="sp in species">
+                        <div class="list-group-item" ng-repeat="sp in result.species">
 
                             <a class="pointer" ng-click="selectSpecies(sp)">
                                 <div class="speciesName">{{sp.fullName }}
                                     <span ng-show="sp.synonyms"> ({{sp.synonyms}})</span></div>
                             </a>
-                            <span ng-repeat="u in characteristics[sp.id].usabilities"
+                            <span ng-repeat="u in result.characteristics[sp.id].usabilities"
                                   title="{{::translateUsability(u)}}"
                                   class="pointer">
                                 <fo-icon icon="{{::u}}"></fo-icon>
                             </span>
 
-                            <span ng-repeat="h in characteristics[sp.id].habitats"
+                            <span ng-repeat="h in result.characteristics[sp.id].habitats"
                                   title="{{::h.title}}"
                                   class="pointer habitat {{::h.key}}">
                                 <fo-icon icon="habitat"></fo-icon>
                             </span>
 
-                            <span ng-repeat="s in characteristics[sp.id].substrates"
+                            <span ng-repeat="s in result.characteristics[sp.id].substrates"
                                   title="{{::s.title}}"
                                   class="pointer">
                                 <fo-icon icon="substrate"></fo-icon>
                             </span>
 
-                            <span class="dimmed">{{::characteristics[sp.id].nutritiveGroup}}</span>
-                            <span ng-show="characteristics[sp.id].growthType" class="dimmed">, {{::characteristics[sp.id].growthType}}</span>
+                            <span class="dimmed">{{::result.characteristics[sp.id].nutritiveGroup}}</span>
+                            <span ng-show="result.characteristics[sp.id].growthType" class="dimmed">, {{::result.characteristics[sp.id].growthType}}</span>
                             <br><br>
 
-                            <p ng-repeat="(key, s) in characteristics[sp.id].sections">
+                            <p ng-repeat="(key, s) in result.characteristics[sp.id].sections">
                                 <span title="{{::s.title}}"><fo-icon icon="{{::s.key}}"></fo-icon></span>
                                 {{ s.content }}
                             </p>
@@ -239,7 +148,7 @@
         </div>
     </div>
 
-    <div class="row" ng-hide="species">
+    <div class="row" ng-hide="result.species">
         <div class="col-lg-6">
             <p>
                 U bazi gljiva Fungiorbis je opisano ukupno <strong>{{::stats.speciesCount}}</strong> vrsta gljiva. Za

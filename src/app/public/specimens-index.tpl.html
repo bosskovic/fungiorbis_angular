@@ -54,8 +54,8 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                <fo-icon icon="species"></fo-icon>
-                Pretraga vrsta
+                <fo-icon icon="specimens"></fo-icon>
+                Pretraga nalaza
             </h1>
         </div>
     </div>
@@ -63,7 +63,6 @@
 
     <div class="row" ng-show="species">
         <div class="col-lg-12">
-
             <div class="panel panel-default searchResults">
                 <div class="panel-heading">
                     <p class="searchParams">{{ displayParams }} --> <span class="hits">{{totalHits}}</span></p>
@@ -71,9 +70,11 @@
                 <div class="panel-body">
                     <div class="list-group">
                         <div class="list-group-item" ng-repeat="sp in species">
-                            <a class="pointer">
-                                <div class="speciesName">{{sp.fullName }}<span
-                                        ng-show="sp.synonyms"> ({{sp.synonyms}})</span></div>
+                            <a class="pointer" href="/species/{{sp.genus + '_' + sp.name}}">
+                                <div class="speciesName">
+                                    {{sp.fullName }}
+                                    <span ng-show="sp.synonyms"> ({{sp.synonyms}})</span>
+                                </div>
                             </a>
                             <span ng-repeat="u in characteristics[sp.id].usabilities"
                                   title="{{::translateUsability(u)}}"
@@ -111,18 +112,15 @@
     <div class="row" ng-hide="species">
         <div class="col-lg-6">
             <p>
-                U bazi gljiva Fungiorbis je opisano ukupno <strong>{{::stats.speciesCount}}</strong> vrsta gljiva. Za izlistavanje vrsta gljiva, iz menija sa
-                leve strane zadajte parametre za pretragu.
-                Rezultat pretrage su sve vrste koje ispunjavaju svaki od zadatih parametara.
+                U bazi gljiva Fungiorbis je opisano ukupno <strong>{{::stats.speciesCount}}</strong> nalaza. Za
+                izlistavanje nalaza, iz menija sa
+                leve strane zadajte parametre za pretragu koji se odnose na vrstu gljive ili na nalaz.
+                Rezultat pretrage su svi nalazi koji ispunjavaju svaki od zadatih parametara.
             </p>
 
             <div><strong>Primeri:</strong></div>
             <ol>
-                <li>Boletus + jestiva + stelja <p>sve jestive vrste roda Boletus koje rastu na stelji</p></li>
-                <li>šuma / listopadna / bukva + panj <p>sve vrste koje rastu u listopadnim bukovim šumama (stanište) na
-                    panjevima (supstrat)</p></li>
-                <li>jestiva + lekovite <p>sve vrste koje su istovremeno i jestive i lekovite (a ne zbir svih jestivih i
-                    svih lekovitih)</p></li>
+                <li>Boletus + Vrdnik <p>svi nalazi gljiva roda Boletus na lokalitetu Vrdnik</p></li>
             </ol>
         </div>
 
@@ -131,7 +129,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <fo-icon icon="speciesStatistics"></fo-icon>
-                        Broj vrsta po pojedinim kategorijama
+                        Broj nalaza po pojedinim kategorijama
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -139,32 +137,17 @@
                         <a class="list-group-item">
                             <span class="badge">{{::stats.speciesCount}}</span>
                             <fo-icon icon="species"></fo-icon>
-                            Broj vrsta
+                            Broj nalaza
                         </a>
                         <a class="list-group-item">
                             <span class="badge">{{::stats.genusCount}}</span>
                             <fo-icon icon="systematics"></fo-icon>
-                            Broj rodova
+                            Broj lokaliteta
                         </a>
                         <a href="#" class="list-group-item">
                             <span class="badge">{{::stats.edibleCount}}</span>
                             <fo-icon icon="edible"></fo-icon>
-                            Broj jestivih vrsta
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <span class="badge">{{::stats.poisonousCount}}</span>
-                            <fo-icon icon="poisonous"></fo-icon>
-                            Broj otrovnih vrsta
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <span class="badge">{{::stats.cultivatedCount}}</span>
-                            <fo-icon icon="cultivated"></fo-icon>
-                            Broj gajenih vrsta
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <span class="badge">{{::stats.medicinalCount}}</span>
-                            <fo-icon icon="medicinal"></fo-icon>
-                            Broj lekovitih vrsta
+                            Prosečan broj nalaza po lokalitetu
                         </a>
                     </div>
                 </div>

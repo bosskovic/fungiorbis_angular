@@ -74,6 +74,7 @@ angular.module('services.icons', [])
     bulletHabitatPublic: 'fa-angle-right',
 
     location: 'fa-globe',
+    date: 'fa-calendar',
 
     fieldStudy: 'fa-car',
 
